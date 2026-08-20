@@ -1,0 +1,10 @@
+{
+  "description": "This fintech platform offers innovative financial solutions for businesses and individuals, combining sophisticated design with advanced technology for seamless transactions.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
