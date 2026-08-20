@@ -69,6 +69,15 @@ export default defineConfig({
     strictPort: true,
     host: '0.0.0.0',
     allowedHosts: true,
+    // Imported projects may be run with a standalone Vite workflow instead
+    // of the artifact router. Keep the browser's relative /api calls pointed
+    // at the existing shared API service in that dev setup.
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: true,
+      },
+    },
     fs: {
       strict: true,
     },
