@@ -367,16 +367,17 @@ export default function App() {
               <button type="button" className="payvora-codex-account-name" onClick={() => setProfileOpen(v => !v)}>{displayName || 'Payvora workspace'}</button>
             </div>
               {profileOpen && (
-                <div role="menu" aria-label="Profile menu" style={{ position: 'absolute', zIndex: 40, left: -60, bottom: 52, width: 240, background: 'var(--pv-card)', border: '1px solid var(--pv-border)', borderRadius: 20, boxShadow: '0 16px 44px rgba(0,0,0,0.22)', padding: 8, animation: 'payvora-menu-in 220ms cubic-bezier(0.32,0.72,0,1)' }}>
+                <div role="menu" aria-label="Profile menu" style={{ position: 'absolute', zIndex: 40, left: 0, bottom: 'calc(100% + 10px)', width: 'min(280px, calc(100vw - 32px))', background: 'var(--pv-card)', border: '1px solid var(--pv-border-strong)', borderRadius: 18, boxShadow: '0 18px 50px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.06)', padding: 8, animation: 'payvora-menu-in 220ms cubic-bezier(0.32,0.72,0,1)', transformOrigin: 'bottom left' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 10px 12px', borderBottom: '1px solid var(--pv-border)' }}>
                     <Avatar initials={initials} size={32} />
                     <div>
                       <p style={{ margin: 0, color: 'var(--pv-text)', fontSize: 13, fontWeight: 600 }}>{displayName || 'Payvora user'}</p>
-                      <p style={{ margin: '2px 0 0', color: 'var(--pv-blue)', fontSize: 11 }}>{planName ? `${planName} Plan` : 'Free Plan'}</p>
+                      <p style={{ margin: '3px 0 0', color: 'var(--pv-blue)', fontSize: 11, fontWeight: 600, letterSpacing: '0.02em' }}>{planName ? `${planName} Plan` : 'Free Plan'}</p>
                     </div>
                   </div>
                   <div style={{ paddingTop: 6 }}>
-                    <button type="button" role="menuitem" className="payvora-menu-item" disabled title="Sign-in is not enabled — Payvora uses an anonymous browser session." style={{ ...menuItem, color: '#ff453a', opacity: 0.5, cursor: 'not-allowed' }}>Sign Out</button>
+                    <div style={{ padding: '8px 10px 5px', color: 'var(--pv-text-muted)', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Workspace</div>
+                    <button type="button" role="menuitem" className="payvora-menu-item" disabled title="Sign-in is not enabled — Payvora uses an anonymous browser session." style={{ ...menuItem, color: '#ff453a', opacity: 0.5, cursor: 'not-allowed', borderRadius: 12 }}>Sign Out</button>
                   </div>
                 </div>
               )}
