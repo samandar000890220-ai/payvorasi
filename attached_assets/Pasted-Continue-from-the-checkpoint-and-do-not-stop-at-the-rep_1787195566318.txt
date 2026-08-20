@@ -1,0 +1,46 @@
+Continue from the checkpoint and **do not stop at the repository inspection or baseline comparison**. Now actually implement the PAYVORA brand identity and animated loading system described in my previous instructions.
+
+Use the attached PAYVORA reference image as the visual source of truth and the actual assets you found in the cloned repository as the implementation source of truth.
+
+I specifically need you to complete all of the following now:
+
+1. Implement the official **PAYVORA logo icon + PAYVORA wordmark** throughout the appropriate application branding locations.
+2. Implement the **“THE ARCHITECTURE OF MODERN FINANCE”** tagline where appropriate, matching the supplied reference's typography, spacing, scale, alignment, and premium visual treatment.
+3. Reuse the actual PAYVORA logo asset from the repository wherever possible instead of recreating or substituting it.
+4. Identify the actual logo animation/animated asset in the repository and use its **original animation behavior** as the PAYVORA loading animation.
+5. Create one reusable `PayvoraLoader`/equivalent component instead of creating multiple inconsistent loaders.
+6. Replace generic route/page loading spinners with the PAYVORA animated logo loader where appropriate.
+7. When users navigate between internal PAYVORA pages, show the animated PAYVORA logo transition/loading state while the destination route is loading.
+8. Make the transition smooth and premium, with no flashing, layout jumping, stuck loaders, duplicate loaders, or unnecessary artificial delays.
+9. Preserve all existing PAYVORA functionality and screens.
+10. Do not replace the application with a mockup or rebuild it from scratch.
+11. Apply the branding consistently to the sidebar/header/login/loading/empty-state/page-transition areas where the existing brand is actually displayed.
+12. Update the favicon/browser title/application metadata where appropriate.
+13. Respect the existing design system and reuse its tokens/components instead of creating conflicting styles.
+14. Make the logo responsive on desktop, tablet, and mobile.
+15. Respect `prefers-reduced-motion` with an appropriate reduced-motion version.
+16. Check the browser console and fix all runtime errors.
+17. Check the terminal/build output and fix all TypeScript, Vite, CSS, import, asset-path, and routing errors.
+18. Start the application using the correct Replit command.
+19. Open the actual **Replit Preview** and verify that the implementation works visually and functionally.
+20. Test actual navigation between multiple pages and confirm that the PAYVORA logo animation appears correctly during route transitions.
+
+### CRITICAL
+
+Do not respond that the task is complete merely because the repository was cloned, inspected, or checkpointed.
+
+**Actually modify the code, run it, open the Replit Preview, test it, and fix anything that does not work.**
+
+The final result must visibly show the new PAYVORA identity and the PAYVORA logo animation must actually function as the application's page/navigation loading experience.
+
+When you finish, report exactly:
+
+* Which files/components you changed
+* Which PAYVORA logo asset you reused
+* Which animation/asset you used for the loader
+* Where the route transition loader was integrated
+* Whether the app successfully builds
+* Whether the Replit Preview is running successfully
+* Any limitations that are genuinely caused by the repository/runtime rather than by incomplete implementation
+
+**Do not stop until the implementation is actually running in Replit Preview.**
