@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Payvora Fintech Logo"
+description = "The extracted Payvora premium fintech logo presentation, rendered unchanged as a previewable web app."
+version = "1.0.0"
+id = "artifacts/payvora-preview"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23723
+
+[services.development]
+run = "pnpm --filter @workspace/payvora-preview run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/payvora-preview", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/payvora-preview/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23723"
+BASE_PATH = "/"
