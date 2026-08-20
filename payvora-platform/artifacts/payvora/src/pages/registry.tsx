@@ -1,4 +1,5 @@
 import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from "react";
+import { PayvoraLoader } from "../components/PayvoraBrand";
 
 /**
  * Label → page component registry for the App shell router.
