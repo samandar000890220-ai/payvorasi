@@ -1,5 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600&display=swap');
 @import 'tailwindcss';
+
+@keyframes payvora-loader-fins {
+  0% { opacity: .2; transform: translate3d(0, 10px, 0) scale(.86); }
+  38% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  100% { opacity: .82; transform: translate3d(0, -3px, 0) scale(.98); }
+}
+
+.payvora-loader__grid {
+  display: grid;
+  place-items: center;
+  animation: payvora-loader-fins 900ms cubic-bezier(.22, 1, .36, 1) infinite alternate;
+}
+
+.payvora-loader--fullscreen {
+  background-color: #060a14 !important;
+  background-image:
+    linear-gradient(rgba(117, 140, 190, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(117, 140, 190, .08) 1px, transparent 1px),
+    radial-gradient(ellipse 55% 55% at 50% 42%, rgba(59, 85, 245, .1), transparent 70%);
+  background-size: 72px 72px, 72px 72px, auto;
+}
+
+.payvora-loader__copy {
+  position: absolute;
+  top: calc(50% + 92px);
+  text-align: center;
+  color: #e8edf5;
+  font-family: 'Outfit', Inter, sans-serif;
+}
+
+.payvora-loader__wordmark {
+  font-size: clamp(24px, 4vw, 44px);
+  font-weight: 300;
+  letter-spacing: .34em;
+  padding-left: .34em;
+}
+
+.payvora-loader__tagline {
+  margin-top: 14px;
+  color: #6f80a0;
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: .42em;
+  padding-left: .42em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .payvora-loader__grid { animation: none; }
+}
 
 @theme {
   --color-sidebar: #13161C;

@@ -9,6 +9,7 @@ import { getJson } from './lib/http'
 import { BottomWorkspacePanel, RightWorkspacePanel, WorkspaceControls, type WorkspaceTool } from './components/WorkspaceControls'
 import VoiceWaveform from './VoiceWaveform'
 import { useVoiceEngine } from './voiceEngineContext'
+import { PayvoraLoader, PayvoraLogo } from './components/PayvoraBrand'
 
 type SidebarConversation = { id: number; title: string; createdAt: string }
 type ComposerAttachment = { id: string; file: File; previewUrl?: string }
@@ -69,6 +70,7 @@ export default function App() {
   const [sidebarConvos, setSidebarConvos] = useState<SidebarConversation[]>([])
   const [displayName, setDisplayName] = useState('')
   const [planName, setPlanName] = useState('')
+  const [routeTransitioning, setRouteTransitioning] = useState(false)
   // Home composer mode: expandable panel like the reference ("Write or edit")
   const [homeMode, setHomeMode] = useState<'none' | 'write'>('none')
   const [composerFocused, setComposerFocused] = useState(false)
@@ -193,7 +195,9 @@ export default function App() {
     if (isMobile) setSidebarOpen(false)
     const path = NAV_PATHS[label]
     if (path && window.location.pathname !== path) {
+      setRouteTransitioning(true)
       window.history.pushState({}, '', path)
+      window.setTimeout(() => setRouteTransitioning(false), 420)
     }
     if (announce) notify(`${label} opened`)
   }
@@ -247,6 +251,7 @@ export default function App() {
 
   return (
     <div className="payvora-app payvora-codex-app" style={{ display: 'flex', background: 'var(--pv-page)', fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, system-ui, sans-serif", overflow: 'hidden' }} aria-live="polite">
+      {routeTransitioning && <PayvoraLoader fullscreen label="Loading destination page" />}
 
       {/* ── Overlay (mobile) ─────────────────────────────────────────────── */}
       <div aria-hidden onClick={() => setSidebarOpen(false)}
@@ -268,11 +273,7 @@ export default function App() {
 
         {/* Title + search */}
         <div className="payvora-codex-sidebar-brand" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '22px 20px 14px' }}>
-          <img
-            src={`${import.meta.env.BASE_URL}${resolved === 'dark' ? 'payvora-dark-logo.png' : 'payvora-light-logo.png'}`}
-            alt="Payvora"
-            style={{ width: 176, height: 'auto', display: 'block' }}
-          />
+          <PayvoraLogo size={34} showTagline={false} color="var(--pv-text)" />
           <div className="payvora-codex-sidebar-utilities">
             <button type="button" aria-label={searchOpen ? 'Close search' : 'Search chats'} aria-expanded={searchOpen} onClick={() => setSearchOpen(v => !v)}
               style={{ width: 40, height: 40, borderRadius: 20, border: 'none', background: 'var(--pv-hover)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 180ms ease' }}>

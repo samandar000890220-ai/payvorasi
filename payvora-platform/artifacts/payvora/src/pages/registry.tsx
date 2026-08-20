@@ -24,7 +24,7 @@ export function RegistryPage({ label }: { label: string }) {
   if (!entry) return null;
   const { Component } = entry;
   return (
-    <Suspense fallback={<div className="pv-page" style={{ padding: 24, color: "var(--pv-text-muted)" }}>Loading…</div>}>
+    <Suspense fallback={<div className="pv-page" style={{ minHeight: "100%", display: "grid", placeItems: "center" }}><PayvoraLoader label="Loading page" /></div>}>
       <Component />
     </Suspense>
   );
