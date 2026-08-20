@@ -1,0 +1,195 @@
+Implement the following UI and UX improvements across the entire application.
+
+# 1. Make Every Button Fully Responsive
+
+Audit every interactive element in the application and ensure it behaves like a modern production SaaS product.
+
+This includes:
+
+• All buttons
+• Icon buttons
+• Sidebar navigation items
+• Dropdown buttons
+• Dropdown arrow icons
+• Expand/Collapse buttons
+• Accordion buttons
+• Tabs
+• Cards that are clickable
+• Menu items
+• Profile button
+• Notification button
+• Search inputs
+• Voice cards
+• Upload buttons
+• Play buttons
+• Generate buttons
+• Chat buttons
+• Tool buttons
+• Settings buttons
+• Every clickable icon
+
+Every interactive element must support:
+
+✓ Hover state
+✓ Active state
+✓ Focus state
+✓ Keyboard navigation
+✓ Proper cursor
+✓ Disabled state
+✓ Loading state (where applicable)
+✓ Mobile touch interaction
+✓ Ripple/pressed feedback (subtle)
+✓ Smooth 180–250ms transition
+
+Nothing should feel static.
+
+---
+
+# 2. Sidebar Expand / Collapse
+
+Improve the sidebar interaction.
+
+Requirements:
+
+• Collapse/Expand animation should be smooth.
+• Width transition should animate naturally.
+• Icons must remain centered.
+• Labels should fade smoothly.
+• Tooltips should appear when collapsed.
+• Active page should remain highlighted.
+• Dropdown arrows should animate when expanding.
+• Section animations should be fluid.
+
+No jitter.
+
+No layout jumps.
+
+No flashing.
+
+---
+
+# 3. Sidebar Dropdowns
+
+Every dropdown should behave like ChatGPT.
+
+Requirements:
+
+• Smooth open/close animation
+• Rotating chevron arrow (180°)
+• Proper easing
+• Remember expanded state
+• Keyboard accessible
+• Auto height animation
+• No flickering
+
+---
+
+# 4. Remove the Current "Settings & Account" Section
+
+Remove this section completely from the sidebar:
+
+Settings & Account
+
+• Settings
+• Billing
+• Help & Support
+
+Do not display these items permanently in the sidebar.
+
+---
+
+# 5. Move Them Into the Profile Menu
+
+Instead, implement the exact interaction used by ChatGPT.
+
+When the user clicks their profile area at the bottom of the sidebar (for example):
+
+Ademola Johnson
+Pro Plan
+
+A floating profile menu should appear.
+
+The menu should contain:
+
+──────────────────
+
+👤 Ademola Johnson
+Pro Plan
+
+──────────────────
+
+Settings
+
+Billing
+
+Help & Support
+
+Keyboard Shortcuts
+
+API Keys
+
+Theme
+
+Language
+
+Sign Out
+
+──────────────────
+
+The popup should:
+
+• Open above the profile area.
+• Be aligned to the sidebar.
+• Have rounded corners (16px).
+• Soft shadow.
+• Light border.
+• Proper spacing.
+• Smooth fade + slide animation.
+• Close when clicking outside.
+• Close with Escape.
+• Support keyboard navigation.
+• Be fully responsive.
+
+It should feel almost identical to ChatGPT's profile dropdown behavior, while using Payvora's branding and styling.
+
+Do not copy ChatGPT visually—only replicate the interaction pattern and usability.
+
+---
+
+# 6. Modern Interaction Standards
+
+Ensure every interaction across the application feels:
+
+• Fast
+• Smooth
+• Responsive
+• Polished
+• Professional
+• Predictable
+
+Animations should never feel slow or distracting.
+
+Target animation duration:
+
+180–250ms
+
+Use modern easing curves.
+
+---
+
+# 7. Production Quality
+
+Audit the entire application and eliminate:
+
+• Buttons without hover effects
+• Icons that don't respond to clicks
+• Inconsistent dropdown behavior
+• Dead clickable areas
+• Misaligned hit targets
+• Small touch targets
+• Flickering menus
+• Layout shifts
+• Inconsistent spacing
+• Accessibility issues
+
+Every interaction should meet production-ready SaaS quality comparable to modern AI applications such as ChatGPT, Linear, Notion, Replit, and ElevenLabs, while maintaining Payvora's own branding and design language.

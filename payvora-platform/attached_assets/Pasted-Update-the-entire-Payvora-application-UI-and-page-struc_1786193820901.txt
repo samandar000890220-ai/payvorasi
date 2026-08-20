@@ -1,0 +1,313 @@
+Update the entire Payvora application UI and page structure to match a modern premium fintech AI platform.
+
+Do NOT only update the navigation labels.
+
+I want the COMPLETE application experience redesigned.
+
+Current navigation:
+
+Payvora
+
+- Images
+- Library
+- Projects
+- More
+
+AI Features:
+- Voice Studio
+- Video Studio
+- AI Agents
+- Templates
+- Knowledge Base
+- Integrations
+- API Keys
+- Billing
+- Help & Support
+
+
+==================================================
+
+NEW DESIGN DIRECTION
+==================================================
+
+Transform Payvora into a modern fintech AI company website/application.
+
+The UI should feel like:
+
+- Stripe
+- Linear
+- Vercel
+- OpenAI
+- Ramp
+- Mercury
+- Notion AI
+
+combined into one premium AI financial platform.
+
+Use a clean enterprise SaaS design system.
+
+==================================================
+
+GLOBAL UI CHANGES
+==================================================
+
+Redesign every page with:
+
+- Modern collapsible sidebar
+- Premium dashboard layout
+- Clean typography
+- Better spacing
+- Glassmorphism where appropriate
+- Subtle shadows
+- Smooth animations
+- Professional cards
+- Modern buttons
+- Consistent components
+- Responsive mobile layout
+
+Create a unified design system:
+
+- Colors
+- Typography
+- Components
+- Layout rules
+- Animations
+- Empty states
+- Loading states
+
+Every page should feel like it belongs to the same product.
+
+==================================================
+
+SIDEBAR STRUCTURE
+==================================================
+
+Create a professional fintech navigation.
+
+Example:
+
+PAYVORA
+
+Workspace
+- Dashboard
+- Projects
+- Library
+
+AI Studio
+- Image Studio
+- Voice Studio
+- Video Studio
+- AI Agents
+- Templates
+- Document Studio
+
+Knowledge & Automation
+- Knowledge Base
+- Integrations
+- API Keys
+
+Account
+- Billing
+- Settings
+- Help & Support
+
+
+Add:
+
+- Icons
+- Hover states
+- Active page indicator
+- Collapsible groups
+- Smooth transitions
+
+==================================================
+
+PAGE REDESIGN REQUIREMENTS
+==================================================
+
+Redesign every existing page:
+
+1. Image Studio
+
+Create a professional AI image generation workspace:
+
+- Prompt editor
+- Model selector
+- Generation settings
+- Recent creations
+- Image history
+- Gallery layout
+- Upload/reference image tools
+
+
+2. Voice Studio
+
+Create a premium ElevenLabs-style voice workspace:
+
+- Voice library
+- Voice cards
+- Voice cloning
+- Reference audio upload
+- Text-to-speech editor
+- Audio player
+- Generation history
+- Voice settings
+
+
+3. Video Studio
+
+Create:
+
+- Video generation workspace
+- Timeline/editor layout
+- Templates
+- Preview player
+- Export controls
+
+
+4. AI Agents
+
+Create:
+
+- Agent dashboard
+- Agent cards
+- Create agent flow
+- Agent configuration
+- Tools/integrations
+- Memory settings
+- Testing playground
+
+
+5. Templates
+
+Create:
+
+- Template marketplace style page
+- Categories
+- Search
+- Template cards
+- Create from template
+
+
+6. Knowledge Base
+
+Create:
+
+- Document management interface
+- Upload documents
+- Search
+- Collections
+- AI retrieval settings
+
+
+7. Document Studio
+
+Create:
+
+- AI document workspace
+- Editor
+- Document templates
+- AI assistant panel
+- Export options
+
+
+8. Integrations
+
+Create:
+
+- Connected apps page
+- API integrations
+- Connection status cards
+- Setup flows
+
+
+9. API Keys
+
+Create:
+
+- Developer dashboard
+- API key management
+- Usage analytics
+- Documentation links
+
+
+10. Billing
+
+Create:
+
+- Modern SaaS billing page
+
+Include:
+
+- Current plan
+- Usage
+- Limits
+- Invoices
+- Payment method section
+
+Do NOT fake payment functionality.
+
+Use real database billing information if available.
+
+If Stripe is not connected, clearly show unavailable states.
+
+
+11. Settings
+
+Create:
+
+- Profile settings
+- Security
+- Preferences
+- Notifications
+- Workspace settings
+
+
+12. Help & Support
+
+Create:
+
+- Support center
+- Search
+- FAQ
+- Contact support
+- Documentation links
+
+
+==================================================
+
+IMPORTANT IMPLEMENTATION RULES
+==================================================
+
+Before changing anything:
+
+1. Inspect current components.
+2. Reuse existing functionality.
+3. Do not break existing routes.
+4. Do not create duplicate systems.
+5. Keep backend connections intact.
+6. Keep F5-TTS integration working.
+7. Keep existing AI functionality connected.
+
+Only redesign the frontend experience.
+
+==================================================
+
+FINAL QUALITY STANDARD
+==================================================
+
+The finished Payvora application should look like a production fintech AI startup valued at billions.
+
+Every page must have:
+
+- Professional layout
+- Real functionality
+- Modern interactions
+- Responsive design
+- Consistent branding
+
+Do not leave placeholder pages.
+
+Every sidebar item must open a complete polished page.
+
+Complete the redesign across the entire application.

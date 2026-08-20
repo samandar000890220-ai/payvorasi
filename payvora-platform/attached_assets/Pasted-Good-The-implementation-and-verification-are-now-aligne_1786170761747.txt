@@ -1,0 +1,171 @@
+Good. The implementation and verification are now aligned with what I want.
+
+DO NOT redesign the Voice Studio or change its existing visual design.
+
+The next priority is the actual F5-TTS worker connection and final end-to-end verification.
+
+### F5-TTS WORKER — FINALIZE THE REAL CONNECTION
+
+Keep the existing F5-TTS architecture and existing `/v1/speech` integration.
+
+Do not replace F5-TTS with ElevenLabs.
+
+Do not introduce mock generation.
+
+Do not create fake audio.
+
+Do not bypass the existing F5-TTS manager/client pipeline.
+
+The only remaining blocker you identified is:
+
+`F5_TTS_SERVICE_URL`
+
+Before declaring the implementation complete:
+
+1. Verify exactly where `F5_TTS_SERVICE_URL` is read.
+2. Verify the expected URL format.
+3. Verify the application can reach the worker.
+4. Verify the worker exposes the expected `/v1/speech` endpoint.
+5. Verify the request payload reaches the worker correctly.
+6. Verify `controls` contains the actual supported values:
+
+   * speed
+   * pitch
+   * energy
+   * emotion
+7. Verify tags are parsed before generation.
+8. Verify pause tags are post-processed correctly.
+9. Verify generated audio is returned successfully.
+10. Verify the returned audio can be played in Voice Studio.
+11. Verify WAV/MP3 conversion works.
+12. Verify sample-rate conversion works.
+13. Verify cancellation works where supported.
+14. Verify generation history is created only after actual successful generation.
+15. Verify failed generations never appear as successful generations.
+
+### IMPORTANT: DO NOT HARD-CODE SECRETS
+
+Do not place worker credentials, private URLs, API keys, or other secrets in frontend/client code.
+
+Use the existing server-side environment configuration.
+
+If the worker URL is intentionally missing from the current environment, report exactly what environment variable needs to be configured rather than inventing a value.
+
+### END-TO-END TEST
+
+Perform an actual test using the existing Voice Studio:
+
+Voice Studio
+→ select real voice
+→ enter text
+→ apply supported tag
+→ configure Speed/Pitch/Speaking Style
+→ Generate
+→ backend validation
+→ `/v1/speech`
+→ F5-TTS worker
+→ audio returned
+→ audio player
+→ history record
+
+Then repeat with:
+
+* normal generation
+* `[short pause]`
+* `[slowly]`
+* `[fast]`
+* `[emphasis]`
+* emotion
+* speed adjustment
+* pitch adjustment
+* failed generation
+* retry
+* cancellation
+
+Confirm that the resulting audio behavior actually changes where expected.
+
+### TAG VERIFICATION
+
+Do not merely verify that tags exist in the request.
+
+Verify their actual audio behavior.
+
+For example:
+
+`[short pause]` → actual silence
+
+`[slowly]` → actual slower segment
+
+`[fast]` → actual faster segment
+
+`[emphasis]` → actual energy change
+
+emotion tag → actual emotion control
+
+Unknown tag → validation failure
+
+No supported tag should accidentally be spoken as literal text.
+
+### VOICE CLONE VERIFICATION
+
+Also perform one complete real clone test if the worker/backend is available:
+
+Upload reference audio
+→ validation
+→ normalization
+→ clone processing
+→ voice created
+→ voice ID persisted
+→ voice appears in My Voices
+→ voice appears in Voice Studio
+→ voice preview works
+→ generate speech using cloned voice
+→ generation appears in History.
+
+### DO NOT MARK SOMETHING FUNCTIONAL WITHOUT TESTING IT
+
+Use these classifications:
+
+**FUNCTIONAL**
+= actually tested end-to-end and works.
+
+**PARTIALLY FUNCTIONAL**
+= UI/backend exists but external dependency prevents complete verification.
+
+**INTENTIONALLY UNAVAILABLE**
+= capability genuinely does not exist in the current architecture.
+
+**BLOCKED**
+= implementation exists but cannot be tested because an external dependency/configuration is missing.
+
+Do NOT classify something as FUNCTIONAL merely because the code exists.
+
+### FINAL REPORT
+
+When finished, provide:
+
+1. F5-TTS worker connection status
+2. Environment/configuration required
+3. Voice Studio control audit
+4. Tag audit
+5. Voice Clone audit
+6. My Voices audit
+7. History audit
+8. Responsive/mobile audit
+9. Accessibility audit
+10. Typecheck result
+11. Build result
+12. Test result
+13. Remaining blockers
+
+Most importantly:
+
+**Do not make any more unnecessary UI changes.**
+
+The Voice Studio design is approved.
+
+The current architecture is approved.
+
+The F5-TTS backend is approved.
+
+Now focus exclusively on making the existing implementation work end-to-end and verifying it honestly.

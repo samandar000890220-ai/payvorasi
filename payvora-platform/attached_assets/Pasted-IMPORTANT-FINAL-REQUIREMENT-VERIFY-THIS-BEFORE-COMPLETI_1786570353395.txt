@@ -1,0 +1,55 @@
+IMPORTANT FINAL REQUIREMENT — VERIFY THIS BEFORE COMPLETING:
+
+Yes, the image-generation feature MUST operate directly inside the EXISTING CHAT INTERFACE during an active conversation.
+
+I do NOT want a separate image-generation page, separate image-generation workspace, separate modal workflow, or redirect.
+
+The exact intended flow is:
+
+1. User is in the normal PAYVORA chat interface.
+2. User sends a normal text request.
+3. If the request requires text reasoning, use the existing text-chat flow.
+4. If the user asks the assistant to generate/create/draw an image, the SAME conversation must handle the image-generation request.
+5. The user's image request must appear as the normal user message in the conversation.
+6. Immediately underneath it, the assistant's image-generation placeholder appears.
+7. The placeholder must show:
+   - "Creating image"
+   - animated dot-matrix visualization
+8. During the generation process it may transition to:
+   - "Sketching it out"
+9. When the REAL backend image-generation request successfully completes, replace the placeholder with the actual generated image IN THAT SAME MESSAGE/CONVERSATION.
+10. The generated image must remain part of the conversation history.
+11. The user must be able to continue chatting normally after the image is generated.
+12. A later user message can request another image and the exact same in-chat workflow should happen again.
+
+DO NOT create a separate image-generation route or page.
+
+DO NOT fake the generated image.
+
+DO NOT use a frontend-only mock generation process.
+
+The backend must actually perform the image-generation request and return the result to the existing chat UI.
+
+The frontend is responsible only for rendering the generation state and displaying the returned result.
+
+Also verify that image generation does NOT break normal text conversations.
+
+TEST THESE EXACT SCENARIOS:
+
+A. "Hello, how are you?"
+→ normal text response.
+
+B. "Explain what a blockchain is."
+→ normal text response.
+
+C. "Generate an image of a real man taking a selfie."
+→ same chat → user message → "Creating image" → animated dots → "Sketching it out" → actual generated image.
+
+D. After the image is generated:
+"Tell me what you just generated."
+→ normal text conversation continues in the SAME chat.
+
+E. "Generate another image..."
+→ another image-generation message appears in the SAME conversation.
+
+Before declaring completion, verify that the generated images are persisted/rendered as conversation messages rather than being displayed in a separate page.

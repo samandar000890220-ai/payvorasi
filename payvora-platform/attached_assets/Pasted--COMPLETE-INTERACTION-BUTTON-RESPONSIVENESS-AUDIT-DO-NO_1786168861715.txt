@@ -1,0 +1,285 @@
+### COMPLETE INTERACTION, BUTTON & RESPONSIVENESS AUDIT — DO NOT SKIP ANYTHING
+
+Treat this as a **full-site interaction and responsiveness repair**, not a partial UI polish.
+
+Audit and fix **EVERY button, icon button, link, tab, dropdown, select, checkbox, radio button, switch, slider, card action, menu item, modal action, upload control, playback control, navigation item, filter, search control, pagination control, form submission, editor control, and other interactive element across EVERY existing Payvora page and route.**
+
+### 1. EVERY INTERACTIVE ELEMENT MUST WORK
+
+Do not skip, ignore, hide, remove, or leave behind any existing interactive element.
+
+For every control:
+
+**Click/Tap → Correct action → Correct UI transition → Loading state → Actual operation → Success state → Failure state → Persistence/update → Return to usable state**
+
+If a control is intentionally unavailable, clearly represent it as unavailable rather than making it appear functional.
+
+Do NOT use fake interactions such as:
+
+* `alert()`
+* `notify("Coming soon")`
+* `notify("Not implemented")`
+* empty `onClick`
+* placeholder handlers
+* console-only actions
+* decorative buttons with no behavior
+* buttons that visually respond but perform no operation
+* controls that silently fail
+
+If the existing UI already contains a control, determine what its intended behavior is from its label, surrounding UI, existing routes, components, state, and application architecture, then implement that behavior properly.
+
+### 2. DO NOT SKIP OR JUMP OVER CONTROLS
+
+Do not implement only the obvious buttons.
+
+Do not stop after fixing the main TTS page.
+
+Do not skip secondary actions, overflow menus, cards, tabs, filters, history actions, settings, modals, mobile navigation, or controls hidden behind menus.
+
+Do not jump directly from the beginning of a page to a later feature while leaving intermediate controls broken.
+
+Work systematically through the entire application.
+
+Create an internal checklist of all interactive elements and mark each one:
+
+* FUNCTIONAL
+* PARTIALLY FUNCTIONAL
+* FIXED
+* INTENTIONALLY UNAVAILABLE
+
+Do not consider the task complete while accidental non-functional controls remain.
+
+### 3. NO UNEXPECTED NAVIGATION OR "JUMPING"
+
+A user must never be unexpectedly redirected, skipped to another section, or taken to another page simply because they clicked a control.
+
+Every navigation action must intentionally go to the correct destination.
+
+Every button must perform the action associated with its label.
+
+Examples:
+
+* Play → plays the selected audio.
+* Pause → pauses that audio.
+* Resume → resumes it.
+* Replay → starts it again.
+* Download → downloads the correct generated asset.
+* Delete → opens the appropriate confirmation and deletes the correct item.
+* Edit → opens the correct editor.
+* Save → persists the changes.
+* Cancel → cancels the current operation without accidentally submitting it.
+* Back → returns to the correct previous location/state.
+* Tab → changes the active tab without unexpected page navigation.
+* Filter → updates the displayed results without losing unrelated state.
+* Search → searches the correct dataset.
+* Sort → changes ordering correctly.
+* Generate → generates exactly once.
+
+Do not allow accidental form submission, accidental navigation, double-click generation, or unintended page refreshes.
+
+### 4. RESPONSIVENESS — EVERY CONTROL ON EVERY DEVICE
+
+Every page and every interaction must work correctly on:
+
+* small mobile phones
+* large mobile phones
+* tablets
+* laptops
+* desktop monitors
+* large/wide monitors
+
+Do not merely shrink the desktop layout.
+
+Reflow and reorganize the UI appropriately for smaller screens.
+
+Audit specifically for:
+
+* horizontal scrolling
+* clipped buttons
+* overlapping buttons
+* text overflowing containers
+* controls extending outside cards
+* fixed-width elements
+* broken flex/grid layouts
+* inaccessible dropdowns
+* broken dialogs
+* overflowing modals
+* sidebar collisions
+* mobile navigation failures
+* buttons becoming too small to tap
+* sliders becoming unusable
+* text editors overflowing
+* audio players overflowing
+* upload areas breaking
+* tables becoming unreadable
+* cards exceeding viewport width
+* headers overlapping content
+* footers overlapping content
+* sticky elements covering controls
+* menus opening outside the viewport
+
+Interactive controls must remain usable on touch devices. Use appropriately sized controls and semantic interactive elements rather than tiny or difficult-to-tap targets.
+
+### 5. MOBILE NAVIGATION
+
+On mobile:
+
+* sidebar must transform into an appropriate mobile navigation pattern
+* menus must open within the viewport
+* dialogs must fit the viewport
+* buttons must remain accessible
+* controls must not overlap
+* content must remain readable
+* no horizontal overflow should occur
+* scrolling must remain natural
+* closing a menu/modal must return the user to the correct state
+
+Never force the desktop sidebar/layout onto a small mobile screen.
+
+### 6. BUTTON BEHAVIOR
+
+Every button must have:
+
+* correct semantic element
+* accessible name
+* visible hover state where applicable
+* visible focus state
+* pressed/selected state where applicable
+* loading state where applicable
+* disabled state only when genuinely necessary
+* error state where applicable
+* success feedback where appropriate
+
+Use real `<button>` elements for actions rather than clickable `<div>` elements wherever possible. Use links for navigation.
+
+### 7. PREVENT DUPLICATE ACTIONS
+
+When an operation is processing:
+
+* disable duplicate submissions
+* prevent duplicate API requests
+* show appropriate loading feedback
+* preserve the user's input
+* restore the control after success/failure
+* allow retry where appropriate
+
+For example, clicking Generate five times must NOT create five generations unless that behavior is explicitly intended.
+
+### 8. STATE CONSISTENCY
+
+Do not allow UI state to become inconsistent with application state.
+
+Examples:
+
+* A voice marked as selected must actually be the voice used for generation.
+* A deleted history item must disappear from the UI.
+* A favorite voice must remain favorited after refresh where persistence exists.
+* A selected filter must correspond to displayed results.
+* A paused audio player must actually be paused.
+* A completed generation must appear in History.
+* A failed generation must not appear as successful.
+* A loading button must not remain permanently stuck in loading state.
+
+### 9. ACCESSIBILITY
+
+All controls must be usable with:
+
+* mouse
+* touch
+* keyboard
+* screen reader
+
+Use semantic HTML wherever possible.
+
+Ensure:
+
+* logical tab order
+* keyboard activation
+* visible focus
+* accessible labels
+* correct ARIA states
+* accessible dialogs
+* accessible dropdowns
+* accessible tabs
+* accessible sliders
+* accessible form fields
+
+Do not use clickable containers when a semantic control is appropriate.
+
+### 10. FULL-PAGE AUDIT
+
+Perform the audit page-by-page and route-by-route.
+
+Do not assume that fixing a shared component automatically means every page is correct.
+
+Test:
+
+1. Desktop
+2. Laptop
+3. Tablet
+4. Mobile
+5. Keyboard navigation
+6. Touch interaction
+7. Loading states
+8. Empty states
+9. Error states
+10. Success states
+11. Repeated clicks
+12. Refresh/reload behavior
+13. Navigation/back behavior
+14. Modal open/close behavior
+15. Dropdown open/close behavior
+
+### 11. DO NOT BREAK EXISTING PAYVORA ARCHITECTURE
+
+Keep:
+
+* existing Payvora architecture
+* existing routes
+* existing components
+* existing UI
+* existing design language
+* existing F5-TTS backend
+* existing working functionality
+
+Do not replace F5-TTS with ElevenLabs.
+
+Do not rebuild Payvora from scratch.
+
+Do not unnecessarily redesign working screens.
+
+Improve the implementation underneath the existing UI.
+
+### 12. FINAL VERIFICATION
+
+Before declaring the work complete, perform a **full interaction audit of the entire application**.
+
+There must be:
+
+* no accidental dead buttons
+* no fake buttons
+* no empty click handlers
+* no unexpected navigation
+* no accidental page jumps
+* no broken mobile controls
+* no clipped controls
+* no horizontal overflow caused by the application
+* no permanently stuck loading states
+* no duplicate submissions
+* no obvious accessibility failures
+* no intentionally skipped controls
+
+The final result should feel like a **complete, production-quality application**, not a collection of partially connected screens.
+
+Most importantly:
+
+**DO NOT SKIP ANY BUTTON.
+DO NOT SKIP ANY PAGE.
+DO NOT SKIP ANY CONTROL.
+DO NOT SKIP MOBILE.
+DO NOT SKIP SECONDARY ACTIONS.
+DO NOT JUMP OVER UNIMPLEMENTED FEATURES.**
+
+If something is broken, trace it through the complete interaction lifecycle and fix the underlying implementation rather than hiding the problem.
+
+**Build on the existing Payvora application and make every existing interaction actually work.**

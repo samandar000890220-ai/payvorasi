@@ -1,0 +1,399 @@
+I have now created and pushed my customized F5-TTS project to my GitHub repository:
+
+https://github.com/ElonInvestmentCo/F5-TTS-Voice-Studio
+
+IMPORTANT:
+Do NOT replace, delete, or rebuild my existing Payvora application.
+
+I want you to INTEGRATE the F5-TTS voice engine into the existing Payvora application as the backend engine for Voice Studio.
+
+IMPLEMENTATION LOCATION:
+
+1. EXISTING PAYVORA APPLICATION
+   - Keep the current Payvora frontend, routing, authentication, layout, sidebar, navigation, and existing pages.
+   - Use the existing Voice Studio page/component as the user-facing interface.
+   - Do not create a separate unrelated application.
+
+2. F5-TTS ENGINE
+   - Use the GitHub repository:
+     https://github.com/ElonInvestmentCo/F5-TTS-Voice-Studio
+   - Treat this repository as the source for the F5-TTS inference/voice-generation engine.
+   - The F5-TTS code should live in a clearly isolated backend/service area of this project.
+   - Do NOT put the Python F5-TTS implementation directly inside the React/TypeScript frontend.
+
+3. RECOMMENDED PROJECT STRUCTURE
+
+Create/use a structure similar to:
+
+/server
+  /voice
+    /f5tts
+      [F5-TTS engine/integration]
+    voice_service.py
+    inference.py
+    preprocessing.py
+    tagging.py
+
+/client
+  [existing Payvora frontend]
+
+/shared
+  [shared API/types if needed]
+
+Do not blindly create these directories if equivalent backend directories already exist. First inspect the existing project and integrate into its current architecture.
+
+4. VOICE STUDIO
+
+Connect the existing Payvora Voice Studio interface to the F5-TTS backend.
+
+The Voice Studio should eventually support:
+
+- Text input
+- Voice selection
+- Voice cloning
+- Reference audio upload
+- Reference transcript
+- Voice preview
+- Generate speech
+- Audio playback
+- Download generated audio
+- Generation history
+- Loading/progress state
+- Error handling
+- Regeneration
+
+5. VOICE CLONING
+
+Implement the pipeline so that:
+
+User uploads reference audio
+        ↓
+Backend validates audio
+        ↓
+Audio preprocessing
+        ↓
+Reference transcript
+        ↓
+F5-TTS inference
+        ↓
+Generated WAV/audio
+        ↓
+Frontend audio player
+
+Use the existing F5-TTS implementation rather than creating a completely different TTS engine.
+
+6. MY EXISTING DATASET TOOLS
+
+My local F5-TTS project already contains these tools:
+
+- transcribe_voice.py
+- transcribe_test.py
+- split_dataset.py
+
+The repository also contains the voice dataset workflow I created.
+
+Do not remove these tools.
+
+Use them where appropriate for development/dataset preparation, but DO NOT expose raw dataset-management functionality to normal Payvora users unless explicitly required.
+
+7. IMPORTANT DATASET RULE
+
+My local voice dataset contains:
+
+voices/
+  my_voice/
+    dataset/
+      master_24k.wav
+      transcription.txt
+      wavs/
+      transcripts/
+
+These are development/training assets.
+
+Do NOT commit or expose private voice recordings, generated WAV files, model checkpoints, virtual environments, or other large binary assets to the application repository.
+
+The existing .gitignore already excludes the appropriate large/private files.
+
+8. ELEVENLABS/FISH-AUDIO STYLE TAGGING
+
+I also want Voice Studio to support expressive speech tags.
+
+Examples:
+
+[giggle]
+[laugh]
+[clear throat]
+[sigh]
+[breath]
+[whisper]
+[excited]
+[angry]
+[sad]
+[happy]
+[calm]
+[pause]
+[long pause]
+
+The frontend should allow these tags to be inserted into the text.
+
+IMPORTANT:
+Do NOT assume that the raw F5-TTS model automatically understands arbitrary tags.
+
+Build an expression/tag processing layer between the frontend and F5-TTS.
+
+For example:
+
+User text:
+"Well, I didn't expect that. [giggle] That's actually pretty funny."
+
+↓
+
+Tag parser identifies:
+
+[giggle]
+
+↓
+
+The system determines the appropriate expressive speech treatment.
+
+↓
+
+F5-TTS receives compatible text/audio instructions.
+
+If a tag cannot be natively supported by the current F5-TTS model, implement the correct architecture for handling it rather than pretending the model supports it.
+
+9. TAG ARCHITECTURE
+
+Create a centralized tag registry/configuration rather than hard-coding tags throughout the UI.
+
+For example:
+
+TAG_REGISTRY
+
+Each tag should have properties such as:
+
+- name
+- category
+- display label
+- supported/experimental status
+- processing strategy
+- whether it modifies text
+- whether it requires audio processing
+- whether it requires a special inference prompt
+- fallback behavior
+
+This should make it easy to add additional expressive tags later.
+
+10. TEXT PROCESSING PIPELINE
+
+Implement:
+
+Raw user text
+    ↓
+Tag parser
+    ↓
+Text segments + expression metadata
+    ↓
+F5-TTS-compatible text
+    ↓
+Inference
+    ↓
+Optional post-processing
+    ↓
+Audio assembly
+    ↓
+Final WAV/MP3
+    ↓
+Frontend player
+
+Do not simply delete the tags from the user's text.
+
+The goal is to make the tags actually influence the generated speech whenever technically possible.
+
+11. API
+
+Create clean backend endpoints for Voice Studio, for example:
+
+POST /api/voice/generate
+
+POST /api/voice/clone
+
+POST /api/voice/preview
+
+GET /api/voice/status
+
+GET /api/voice/voices
+
+POST /api/voice/validate-reference
+
+Use the existing Payvora API architecture if these routes already have an equivalent structure.
+
+Do not duplicate existing API systems unnecessarily.
+
+12. GPU / INFERENCE
+
+The original F5-TTS environment was tested locally with CUDA.
+
+The system should detect whether CUDA/GPU inference is available.
+
+If GPU is available:
+    use CUDA inference.
+
+If GPU is unavailable:
+    provide a controlled fallback/error state rather than crashing the application.
+
+Do not download multi-gigabyte models every time a user generates speech.
+
+Models should be cached and loaded once where possible.
+
+13. MODEL MANAGEMENT
+
+Create a model-management layer that handles:
+
+- model availability
+- model loading
+- caching
+- device detection
+- inference status
+- errors
+- cleanup
+
+Do not place model-loading code directly inside frontend components.
+
+14. ASYNCHRONOUS GENERATION
+
+Voice generation may take time.
+
+Do not block the frontend.
+
+Implement an appropriate job/status architecture if necessary:
+
+REQUEST
+ ↓
+JOB CREATED
+ ↓
+MODEL INFERENCE
+ ↓
+AUDIO GENERATED
+ ↓
+JOB COMPLETE
+ ↓
+FRONTEND RECEIVES AUDIO
+
+The UI should display:
+
+Generating voice...
+Processing reference...
+Running F5-TTS...
+Finalizing audio...
+
+where appropriate.
+
+15. FILE STORAGE
+
+Reference audio and generated audio must be handled safely.
+
+Do not permanently store uploaded user audio unless the application explicitly needs to.
+
+Use temporary files/directories for processing where possible.
+
+Clean temporary files after generation.
+
+Never expose server filesystem paths to the frontend.
+
+16. SECURITY
+
+Validate:
+
+- uploaded file type
+- file size
+- audio duration
+- malformed files
+- path traversal
+- unauthorized access
+
+Never allow a user-provided path to be passed directly into Python/FFmpeg/shell commands.
+
+17. DO NOT BREAK EXISTING PAYVORA
+
+Before modifying anything:
+
+FIRST inspect the entire existing project.
+
+Identify:
+
+- frontend framework
+- backend framework
+- existing API routes
+- existing Voice Studio components
+- existing audio infrastructure
+- package manager
+- build scripts
+- environment configuration
+- database/storage system
+- existing authentication
+
+Then integrate F5-TTS into the existing architecture.
+
+Do NOT blindly overwrite files.
+
+18. GITHUB SOURCE
+
+Use the F5-TTS repository as the implementation source:
+
+https://github.com/ElonInvestmentCo/F5-TTS-Voice-Studio
+
+If the repository is already available in the Replit workspace, use the existing local copy instead of downloading another copy.
+
+If it is not present, clone/import it into an appropriate backend/vendor/service location.
+
+Do not put the entire Python virtual environment into the Payvora repository.
+
+19. DEVELOPMENT MODE
+
+For development, make it possible to run the F5-TTS backend independently if necessary.
+
+For example:
+
+Payvora frontend
+    ↓
+Payvora backend/API
+    ↓
+F5-TTS voice service
+    ↓
+GPU/CPU inference
+
+Keep the architecture modular so the F5-TTS engine can later be moved to a dedicated GPU server without rewriting the frontend.
+
+20. ACCEPTANCE TEST
+
+Do not consider the task complete merely because the code compiles.
+
+Actually verify:
+
+1. Payvora starts.
+2. Existing pages still work.
+3. Voice Studio opens.
+4. Reference audio can be uploaded.
+5. Reference audio is validated.
+6. Text can be entered.
+7. Generate can be clicked.
+8. Backend receives the request.
+9. F5-TTS loads correctly.
+10. Inference runs.
+11. Audio is generated.
+12. Generated audio can be played in the browser.
+13. Errors are displayed cleanly.
+14. Existing Payvora functionality remains intact.
+15. Expressive tags are parsed correctly.
+16. Unsupported tags receive a safe fallback rather than silently failing.
+
+IMPORTANT:
+
+Before making changes, inspect the existing project and produce a short implementation plan.
+
+Then implement the integration.
+
+Do not stop at creating placeholder UI.
+
+The goal is a REAL working Voice Studio integration with F5-TTS, not mock generation.

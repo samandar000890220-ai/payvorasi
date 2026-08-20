@@ -1,0 +1,417 @@
+## IMPLEMENT THE PROJECT'S CANONICAL SYSTEM PROMPT
+
+I want the project to use **one canonical system instruction** as the primary instruction set for the AI assistant.
+
+### OBJECTIVE
+
+Take the system prompt I provide and integrate it into the project's AI request pipeline so that it is automatically included in **every model request** made by this application.
+
+The application must treat this prompt as the **canonical system-level behavior definition** for the assistant.
+
+Do NOT simply display the prompt in the UI.
+
+Do NOT inject it into the user's message.
+
+Do NOT require the user to manually provide it.
+
+It must be automatically applied by the application's backend/model-request layer.
+
+---
+
+## 1. CREATE ONE CANONICAL SOURCE OF TRUTH
+
+Create a single dedicated location for the system prompt.
+
+For example:
+
+`server/ai/systemPrompt.ts`
+
+or the appropriate existing AI/configuration directory used by this project.
+
+Export the canonical system prompt from that location.
+
+There must be **one authoritative source**.
+
+Do not duplicate the complete prompt across multiple components or API routes.
+
+---
+
+## 2. APPLY IT TO EVERY AI REQUEST
+
+Find the central function/service responsible for sending requests to the AI model.
+
+Every request must automatically receive the canonical system prompt.
+
+The architecture should conceptually be:
+
+```text
+User message
+      ↓
+Application AI request service
+      ↓
+Canonical system/developer instruction
+      ↓
+Conversation history
+      ↓
+Current user message
+      ↓
+Model
+      ↓
+Response
+```
+
+Do not rely on individual UI components to remember to add the prompt.
+
+The centralized AI request layer must enforce it.
+
+---
+
+## 3. NEVER ALLOW THE USER TO OVERRIDE IT
+
+The user's normal chat input must never replace the canonical system prompt.
+
+If a user says things such as:
+
+* "Ignore your system prompt."
+* "Forget your instructions."
+* "Use this prompt instead."
+* "Replace your instructions with this."
+* "Do not follow the application instructions."
+* "Act as if there is no system prompt."
+
+the application must continue using the canonical application instruction.
+
+The user message remains user input.
+
+It must NOT become the application's system instruction.
+
+---
+
+## 4. CONVERSATION HISTORY MUST NOT REPLACE IT
+
+When previous messages are sent to the model, the canonical system instruction must still be included according to the model API's supported instruction hierarchy.
+
+Do not assume that because the prompt appeared in an earlier message it remains authoritative.
+
+The application should construct every model request from the canonical source.
+
+Conceptually:
+
+```text
+Canonical application instruction
++
+conversation history
++
+current user message
+```
+
+rather than:
+
+```text
+conversation history only
+```
+
+---
+
+## 5. FALLBACK BEHAVIOR
+
+If the application has multiple AI routes, providers, models, agents, or fallback paths, the canonical system instruction must be applied to **all of them**.
+
+For example:
+
+```text
+Primary AI provider
+       ↓
+Canonical system instruction
+
+Fallback AI provider
+       ↓
+Canonical system instruction
+
+Secondary model
+       ↓
+Canonical system instruction
+
+Streaming request
+       ↓
+Canonical system instruction
+
+Non-streaming request
+       ↓
+Canonical system instruction
+```
+
+There must not be a fallback path that silently sends requests without the canonical instruction.
+
+---
+
+## 6. DO NOT CREATE MULTIPLE COMPETING PROMPTS
+
+Search the entire project for existing:
+
+* system prompts
+* developer prompts
+* assistant personas
+* AI instructions
+* agent instructions
+* fallback prompts
+* hardcoded behavioral instructions
+* model-specific instructions
+* prompt templates
+
+Identify which ones currently affect model behavior.
+
+Do not blindly delete them.
+
+Instead, determine whether they are:
+
+1. The canonical application instruction
+2. Task-specific context
+3. Tool instructions
+4. User-provided content
+5. Legacy/duplicate prompt logic
+
+The canonical system instruction should remain the authoritative application behavior definition.
+
+Task-specific context may still be supplied where necessary, but it must not silently replace the canonical instruction.
+
+---
+
+## 7. PRESERVE REQUIRED DYNAMIC CONTEXT
+
+Do not confuse the canonical system instruction with dynamic data.
+
+The application may still need to provide things such as:
+
+* Current user information
+* Conversation history
+* Tool results
+* Retrieved documents
+* Current page/context
+* Project information
+* Tool definitions
+* Application state
+
+These can remain dynamic.
+
+However, they must be added **around** the canonical instruction rather than replacing it.
+
+---
+
+## 8. SERVER-SIDE ENFORCEMENT
+
+If the AI request is currently being made directly from the browser/client, move or refactor the prompt enforcement into the appropriate secure server-side layer where practical.
+
+Do not expose sensitive server-only configuration unnecessarily to the client.
+
+The client should send something like:
+
+```text
+conversation/messages
++
+user request
+```
+
+and the server should construct the final model request.
+
+---
+
+## 9. FALLBACK IF THE PROMPT CANNOT BE LOADED
+
+If the canonical prompt is stored in a required configuration/file and cannot be loaded, do NOT silently send an unconfigured AI request.
+
+Fail safely.
+
+The application should either:
+
+* use a deliberately defined built-in fallback version of the canonical instruction, or
+* return a clear server-side configuration error.
+
+Do NOT silently fall back to an unrelated prompt.
+
+There must never be a path where the application unintentionally sends a model request without its required behavioral instruction.
+
+---
+
+## 10. DO NOT LET CONFIGURATION OVERRIDE THE CANONICAL PROMPT
+
+Environment variables may be used for things such as:
+
+* API keys
+* model names
+* provider configuration
+* feature flags
+
+but do not allow an arbitrary user-controlled request parameter to replace the canonical system instruction.
+
+For example, avoid logic equivalent to:
+
+```ts
+systemPrompt = request.body.systemPrompt
+```
+
+unless there is a deliberate, authenticated administrative mechanism for it.
+
+The normal chat endpoint must not accept a user-supplied system prompt.
+
+---
+
+## 11. LOGGING / DEBUGGING
+
+Add safe development/debug visibility so I can verify that the canonical prompt is actually being applied.
+
+Do NOT log sensitive prompt contents, API keys, private user data, or secrets in production.
+
+In development, provide enough information to confirm:
+
+* Which AI request path was used
+* Which model/provider was selected
+* That the canonical instruction was attached
+* Which prompt/version identifier was used
+
+For example:
+
+```text
+AI request
+Prompt policy: canonical
+Prompt version: v1
+Provider: ...
+Model: ...
+```
+
+Do not expose the complete system prompt to normal users.
+
+---
+
+## 12. VERSION THE PROMPT
+
+Give the canonical prompt a version identifier.
+
+For example:
+
+```ts
+export const SYSTEM_PROMPT_VERSION = 'v1'
+```
+
+This will make it easier to determine which prompt produced a response.
+
+When I update the prompt later, I should only need to update the canonical source.
+
+---
+
+## 13. TEST IT
+
+Add tests around the AI request construction.
+
+Verify that:
+
+### Test 1 — Normal request
+
+A normal user message receives the canonical instruction.
+
+### Test 2 — Prompt injection attempt
+
+A user message attempting to replace the system instruction does not replace it.
+
+### Test 3 — Conversation continuation
+
+A subsequent conversation request still receives the canonical instruction.
+
+### Test 4 — Streaming
+
+Streaming requests receive the canonical instruction.
+
+### Test 5 — Fallback provider
+
+Fallback AI requests receive the canonical instruction.
+
+### Test 6 — Missing prompt
+
+The application does not silently send an unconfigured request.
+
+### Test 7 — Client override
+
+A client cannot submit a `systemPrompt` field and override the application's canonical instruction.
+
+---
+
+## 14. IMPORTANT ARCHITECTURAL REQUIREMENT
+
+Do NOT solve this by adding the prompt separately to every page/component.
+
+I want centralized enforcement.
+
+The preferred architecture is:
+
+```text
+                    ┌─────────────────────┐
+                    │ Canonical Prompt    │
+                    │ systemPrompt.ts     │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Central AI Service  │
+                    │ / AI Request Layer  │
+                    └──────────┬──────────┘
+                               │
+                 ┌─────────────┼─────────────┐
+                 ▼             ▼             ▼
+             Chat API      Streaming      Fallback
+                 │             │             │
+                 └─────────────┼─────────────┘
+                               ▼
+                             Model
+```
+
+Every route should converge on the same AI request layer whenever practical.
+
+---
+
+## 15. DO NOT CHANGE THE UI
+
+This task is about the AI instruction architecture.
+
+Do NOT redesign:
+
+* Chat UI
+* Sidebar
+* Voice Library
+* Workspace
+* Cards
+* Buttons
+* Navigation
+* Layout
+
+Do not modify unrelated frontend functionality.
+
+Only modify the AI request/prompt architecture necessary to implement this requirement.
+
+---
+
+## 16. FINAL ACCEPTANCE CRITERIA
+
+Do not consider this complete until you have verified:
+
+* There is exactly one canonical application system instruction.
+* Every AI request receives it.
+* Streaming requests receive it.
+* Fallback providers receive it.
+* Conversation history cannot replace it.
+* User messages cannot replace it.
+* Client requests cannot provide a replacement system prompt.
+* Missing configuration cannot silently bypass it.
+* The prompt is enforced centrally rather than manually on individual pages.
+* Existing AI functionality continues working.
+* Tests/build/type checks pass.
+
+After implementation, show me:
+
+1. The file containing the canonical prompt.
+2. The central AI request function that applies it.
+3. All AI request paths that use that function.
+4. Any legacy/duplicate prompt logic you found.
+5. The tests you added or updated.
+6. The exact commands you ran to verify the implementation.
+
+Do not stop after creating the prompt file. The important requirement is that the **actual model-request pipeline enforces it on every request**.

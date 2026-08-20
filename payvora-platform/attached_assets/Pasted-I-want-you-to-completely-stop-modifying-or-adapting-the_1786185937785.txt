@@ -1,0 +1,167 @@
+I want you to completely stop modifying or adapting the existing SkyrimNet/F5 adapter that is running on port 7861.
+
+Do NOT delete or modify my working F5-TTS installation, model files, voices, or the existing 7861 service. Leave that system intact.
+
+Instead, create a completely NEW Payvora-specific F5-TTS worker adapter from scratch that is designed specifically to match my Payvora Voice Studio website/API contract.
+
+IMPORTANT:
+
+1. Treat the uploaded `f5_adapter_server.py` and `openapi.json` only as references to understand my existing local F5-TTS installation and model-loading/inference patterns.
+
+2. Do NOT reuse its incompatible HTTP API:
+
+   * `/tts_to_audio`
+   * `/pronunciation`
+   * `/create_and_store_latents`
+   * `/health`
+   * etc.
+
+3. The new Payvora worker must run independently on port `7870`.
+
+4. It must expose exactly the API that Payvora already expects:
+
+   `POST /v1/speech`
+   `POST /v1/vocal-event`
+   `POST /v1/transcribe`
+   `GET /v1/health`
+
+5. The new `/v1/speech` endpoint must support Payvora's existing multipart contract:
+
+   * `text`
+   * `reference_text`
+   * `reference_audio`
+   * `model`
+   * `device`
+   * `compute_type`
+   * `controls`
+   * `response_format`
+
+   `controls` must be parsed as JSON.
+
+6. Use my actual F5-TTS Python installation and actual model:
+
+   `C:\AI\F5-TTS\models\F5TTS_v1_Base_v4_winter\model_212000.safetensors`
+
+   and:
+
+   `C:\AI\F5-TTS\models\F5TTS_v1_Base_v4_winter\vocab.txt`
+
+   Do not invent another model or silently switch to the Hugging Face cached model.
+
+7. Use the F5-TTS Python API directly rather than attempting to automate the Gradio UI.
+
+8. Preserve the persistent-model-loading architecture so the model is loaded once rather than reloaded for every request.
+
+9. The worker must accept arbitrary uploaded reference WAV audio for Payvora voice cloning. It must NOT require a speaker name from `voice_refs.json`.
+
+10. There must be NO fake/silent WAV fallback.
+
+    If inference fails, return a proper HTTP error and log the actual reason.
+
+11. Add mandatory Bearer authentication using:
+
+    `F5_TTS_ADAPTER_TOKEN`
+
+    Every `/v1/*` endpoint must reject requests without the correct bearer token.
+
+12. `/v1/health` must report:
+
+    * worker status
+    * model loaded
+    * CUDA availability
+    * active device
+    * supported capabilities
+    * authentication enabled
+
+    Never expose the actual token.
+
+13. For controls:
+
+    * `speed`: use F5-TTS's native speed capability.
+    * `pitch`: implement genuine audio DSP/post-processing if FFmpeg is available.
+    * `energy`: implement genuine audio gain/dynamics processing if FFmpeg is available.
+    * `emotion`: DO NOT pretend F5-TTS has native emotion conditioning. Report it as unsupported unless a genuine implementation exists.
+    * Unknown controls must return a clear validation error.
+
+14. `/v1/transcribe` must accept an uploaded WAV and use the available F5-TTS/Whisper transcription capability where supported.
+
+15. `/v1/vocal-event` must NOT generate fake audio. If vocal events are not genuinely supported, return an explicit `501 Not Implemented` response.
+
+16. Add proper temporary-file cleanup and WAV validation.
+
+17. Add request logging that does NOT log secrets.
+
+18. Add CORS only if actually necessary. Do not unnecessarily expose the service.
+
+19. Add a small `/v1/health` and `/v1/*` contract test suite.
+
+20. Create a README specifically for connecting this worker to Payvora.
+
+The architecture should be:
+
+Payvora Replit API
+|
+| HTTPS + Bearer token
+v
+Cloudflare Tunnel
+|
+v
+127.0.0.1:7870
+|
+v
+NEW PAYVORA F5-TTS WORKER
+|
+v
+F5-TTS Python API
+|
+v
+My existing F5-TTS model/GPU
+
+The existing 7861 SkyrimNet service should remain completely independent:
+
+127.0.0.1:7861 = existing SkyrimNet adapter
+127.0.0.1:7870 = NEW Payvora worker
+
+Do NOT merge these two APIs.
+
+Also inspect Payvora's existing `client.ts` before implementing anything and make the new worker conform to the actual request fields/types that Payvora sends rather than inventing a new contract.
+
+After implementation:
+
+* syntax-check everything
+* run the contract tests
+* verify the worker starts
+* verify `/v1/health`
+* verify authentication rejection
+* verify authentication success
+* verify validation errors
+* verify transcription
+* verify a real speech-generation request using an uploaded reference WAV
+* verify that the returned WAV contains actual non-silent speech
+* verify speed
+* verify pitch/energy only if genuinely implemented
+* verify unsupported features return honest errors
+* verify no fake success responses
+
+Do NOT ask me to choose another architecture unless there is a genuine technical blocker.
+
+Do NOT modify the existing 7861 adapter.
+
+Do NOT delete my F5-TTS models or voice files.
+
+Do NOT use mock audio.
+
+Do NOT report something as functional unless you actually verified it.
+
+When finished, give me:
+
+1. exact files created/changed
+2. exact commands I need to run on Windows
+3. exact port
+4. exact environment variables
+5. exact Cloudflare tunnel command
+6. exact Replit secrets required
+7. complete test results
+8. any remaining limitation
+
+The goal is a clean, production-oriented Payvora-specific adapter that connects my actual F5-TTS GPU installation to my existing Payvora Voice Studio — not compatibility with the old SkyrimNet API.

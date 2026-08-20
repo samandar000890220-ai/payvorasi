@@ -1,0 +1,586 @@
+## APPROVED — UPGRADE THE EXISTING VOICE LIBRARY UI TO MATCH THE NEW CHAT INTERFACE DARK MODE
+
+Use the **attached Voice Library screenshot** as the current page reference and use the **existing/new Chat interface dark-mode design already implemented in this project as the visual design system and source of truth**.
+
+### PRIMARY OBJECTIVE
+
+Upgrade the **existing Voice Library page** so that its cards, controls, surfaces, typography, spacing, borders, buttons, filters, and overall visual treatment feel like they belong to the **same premium dark-mode product as the new Chat interface**.
+
+This is a **visual/UI refinement and consistency task**, NOT a redesign or recreation of the Voice Library page.
+
+---
+
+## 1. DO NOT REDESIGN THE PAGE STRUCTURE
+
+Preserve the existing Voice Library page:
+
+* Existing sidebar
+* Existing top navigation/header
+* Existing Voice Library title/header
+* Existing Explore / My Voices tabs
+* Existing search bar
+* Existing filters
+* Existing category chips
+* Existing sorting control
+* Existing "Create a voice" area
+* Existing trending voices section
+* Existing voice cards
+* Existing audio player
+* Existing labels, text, voice names, metadata, buttons, and functionality
+* Existing routes
+* Existing interactions
+* Existing responsive behavior
+
+Do NOT remove or replace existing functionality.
+
+Do NOT invent a completely different layout.
+
+Do NOT turn this into a new page.
+
+The goal is:
+
+> **Same Voice Library product and information architecture, but visually upgraded so it uses the exact design language of the new Chat interface dark mode.**
+
+---
+
+# 2. USE THE NEW CHAT INTERFACE AS THE VISUAL SOURCE OF TRUTH
+
+Before making changes, inspect the implementation of the **new Chat interface page** already present in the repository.
+
+Identify and reuse its existing:
+
+* Dark-mode background colors
+* Surface/card colors
+* Sidebar treatment
+* Border colors
+* Text hierarchy
+* Muted text colors
+* Accent color
+* Button styling
+* Border radii
+* Shadows
+* Hover states
+* Active states
+* Focus states
+* Typography
+* Font weights
+* Spacing scale
+* Icon sizing
+* Input styling
+* Pills/chips
+* Navigation styling
+* Glass/translucent surfaces
+* Selected states
+* Animation/motion behavior
+
+Do NOT create a second unrelated design system.
+
+If reusable CSS variables, tokens, utility classes, components, or existing design primitives already exist in the Chat interface, **reuse them instead of creating duplicate values**.
+
+---
+
+# 3. DARK MODE SHOULD FEEL LIKE ONE COHESIVE PRODUCT
+
+The Voice Library should no longer look like a light-mode card collection placed inside a dark application.
+
+Everything should feel intentionally designed for the dark interface.
+
+Use the Chat interface's dark-mode visual language for:
+
+### Page background
+
+Use the same dark page/background treatment as the Chat interface.
+
+Avoid a pure `#000000` appearance unless the existing Chat interface already uses it.
+
+The background should have the same subtle depth and tonal layering used by the Chat interface.
+
+### Cards
+
+Upgrade every voice card to use the Chat interface's dark surface treatment.
+
+Cards should feel:
+
+* Premium
+* Clean
+* Lightweight
+* High contrast
+* Subtle
+* Modern
+* Fintech/productivity-app quality
+
+Avoid excessive gradients, heavy shadows, excessive glow, or decorative effects.
+
+Use subtle:
+
+* Surface contrast
+* 1px borders
+* Rounded corners
+* Hover elevation
+* Background transitions
+
+Cards should visually belong to the same family as the Chat interface panels.
+
+---
+
+# 4. VOICE CARDS
+
+The existing voice cards are one of the most important areas to upgrade.
+
+Keep their existing content and functionality.
+
+Improve only their visual treatment.
+
+Each card should use:
+
+* Dark surface
+* Subtle border
+* Consistent corner radius with Chat UI
+* Chat UI typography
+* Muted metadata
+* Proper text hierarchy
+* Premium hover state
+* Consistent icon treatment
+* Consistent blue/accent action button
+* Subtle waveform treatment
+* Proper spacing between avatar, text, metadata, waveform, bookmark, and play button
+
+### Card hierarchy
+
+The hierarchy should clearly be:
+
+1. Voice avatar
+2. Voice name
+3. Verification indicator
+4. Voice description
+5. Category
+6. Language / metadata
+7. Waveform
+8. Bookmark/action
+9. Play button
+
+Do not make every element equally bright.
+
+Use the same primary/secondary/muted text hierarchy as the Chat interface.
+
+---
+
+# 5. PLAY BUTTONS
+
+The existing circular play buttons should match the Chat interface's primary action language.
+
+Use the existing primary accent from the Chat interface.
+
+The button should have:
+
+* Correct contrast
+* Subtle hover state
+* Slight active/pressed state
+* Consistent dimensions
+* Consistent icon weight
+* Accessible focus state
+
+Do not introduce a new unrelated blue.
+
+Use the existing application accent token.
+
+---
+
+# 6. WAVEFORMS
+
+Keep the existing waveform concept.
+
+Do not replace it with a completely different visualization.
+
+However, make the waveform visually consistent with the Chat interface.
+
+Use:
+
+* Subtle muted waveform color
+* Accent treatment only where appropriate
+* Lower visual noise
+* Proper opacity
+* Smooth appearance
+
+The waveform should support the card rather than dominate it.
+
+---
+
+# 7. SEARCH BAR
+
+Upgrade the search bar to match the Chat interface's input components.
+
+It should use the same:
+
+* Background
+* Border
+* Radius
+* Placeholder color
+* Text color
+* Focus ring
+* Icon treatment
+* Height
+* Internal padding
+
+Do not introduce a separate search-field design.
+
+If the Chat interface already has a reusable input component/style, reuse it.
+
+---
+
+# 8. FILTERS AND CATEGORY CHIPS
+
+The filter controls should visually match the Chat interface's pills, segmented controls, or buttons.
+
+Use the same design language for:
+
+* Language
+* Accent
+* Conversational
+* Narration
+* Characters
+* Social Media
+* Educational
+* Advertisement
+* Cinema
+* Filters
+* Sorting
+
+Inactive chips should be subtle dark surfaces.
+
+Active chips should use the existing application accent.
+
+The active state must be obvious but restrained.
+
+Avoid bright white pills unless the Chat interface itself uses that treatment.
+
+---
+
+# 9. CREATE VOICE / PROMOTIONAL PANEL
+
+Keep the existing "Create a voice that's uniquely yours" section and its content.
+
+Upgrade its styling so it feels like a premium Chat-interface panel.
+
+Use the Chat interface's:
+
+* Surface hierarchy
+* Border treatment
+* Radius
+* Typography
+* Accent
+* Shadow
+* Spacing
+
+Do NOT completely redesign the content or layout.
+
+The panel should feel like an intentional premium feature card within the same product.
+
+---
+
+# 10. TOP HEADER
+
+Keep the existing header structure.
+
+Make its typography and controls consistent with the Chat interface.
+
+Ensure:
+
+* Title hierarchy matches Chat UI
+* Subtitle uses the same muted text color
+* Credits balance card matches the application surface language
+* Create Voice button matches the primary Chat UI action
+* Icons use the same icon sizing/weight
+* Spacing matches the overall application rhythm
+
+---
+
+# 11. SIDEBAR
+
+The existing sidebar is already part of the product's visual language.
+
+Do not replace it.
+
+Do not redesign its navigation structure.
+
+Make sure the Voice Library page uses the same sidebar styling/tokens as the new Chat interface.
+
+The active Voice Library item should use the same active-state treatment as the Chat interface's active navigation items.
+
+---
+
+# 12. AUDIO PLAYER
+
+Keep the existing bottom audio player.
+
+Upgrade its visual treatment to match the Chat interface.
+
+It should feel like a native application surface rather than a separate white component.
+
+Use:
+
+* Chat UI background/surface
+* Matching border
+* Matching typography
+* Matching buttons
+* Matching waveform treatment
+* Matching volume control
+* Matching spacing
+
+Keep all existing playback functionality intact.
+
+---
+
+# 13. TYPOGRAPHY
+
+Do NOT introduce a new font.
+
+Inspect the Chat interface and reuse its existing typography system.
+
+Match:
+
+* Font family
+* Heading weights
+* Body weights
+* Caption sizes
+* Line heights
+* Letter spacing
+
+Do not use excessively bold text.
+
+The overall hierarchy should be refined and restrained.
+
+---
+
+# 14. COLORS
+
+Do not manually invent a new palette.
+
+First inspect the existing Chat interface's dark-mode CSS variables/tokens.
+
+Reuse those tokens wherever possible.
+
+For example, if the Chat interface already defines tokens for:
+
+* page background
+* card background
+* elevated surface
+* border
+* primary text
+* secondary text
+* muted text
+* accent
+* hover
+* active
+* focus
+
+use those exact existing tokens.
+
+Do NOT create competing variables such as:
+
+`--voice-card-bg`
+
+if an equivalent application-level token already exists.
+
+---
+
+# 15. BORDERS AND SHADOWS
+
+Follow the Chat interface's visual restraint.
+
+Prefer:
+
+* subtle 1px borders
+* low-opacity separators
+* soft shadows
+* slight surface contrast
+
+Avoid:
+
+* large black shadows
+* excessive glow
+* neon effects
+* strong gradients
+* glass effects everywhere
+* overly bright borders
+
+The design should feel premium and mature.
+
+---
+
+# 16. HOVER / ACTIVE / FOCUS STATES
+
+Every interactive element should feel consistent with the Chat interface.
+
+Implement appropriate states for:
+
+* Voice cards
+* Play buttons
+* Bookmark buttons
+* Search
+* Filters
+* Category chips
+* Tabs
+* Create Voice button
+* Sort dropdown
+* Sidebar navigation
+* Audio controls
+
+Use the same transition timing and easing conventions already used by the Chat interface.
+
+Do not introduce distracting animations.
+
+---
+
+# 17. RESPONSIVENESS
+
+Do not break the existing responsive layout.
+
+After the visual upgrade, verify:
+
+* Desktop
+* Laptop
+* Tablet
+* Narrow desktop
+* Mobile
+
+The Voice Library must remain usable at every existing supported breakpoint.
+
+Do not simply scale everything down.
+
+Preserve readable:
+
+* Card content
+* Buttons
+* Filters
+* Search
+* Navigation
+* Audio controls
+
+---
+
+# 18. ACCESSIBILITY
+
+Preserve and improve accessibility.
+
+Ensure:
+
+* Sufficient text contrast
+* Visible keyboard focus
+* Proper button labels
+* Proper input labels
+* Correct semantic elements
+* No interactive element becomes inaccessible
+* `aria-*` attributes remain correct
+* Hover states are not the only indication of interaction
+
+Do not sacrifice accessibility for visual appearance.
+
+---
+
+# 19. IMPORTANT IMPLEMENTATION RULE
+
+Before changing code:
+
+1. Locate the existing New Chat interface implementation.
+2. Locate its dark-mode CSS/design tokens.
+3. Locate reusable components used by that interface.
+4. Identify which styles can be shared.
+5. Reuse those existing primitives/tokens.
+6. Then update the Voice Library page.
+
+Do NOT duplicate the entire Chat interface stylesheet.
+
+Do NOT hardcode dozens of unrelated colors.
+
+Do NOT create an entirely new design system.
+
+---
+
+# 20. PRESERVE FUNCTIONALITY
+
+This is critical.
+
+Do NOT break:
+
+* Voice playback
+* Search
+* Filtering
+* Sorting
+* Tabs
+* Voice selection
+* Bookmark functionality
+* Create Voice navigation
+* Credits balance
+* Sidebar navigation
+* Responsive behavior
+* Existing routes
+* Existing state management
+* Existing API integrations
+
+This task is primarily a **visual design-system alignment**.
+
+---
+
+# 21. VISUAL QUALITY TARGET
+
+The final result should look like:
+
+> **The Voice Library was designed by the same product/design team that created the new Chat interface.**
+
+It should NOT look like:
+
+> "A new dark theme was placed over the old Voice Library."
+
+The relationship between the two pages should be immediately obvious.
+
+The user should be able to navigate from:
+
+**New Chat → Voice Library**
+
+and feel that they are still inside the exact same premium application.
+
+---
+
+# 22. DO NOT TOUCH UNRELATED AREAS
+
+Only modify what is necessary for this visual upgrade.
+
+Do not modify unrelated pages.
+
+Do not redesign the existing Chat interface.
+
+Do not modify backend/API behavior.
+
+Do not change data structures unless absolutely required.
+
+Do not replace existing assets unnecessarily.
+
+Do not recreate existing components when reusable components already exist.
+
+---
+
+# 23. VALIDATION BEFORE FINISHING
+
+After implementation:
+
+1. Run the project.
+2. Open the Voice Library page.
+3. Compare it against the existing New Chat dark-mode interface.
+4. Verify the two pages use the same visual language.
+5. Verify all existing Voice Library functionality still works.
+6. Verify dark mode.
+7. Verify responsive layouts.
+8. Check for console errors.
+9. Check for TypeScript/build errors.
+10. Fix any visual regressions before finishing.
+
+### Final acceptance criterion
+
+The Voice Library page should retain its **existing layout, content, functionality, and information architecture**, while its visual system is upgraded to match the **new Chat interface dark mode** in:
+
+**colors + surfaces + cards + borders + typography + spacing + buttons + inputs + chips + active states + hover states + shadows + icons + overall visual hierarchy.**
+
+Do not stop at "darkening" the page.
+
+Make it a genuine **design-system alignment** with the new Chat interface while preserving the existing Voice Library experience.

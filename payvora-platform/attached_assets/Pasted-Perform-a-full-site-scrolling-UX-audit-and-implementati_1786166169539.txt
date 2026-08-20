@@ -1,0 +1,93 @@
+Perform a **full-site scrolling UX audit and implementation** across the entire Payvora website.
+
+### Goal
+
+Make scrolling feel like a polished, modern fintech/AI product: smooth, responsive, fluid, predictable, and completely free of hanging, stuttering, broken scroll areas, accidental scroll locking, or layout jumps.
+
+### Requirements
+
+1. **Hide visible scrollbars across the entire website**
+
+   * Keep every page and scrollable container fully scrollable.
+   * Do NOT use `overflow: hidden` to accomplish this.
+   * Support Chromium/Edge, Firefox, and Safari.
+   * Hide scrollbars without preventing mouse wheel, trackpad, touch, keyboard, Page Up/Down, Home/End, or programmatic scrolling.
+
+2. **Audit every scroll container**
+
+   * Inspect the root document, app shell, sidebar, main content areas, modals, dropdowns, panels, tables, chat areas, Voice Studio, history, My Voices, Voice Clone, Text-to-Speech, and every other page/component.
+   * Identify unnecessary nested scroll containers.
+   * Remove competing scroll parents where they cause wheel/touch events to feel trapped.
+   * Make sure each scrollable region has a clear purpose.
+
+3. **Implement polished scrolling behavior**
+
+   * Use native browser scrolling wherever possible.
+   * Add smooth programmatic scrolling where appropriate.
+   * Use `overscroll-behavior` intelligently to prevent unwanted scroll chaining.
+   * Do NOT add heavy JavaScript scroll handlers or animation libraries just to make normal scrolling feel smooth.
+   * Do NOT hijack the user's wheel/touch scrolling.
+   * Avoid scroll-snap unless a specific UI genuinely benefits from it.
+
+4. **Prevent layout problems**
+
+   * No horizontal page overflow.
+   * No content disappearing behind fixed/sticky elements.
+   * No scrollbars suddenly appearing/disappearing and shifting the layout.
+   * Preserve sticky headers/sidebar behavior.
+   * Make sure viewport-height layouts work correctly on desktop, tablet, and mobile.
+   * Check `100vh`/viewport sizing issues on mobile browsers.
+
+5. **Performance**
+
+   * Scrolling must remain responsive even on long pages.
+   * Avoid expensive `scroll` event listeners.
+   * Avoid unnecessary React state updates during scrolling.
+   * Avoid continuously running animations tied directly to scroll position unless absolutely necessary.
+   * Keep the implementation lightweight and GPU/browser friendly.
+
+6. **Accessibility**
+
+   * Respect `prefers-reduced-motion`.
+   * Do not remove keyboard accessibility.
+   * Every intentionally scrollable region must remain keyboard/touch accessible.
+   * Do not remove visible focus indicators.
+   * Ensure users can still reach every piece of content after scrollbar hiding.
+
+7. **Visual polish**
+
+   * Add subtle, professional scrolling behavior appropriate for a premium fintech AI application.
+   * Keep transitions subtle rather than flashy.
+   * Scrolling should feel natural rather than artificially animated.
+   * Maintain the existing Payvora visual design; do not redesign unrelated UI.
+
+### Verification
+
+After implementation:
+
+* Test every major route/page.
+* Test expanded and collapsed sidebar.
+* Test desktop and mobile layouts.
+* Test mouse wheel.
+* Test trackpad scrolling.
+* Test touch scrolling.
+* Test keyboard scrolling.
+* Test nested panels/modals/dropdowns.
+* Test long content.
+* Test page navigation and programmatic scrolling.
+* Check for horizontal overflow.
+* Check browser console for errors.
+* Run the project's typecheck/build.
+* Verify there are no scroll-related regressions.
+
+**Important:** Do not change unrelated buttons, features, API behavior, Voice Studio functionality, or application logic. This task is specifically about the site's scrolling system and scroll UX.
+
+When finished, report:
+
+1. Files modified
+2. Scroll containers audited
+3. Scroll behavior implemented
+4. Accessibility considerations
+5. Performance considerations
+6. Tests performed
+7. Any remaining scrolling issues

@@ -1,0 +1,555 @@
+Clone and work from the PAYVORA repository using:
+
+`git clone https://github.com/ElonInvestmentCo/payvora-platform.git`
+
+Then fully inspect the cloned repository and implement the **new official PAYVORA website brand identity shown in the attached reference image**, specifically the visual identity that reads:
+
+**PAYVORA**
+**THE ARCHITECTURE OF MODERN FINANCE**
+
+Do not treat the screenshot as general inspiration. Use it as the exact visual and behavioral reference for the new PAYVORA branding.
+
+## 1. FIRST INSPECT THE REPOSITORY
+
+Before modifying anything:
+
+* Clone the repository.
+* Inspect the complete project structure.
+* Identify the framework and build system.
+* Identify the current entry point.
+* Identify the current routing/navigation system.
+* Identify the existing global CSS/design system.
+* Identify the existing logo/branding assets.
+* Identify existing loading components.
+* Identify all page-transition/navigation components.
+* Identify whether there are already reusable animation utilities.
+* Identify the correct production Preview/start command.
+
+Do not blindly overwrite the project.
+
+Preserve all existing functionality unless a change is specifically required to implement the new PAYVORA identity.
+
+If the repository is already cloned or the working directory is already the PAYVORA repository, do NOT clone it again. Work directly with the existing repository.
+
+## 2. IMPLEMENT THE NEW PAYVORA BRAND IDENTITY
+
+Use the attached reference image as the primary visual source.
+
+The new visual identity should reproduce the same overall premium, architectural, modern-finance aesthetic.
+
+The central brand lockup should consist of:
+
+**PAYVORA**
+
+with the tagline:
+
+**THE ARCHITECTURE OF MODERN FINANCE**
+
+The branding should feel:
+
+* Premium
+* Minimal
+* Architectural
+* Sophisticated
+* Modern
+* Financial
+* High-end
+* Institutional
+* Technology-forward
+
+Do not make it look like a generic banking website.
+
+Do not make it look like a generic AI startup.
+
+Do not introduce unnecessary gradients, excessive glassmorphism, cartoonish effects, or unrelated visual styles.
+
+## 3. PAYVORA LOGO ICON
+
+Use the PAYVORA logo icon shown in the reference image as the official brand icon.
+
+The logo icon consists of the distinctive geometric PAYVORA mark shown above the wordmark.
+
+Implement the logo as a real reusable brand component rather than repeatedly recreating it manually in different pages.
+
+Create a reusable component such as:
+
+`<PayvoraLogo />`
+
+or the equivalent appropriate to the existing framework.
+
+It should support at minimum:
+
+* Icon only
+* Icon + wordmark
+* Full brand lockup
+* Loading/animated version
+
+The logo must remain visually consistent everywhere.
+
+## 4. DO NOT RANDOMLY REDESIGN THE LOGO
+
+Do not:
+
+* Redraw the logo differently
+* Change its proportions
+* Change the geometry
+* Add unnecessary effects
+* Distort the icon
+* Replace it with a generic finance icon
+* Substitute another logo
+* Use an unrelated icon library as the brand mark
+
+The PAYVORA logo itself should remain the recognizable central brand asset.
+
+If the repository contains an existing official PAYVORA logo asset, inspect and reuse the highest-quality existing asset rather than recreating it unnecessarily.
+
+If the exact asset is available in the repository, use that asset.
+
+## 5. WORDMARK
+
+Implement the PAYVORA wordmark as part of the official brand identity.
+
+The wordmark should have:
+
+* Clean geometric typography
+* Generous letter spacing
+* Premium appearance
+* Strong horizontal alignment
+* Proper optical spacing between the icon and wordmark
+
+Do not use an arbitrary font if the repository already contains an official brand font.
+
+Inspect the project/assets first.
+
+If there is no official PAYVORA font, choose the closest appropriate modern geometric sans-serif available through the project and make the typography visually match the reference as closely as reasonably possible.
+
+## 6. TAGLINE
+
+Implement:
+
+**THE ARCHITECTURE OF MODERN FINANCE**
+
+Use the reference image as the visual guide for:
+
+* Letter spacing
+* Font size
+* Weight
+* Position
+* Alignment
+* Opacity
+* Vertical spacing
+
+The tagline should be subtle and premium rather than competing with the PAYVORA wordmark.
+
+## 7. BRAND INTRO / LOADING EXPERIENCE
+
+This is extremely important.
+
+Use the **PAYVORA logo icon animation from the newly implemented brand identity as the official loading/spinner animation throughout the application.**
+
+Do NOT use:
+
+* Generic circular spinners
+* Generic loading dots
+* Material UI spinner
+* Browser spinner
+* Random rotating loader
+* Unrelated animated icon
+
+The PAYVORA logo itself must become the loading indicator.
+
+The animation should be derived from the logo's actual geometry and motion rather than simply placing a circular spinner around the logo.
+
+## 8. EXACT LOGO ANIMATION BEHAVIOR
+
+Use the animation shown in the supplied PAYVORA reference/brand asset as the source of truth.
+
+The logo animation should feel like the brand's geometric pieces are assembling, moving, transforming, or transitioning into the PAYVORA mark.
+
+Preserve the original:
+
+* Movement
+* Timing
+* Direction
+* Rotation
+* Scale
+* Position
+* Sequence
+* Easing
+* Relative relationship between the geometric pieces
+
+Do not invent a completely different loading animation.
+
+If the repository contains the original animated asset, inspect it and reuse the original animation whenever technically possible.
+
+If the animation exists as an SVG/CSS/Lottie/video/other asset, determine the most appropriate way to integrate it while preserving the original behavior.
+
+## 9. PAGE NAVIGATION LOADING
+
+Whenever a user navigates from one PAYVORA page/route to another:
+
+1. Detect the navigation.
+2. Immediately display the animated PAYVORA logo loader.
+3. Allow the logo animation to play smoothly while the destination page is loading.
+4. Complete the transition once the destination page is ready.
+5. Remove the loader smoothly.
+6. Display the destination page.
+
+The loading experience should feel intentional and premium.
+
+Do not make the screen flash white.
+
+Do not display an unrelated loading spinner.
+
+Do not show the loader for an unnecessarily long artificial duration.
+
+The loader must represent actual navigation/loading state.
+
+## 10. TRANSITION TIMING
+
+The transition should feel similar to a premium financial platform.
+
+Use the actual animation timing from the supplied brand animation wherever available.
+
+If timing has to be recreated, use carefully tuned easing rather than a generic linear animation.
+
+The transition should:
+
+* Start immediately
+* Feel smooth
+* Have no visible flicker
+* Avoid abrupt appearance/disappearance
+* Avoid blocking the interface unnecessarily
+* Respect fast navigation
+* Respect slower page loads
+
+If the destination page loads very quickly, prevent the loading animation from flashing for only a few milliseconds. Use an appropriate minimum display threshold only where necessary to avoid visual flicker.
+
+If navigation takes longer, allow the PAYVORA logo loader to continue naturally.
+
+## 11. GLOBAL LOADING SYSTEM
+
+Create a reusable global loading component, for example:
+
+`<PayvoraLoader />`
+
+and use it consistently across the application.
+
+The loader should support:
+
+* Full-screen loading
+* Route/page transition loading
+* Component loading
+* Browser/workspace loading where appropriate
+* Async operation loading where appropriate
+
+Do not duplicate separate versions of the same logo spinner throughout the codebase.
+
+Create one reliable source of truth.
+
+## 12. FULL-SCREEN BRAND LOADER
+
+For full-page navigation, the loader should visually reference the supplied PAYVORA brand screen.
+
+Use the dark architectural aesthetic from the reference:
+
+* Deep dark background
+* Subtle grid/architectural lines where appropriate
+* Centered PAYVORA icon
+* PAYVORA wordmark
+* Subtle tagline where appropriate
+* Premium spacing
+* Minimal visual noise
+
+The grid should remain subtle and must not overpower the logo.
+
+Do not add random decorative elements.
+
+## 13. PAGE TRANSITION BEHAVIOR
+
+Implement proper route transitions.
+
+The sequence should be:
+
+`Current Page`
+
+→ navigation begins
+
+→ `PAYVORA logo animation`
+
+→ destination page becomes ready
+
+→ subtle transition
+
+→ `Destination Page`
+
+The transition should not destroy the existing application state unnecessarily.
+
+Do not reload the entire browser window for normal internal navigation.
+
+Use the existing client-side routing architecture whenever possible.
+
+## 14. APPLY THE BRAND IDENTITY THROUGHOUT THE WEBSITE
+
+Once the core brand system is implemented, identify the existing locations where the old brand identity is displayed.
+
+Update the appropriate areas to use the new PAYVORA identity, including where applicable:
+
+* Sidebar
+* Header
+* Login
+* Signup
+* Landing page
+* Dashboard
+* Browser workspace
+* Settings
+* Empty states
+* Loading screens
+* Error screens
+* Page transitions
+* Favicon/app icon where appropriate
+* Metadata/title branding where appropriate
+
+Do not blindly replace every occurrence of existing text.
+
+Only update branding-related elements.
+
+Preserve application functionality.
+
+## 15. SIDEBAR BRANDING
+
+The PAYVORA sidebar should use the new logo system.
+
+When expanded:
+
+`[PAYVORA ICON] PAYVORA`
+
+When collapsed:
+
+`[PAYVORA ICON]`
+
+The icon and wordmark must remain aligned and visually balanced.
+
+Do not distort the logo when the sidebar changes width.
+
+Use the same reusable logo component.
+
+## 16. FAVICON AND APPLICATION BRANDING
+
+If the application has a favicon or app icon:
+
+Use the PAYVORA logo icon.
+
+Inspect the repository for existing favicon/brand assets before creating anything new.
+
+Update the relevant metadata/configuration so the browser tab uses PAYVORA branding where appropriate.
+
+## 17. BROWSER TAB TITLE
+
+Use appropriate PAYVORA page titles.
+
+For example:
+
+`PAYVORA`
+
+or:
+
+`Dashboard — PAYVORA`
+
+or:
+
+`Browser — PAYVORA`
+
+depending on the current page.
+
+Do not leave generic development titles such as:
+
+`Vite App`
+
+`React App`
+
+`localhost`
+
+or other placeholder titles.
+
+## 18. DESIGN SYSTEM
+
+Create or update reusable brand tokens for:
+
+* PAYVORA background
+* Primary text
+* Secondary text
+* Muted text
+* Borders
+* Accent
+* Logo dimensions
+* Wordmark spacing
+* Tagline spacing
+* Animation timing
+* Loader dimensions
+* Transition easing
+
+Do not hard-code dozens of unrelated values throughout individual components.
+
+The brand identity should be maintainable from a central design system.
+
+## 19. RESPONSIVE BEHAVIOR
+
+The PAYVORA logo and loading animation must work correctly at:
+
+* Desktop
+* Laptop
+* Tablet
+* Mobile
+
+The logo should scale proportionally.
+
+The wordmark should not become distorted.
+
+The tagline should remain readable.
+
+The loading animation should remain centered and visually balanced.
+
+## 20. ACCESSIBILITY
+
+Make sure the implementation is accessible.
+
+For loading states:
+
+* Use appropriate ARIA loading semantics where applicable.
+* Do not trap keyboard focus unnecessarily.
+* Do not make navigation unusable for keyboard users.
+* Respect `prefers-reduced-motion`.
+
+When reduced motion is enabled, provide a calmer version of the PAYVORA loading transition while preserving the brand identity.
+
+## 21. PERFORMANCE
+
+The logo animation must be lightweight.
+
+Prefer:
+
+* SVG
+* CSS animation
+* optimized vector assets
+* Lottie only if the original animation is provided in a Lottie-compatible format
+
+Avoid unnecessarily large video files for a simple logo animation.
+
+Do not create animation loops that consume excessive CPU/GPU resources.
+
+Clean up animation listeners and timers when components unmount.
+
+## 22. IMPORTANT: DO NOT BREAK EXISTING FEATURES
+
+Preserve the current PAYVORA application.
+
+Do not remove or break:
+
+* Chat
+* Browser
+* Projects
+* Voice
+* Authentication
+* Navigation
+* Existing pages
+* Existing APIs
+* Existing backend
+* Existing database
+* Existing user state
+* Existing AI functionality
+
+The branding and loading implementation must integrate into the existing application rather than replacing the entire application.
+
+## 23. RUN THE PROJECT
+
+After implementing everything:
+
+* Install missing dependencies.
+* Resolve all build errors.
+* Resolve all TypeScript/JavaScript errors.
+* Resolve CSS errors.
+* Resolve routing errors.
+* Resolve asset path errors.
+* Confirm the application builds successfully.
+* Start the application using the correct Replit development command.
+* Make sure the Replit Preview actually loads.
+* Open the Preview and verify the implementation visually.
+
+Do not stop at "the code has been written."
+
+I need the application actually running in the Replit Preview.
+
+## 24. VERIFY THE BRAND LOADER
+
+Test the loader manually.
+
+Navigate:
+
+`Page A → Page B`
+
+Confirm:
+
+`PAYVORA logo animation appears`
+
+then:
+
+`Page B loads`
+
+Then test:
+
+`Page B → Page C`
+
+Confirm the same PAYVORA animation is reused.
+
+Then test a fast navigation.
+
+Then test a slower navigation.
+
+Then test repeated navigation.
+
+There must be no:
+
+* Flashing
+* Broken animation
+* Stuck loader
+* Double loader
+* Generic spinner
+* Layout jump
+* Blank screen
+* Console error
+
+## 25. FINAL VISUAL QUALITY CHECK
+
+Compare the finished result against the supplied PAYVORA reference image.
+
+Pay particular attention to:
+
+* Logo proportions
+* Logo placement
+* Wordmark
+* Letter spacing
+* Tagline
+* Dark background
+* Architectural grid
+* Spacing
+* Alignment
+* Animation
+* Loading behavior
+* Overall premium-finance aesthetic
+
+The final result should feel like a cohesive **PAYVORA brand system**, not a collection of unrelated components.
+
+## 26. MOST IMPORTANT REQUIREMENT
+
+Do not merely create a static PAYVORA logo.
+
+I want the **PAYVORA logo + wordmark + brand identity + logo animation + navigation loading system fully implemented into the actual application.**
+
+The logo animation must become the application's recognizable loading language.
+
+Every time a user navigates to another internal page, the PAYVORA animated logo should provide the transition/loading experience.
+
+Use the supplied PAYVORA reference image as the visual source of truth and the repository's actual assets as the technical source of truth.
+
+Finally, run the completed application and leave it working in **Replit Preview**. If anything fails, diagnose and fix it before considering the task complete.

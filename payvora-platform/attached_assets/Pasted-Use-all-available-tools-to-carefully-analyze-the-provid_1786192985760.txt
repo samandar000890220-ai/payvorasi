@@ -1,0 +1,171 @@
+Use all available tools to carefully analyze the provided screen recording/reference frames.
+
+IMPORTANT:
+Do NOT skip frames.
+Do NOT jump ahead.
+Do NOT only analyze screenshots.
+Watch the entire recording from start to finish and study every interaction, transition, animation, hover state, click behavior, scrolling behavior, spacing change, and visual detail.
+
+Your task:
+
+Replicate the design with pixel-perfect accuracy.
+
+The final Payvora UI should visually match the reference exactly, including:
+
+- Overall layout structure
+- Sidebar design
+- Header/navigation
+- Page spacing
+- Grid systems
+- Card layouts
+- Typography
+- Font sizes
+- Font weights
+- Line heights
+- Colors
+- Gradients
+- Borders
+- Border radius
+- Shadows
+- Transparency effects
+- Blur effects
+- Glassmorphism effects
+- Icons
+- Buttons
+- Inputs
+- Dropdowns
+- Tabs
+- Animations
+- Hover effects
+- Transitions
+- Loading states
+- Interactive behaviors
+
+The result should be visually indistinguishable from the reference design.
+
+==================================================
+
+APPLY THIS DESIGN SYSTEM TO ALL PAYVORA PAGES
+
+==================================================
+
+Update ALL existing pages to follow the same visual language from the recording.
+
+Pages to update:
+
+- Dashboard
+- Document Studio
+- AI Agents
+- Templates
+- Knowledge Base
+- Projects
+- Integrations
+- Settings
+- Billing
+- Help & Support
+- Keyboard Shortcuts
+- API Keys
+- Theme
+- Language
+- Image Studio
+- Voice Studio
+- Any other existing pages
+
+Do not only copy one page.
+
+Create a consistent application-wide design system.
+
+==================================================
+
+RESPONSIVENESS REQUIREMENTS
+
+==================================================
+
+The recreated UI must work perfectly on:
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile phones
+
+Maintain:
+
+- Same spacing relationships
+- Same hierarchy
+- Same readability
+- Same interactions
+
+Do not allow:
+
+- Broken layouts
+- Overflow
+- Tiny unreadable text
+- Misaligned components
+
+==================================================
+
+IMPLEMENTATION REQUIREMENTS
+
+==================================================
+
+Before changing the UI:
+
+1. Inspect the current component architecture.
+2. Identify reusable components.
+3. Create shared design components where possible.
+4. Avoid duplicated code.
+5. Preserve all existing functionality.
+
+Refactor styling into reusable:
+
+- Layout components
+- Navigation components
+- Card components
+- Button components
+- Input components
+- Modal components
+- Theme variables
+
+==================================================
+
+INTERACTION ACCURACY
+
+==================================================
+
+Match all interactions from the recording:
+
+- Sidebar expansion/collapse
+- Page transitions
+- Button animations
+- Hover effects
+- Dropdown behavior
+- Tabs
+- Modals
+- Toast notifications
+- Loading animations
+- Empty states
+
+Every visible interaction should behave like the reference.
+
+==================================================
+
+FINISHING REQUIREMENTS
+
+==================================================
+
+After implementation:
+
+- Compare the rebuilt UI against the recording frame-by-frame.
+- Fix visual differences.
+- Adjust spacing and sizing until it matches.
+- Verify all pages use the same design language.
+- Test responsive layouts.
+- Remove any unfinished placeholder styling.
+
+The goal:
+
+Transform Payvora into a premium fintech AI product with a UI quality level matching the provided reference exactly.
+
+Do not create a similar design.
+
+Recreate the exact design system and experience from the recording.

@@ -1,0 +1,1062 @@
+# PAYVORA — COMPLETE INTERACTION IMPLEMENTATION CONTRACT
+
+You are implementing the Payvora application from an existing UI and a completed read-only button audit.
+
+## NON-NEGOTIABLE RULE
+
+Do NOT redesign the existing UI.
+
+Do NOT remove, rename, relocate, or visually restyle controls that are already functioning correctly.
+
+Do NOT replace working behavior with new behavior.
+
+Your job is to make every currently inert, stubbed, partially functional, or incorrectly wired interactive control behave according to its intended purpose.
+
+Use the existing UI, components, styling, routes, state architecture, and design language wherever possible.
+
+---
+
+# 1. PRIMARY OBJECTIVE
+
+Every button, clickable card, icon, slider, toggle, dropdown, tab, filter, upload control, and CTA must have a clearly defined and production-ready behavior.
+
+For every interactive control, implement:
+
+1. User intent
+2. Click/tap behavior
+3. Keyboard behavior
+4. Focus behavior
+5. Loading state where applicable
+6. Success state where applicable
+7. Failure state where applicable
+8. Disabled state where applicable
+9. API interaction where applicable
+10. Database persistence where applicable
+11. Browser-side behavior where applicable
+12. Duplicate-click protection
+13. Error handling
+14. Accessibility semantics
+15. Correct mobile behavior
+
+Do not leave `notify(...)` placeholders for functionality that is supposed to actually work.
+
+Do not use empty callbacks such as:
+
+```ts
+() => {}
+```
+
+for controls that are supposed to perform an action.
+
+Do not use `stopPropagation()` as the only implementation of an action button.
+
+---
+
+# 2. SOURCE OF TRUTH
+
+Use these materials as the implementation basis:
+
+* Completed Payvora button audit
+* Existing Payvora source code
+* Existing UI/UX
+* Current ElevenLabs API documentation
+* Existing application architecture
+* Existing database/authentication architecture
+
+Where ElevenLabs capabilities differ by model, implement model-aware validation instead of assuming every parameter works with every model.
+
+---
+
+# 3. IMPORTANT ELEVENLABS CORRECTIONS
+
+Do NOT hard-code the previously suggested Speed range of 0.5–2.0.
+
+Current ElevenLabs documentation describes Speed as:
+
+* Default: 1.0
+* Minimum: 0.7
+* Maximum: 1.2
+
+The UI must therefore use the actual supported range for the selected model rather than blindly assuming 0.5–2.0.
+
+ElevenLabs also documents:
+
+* `stability`
+* `similarity_boost`
+* `style`
+* `use_speaker_boost`
+* `speed`
+
+as voice settings, with model-specific availability.
+
+The application must verify compatibility for the selected model before sending unsupported parameters.
+
+Do not silently send unsupported parameters.
+
+---
+
+# 4. TTS — TEXT TO SPEECH
+
+## Generate Speech
+
+This is P0 and must be fully functional.
+
+Current behavior:
+
+```text
+Click Generate Speech
+        ↓
+Validate input
+        ↓
+Validate selected voice
+        ↓
+Validate model/settings
+        ↓
+Set UI to loading
+        ↓
+Send request to Payvora backend
+        ↓
+Backend authenticates request
+        ↓
+Backend calls ElevenLabs
+        ↓
+Receive generated audio
+        ↓
+Return audio to frontend
+        ↓
+Create playable audio
+        ↓
+Persist generation metadata
+        ↓
+Update History
+        ↓
+Return UI to ready state
+```
+
+The Generate Speech button must:
+
+* Validate that text exists
+* Validate text length
+* Validate that a voice is selected
+* Validate model compatibility
+* Disable itself while generating
+* Display a loading indicator
+* Prevent duplicate requests
+* Handle success
+* Handle failure
+* Make generated audio immediately playable
+* Provide download functionality
+* Create a History record
+* Preserve the generation metadata
+
+Never simply display:
+
+```text
+Service unavailable
+```
+
+without actually attempting the configured generation workflow.
+
+---
+
+# 5. VOICE SELECTION
+
+Voice cards must become real interactive controls.
+
+When a user selects a voice:
+
+```text
+selectedVoiceId = voice.id
+```
+
+The selected voice must have:
+
+* visual selected state
+* keyboard accessibility
+* focus state
+* accessible name
+* correct `aria-selected` semantics where appropriate
+
+The selected `voice_id` must be passed to TTS generation.
+
+Fetch available voices from the configured ElevenLabs integration rather than relying permanently on hard-coded fake voices.
+
+---
+
+# 6. VOICE PREVIEW
+
+Every Play Preview button must actually play the corresponding voice preview.
+
+Do not implement:
+
+```ts
+onClick={(e) => e.stopPropagation()}
+```
+
+as the complete behavior.
+
+The control must:
+
+1. Stop card selection propagation if necessary
+2. Obtain the preview audio
+3. Start playback
+4. Change to pause state while playing
+5. Stop/reset correctly
+6. Handle unavailable previews
+7. Prevent multiple previews from fighting each other
+
+Use the browser audio layer for playback.
+
+---
+
+# 7. TTS SETTINGS
+
+Implement the existing settings controls as real interactive controls.
+
+## Stability
+
+Map to ElevenLabs:
+
+```text
+stability
+```
+
+Range must follow the API/model capabilities.
+
+## Similarity
+
+Map to:
+
+```text
+similarity_boost
+```
+
+Range:
+
+```text
+0–1
+```
+
+where supported.
+
+## Style
+
+Map to:
+
+```text
+style
+```
+
+where supported.
+
+## Speaker Boost
+
+Map to:
+
+```text
+use_speaker_boost
+```
+
+where supported.
+
+## Speed
+
+Map to:
+
+```text
+speed
+```
+
+Use the currently supported ElevenLabs range/model rules.
+
+Do not assume the same settings are available on every model.
+
+If a selected model does not support a setting:
+
+* disable the control OR
+* hide it where appropriate
+* explain why it is unavailable
+* never send an unsupported parameter
+
+---
+
+# 8. SLIDERS
+
+The current Slider component is a non-interactive `<div>`.
+
+Replace it with a proper accessible range control.
+
+It must support:
+
+* mouse
+* touch
+* keyboard
+* arrow keys
+* Home
+* End
+* focus
+* visible value
+* accessible label
+* `aria-valuemin`
+* `aria-valuemax`
+* `aria-valuenow`
+
+Do not break the existing visual design.
+
+---
+
+# 9. TOGGLE
+
+The Add Natural Pauses toggle must become a real switch.
+
+Implement:
+
+```text
+role="switch"
+aria-checked
+```
+
+or an equivalent native accessible control.
+
+It must support:
+
+* click
+* keyboard
+* touch
+* selected/unselected visual state
+* persisted state where appropriate
+
+---
+
+# 10. DROPDOWNS
+
+Speaking Style, Role, Output Format, Sample Rate, and other custom dropdowns must become real controls.
+
+Each dropdown must support:
+
+* open
+* close
+* selection
+* keyboard navigation
+* Escape
+* Enter/Space
+* outside-click closing
+* focus handling
+* accessible labels
+* selected state
+
+If a native `<select>` is appropriate, use it instead of creating unnecessary custom behavior.
+
+---
+
+# 11. TEXT EDITOR
+
+## Import Text
+
+Open a file picker.
+
+Accept appropriate text formats.
+
+Read the file and populate the editor.
+
+Handle:
+
+* unsupported file
+* empty file
+* oversized file
+* read failure
+
+## Clear
+
+Immediately clear the editor.
+
+If text is already empty, remain disabled or perform no-op behavior without error.
+
+## Add Pause
+
+Insert the appropriate supported markup only when the selected ElevenLabs model supports that markup.
+
+Do not assume generic SSML support across all models.
+
+## Pronunciation
+
+Use the appropriate ElevenLabs pronunciation-dictionary capability where applicable.
+
+ElevenLabs provides pronunciation dictionary functionality, including IPA and CMU support with model-specific restrictions.
+
+Do not pretend arbitrary phoneme markup works universally.
+
+---
+
+# 12. VOICE CLONING
+
+The Voice Clone page must become a complete workflow.
+
+## Upload Files
+
+Open file picker.
+
+Validate:
+
+* file type
+* file size
+* number of files
+* audio validity
+
+Show selected files before submission.
+
+## Import Audio
+
+Allow the intended import workflow rather than showing a toast-only placeholder.
+
+## New Voice
+
+Start a real voice creation workflow.
+
+## Create New Voice
+
+Open the creation interface.
+
+The user must be able to:
+
+1. Provide voice name
+2. Provide audio
+3. Validate audio
+4. Submit
+5. Display processing/loading
+6. Receive `voice_id`
+7. Save voice metadata in Payvora
+8. Make the new voice available in TTS
+
+For Instant Voice Cloning, the ElevenLabs API uses:
+
+```text
+POST /v1/voices/add
+```
+
+and returns a `voice_id`.
+
+---
+
+# 13. VOICE CARD ACTIONS
+
+Every voice card must support the actions represented in the UI.
+
+## Favorite
+
+Persist favorite state.
+
+Do not only update temporary React state.
+
+## Options
+
+Open a real menu.
+
+## Play Sample
+
+Play the voice sample.
+
+## Edit Voice
+
+Open an edit interface and persist changes.
+
+## Retrain
+
+Only expose this if the configured ElevenLabs voice workflow actually supports the operation.
+
+## Duplicate
+
+Create the appropriate application/voice duplication workflow.
+
+## Delete
+
+Require confirmation.
+
+Delete the corresponding ElevenLabs voice when appropriate and remove/update the Payvora record.
+
+Never delete silently.
+
+---
+
+# 14. MY VOICES
+
+`Use Voice` must actually select the voice for TTS.
+
+Do not pass:
+
+```ts
+() => {}
+```
+
+as its callback.
+
+Instead:
+
+```text
+Use Voice
+    ↓
+select voice
+    ↓
+navigate/open TTS
+    ↓
+populate selectedVoiceId
+```
+
+Preview must play.
+
+Edit must edit.
+
+Duplicate must duplicate.
+
+Download must perform the intended download behavior.
+
+Favorites must persist.
+
+---
+
+# 15. HISTORY
+
+Every History card must be a real interactive entity.
+
+Support:
+
+* selection
+* play
+* replay
+* download
+* share
+* delete
+
+Do not implement these as:
+
+```ts
+e.stopPropagation()
+```
+
+only.
+
+## Status filters
+
+The selected status must actually affect the displayed dataset.
+
+Fix the existing bug where `voiceFilter` changes but `filterItems` ignores it.
+
+Support:
+
+* All
+* Completed
+* Processing
+* Failed
+
+## Sort
+
+Implement actual sorting.
+
+## Export
+
+Export the displayed/selected history records.
+
+## Date Range
+
+Implement actual date filtering.
+
+## Delete
+
+Require confirmation and update UI after successful deletion.
+
+---
+
+# 16. AUDIO ARCHITECTURE
+
+Playback is application/browser responsibility.
+
+Implement a reusable audio manager rather than duplicating audio logic across every component.
+
+The manager should support:
+
+```text
+play
+pause
+resume
+stop
+seek
+volume
+duration
+currentTime
+ended
+error
+```
+
+Only one preview should normally play at a time unless explicitly designed otherwise.
+
+---
+
+# 17. DOWNLOAD
+
+Download buttons must retrieve the generated audio through a safe application-controlled mechanism.
+
+Do not expose ElevenLabs API credentials to the browser.
+
+Do not put the ElevenLabs API key in:
+
+* React source
+* Vite environment variables exposed to the client
+* browser localStorage
+* client JavaScript
+* HTML
+
+API credentials belong on the server.
+
+---
+
+# 18. AI CHAT
+
+Do not change the existing working navigation.
+
+For currently stubbed AI Chat controls:
+
+* New Chat must create/reset a conversation
+* Send must actually submit the message
+* Attachments must actually attach files
+* Browse Web must invoke the configured web-search capability
+* Voice Input must invoke the configured speech-to-text capability
+* Model selection must actually affect the request
+
+Do not display fake success notifications for actions that have not occurred.
+
+---
+
+# 19. NAVIGATION
+
+Do NOT change controls already confirmed functional.
+
+Keep:
+
+* sidebar collapse
+* New Chat
+* AI Chat
+* Voice Studio
+* Image Studio
+* Video Studio
+* notifications
+* avatar menus
+* working studio navigation
+
+For routes that currently point to pages that do not exist, either:
+
+1. implement the missing destination, or
+2. remove/disable the control only if the product specification explicitly says that feature is not yet available.
+
+Do not leave navigation pointing to a blank/nonexistent page.
+
+---
+
+# 20. IMAGE STUDIO
+
+Do not modify controls already working.
+
+The Generate Image CTA must eventually invoke the configured image-generation backend.
+
+Do not simply show:
+
+```text
+service unavailable
+```
+
+if an image-generation provider is configured.
+
+Respect existing:
+
+* aspect ratio
+* quality
+* seed
+* model
+* resolution
+* style
+* advanced settings
+
+---
+
+# 21. VIDEO STUDIO
+
+Keep all currently functional controls intact.
+
+Implement the stubbed controls:
+
+* Improve with AI
+* Add Voiceover
+* Add B-Roll
+* recent video navigation
+* Generate Video
+
+Configuration controls must actually affect generation.
+
+Do not show success notifications when no generation occurred.
+
+---
+
+# 22. STATE MACHINE
+
+For every asynchronous operation use an explicit state machine.
+
+Minimum:
+
+```text
+IDLE
+ ↓
+VALIDATING
+ ↓
+SUBMITTING
+ ↓
+PROCESSING
+ ↓
+SUCCESS
+ ↓
+READY
+```
+
+Failure can occur from any appropriate stage:
+
+```text
+FAILED
+```
+
+Retry:
+
+```text
+FAILED → VALIDATING
+```
+
+Never leave the UI permanently stuck in:
+
+```text
+loading
+```
+
+---
+
+# 23. ERROR HANDLING
+
+Implement meaningful user-facing errors.
+
+At minimum handle:
+
+### 401 / 403
+
+Authentication/authorization problem.
+
+Tell the user that the service authorization could not be completed.
+
+Do not expose secrets.
+
+### 422
+
+Invalid request/input.
+
+Show the specific actionable validation problem where available.
+
+### 429
+
+Rate limit.
+
+Tell the user the request was rate-limited.
+
+Use retry/backoff only where safe.
+
+### 5xx
+
+Provider/server failure.
+
+Allow manual retry.
+
+### Network failure
+
+Show an offline/network error.
+
+Allow retry.
+
+### Timeout
+
+Return the UI to a recoverable state.
+
+Never leave an indefinite spinner.
+
+---
+
+# 24. DATABASE
+
+Persist application-owned metadata.
+
+At minimum support concepts equivalent to:
+
+```text
+User
+Voice
+Generation
+HistoryItem
+Project
+Agent
+```
+
+Generation should contain appropriate metadata such as:
+
+```text
+id
+userId
+voiceId
+modelId
+text
+settings
+status
+audioReference
+createdAt
+updatedAt
+error
+```
+
+Do not store API keys in these records.
+
+---
+
+# 25. SECURITY
+
+ElevenLabs credentials must remain server-side.
+
+Every server request must verify the authenticated Payvora user.
+
+Before operating on a voice:
+
+```text
+authenticated user
+        ↓
+voice belongs to user / is permitted
+        ↓
+perform operation
+```
+
+Do not trust a client-supplied `voice_id` without authorization checks.
+
+The same principle applies to:
+
+* generation IDs
+* project IDs
+* agent IDs
+* files
+* history IDs
+
+---
+
+# 26. ACCESSIBILITY
+
+Fix all interactive `<div>` elements that are currently pretending to be buttons.
+
+Prefer native elements:
+
+```html
+<button>
+<input>
+<select>
+<input type="range">
+```
+
+instead of recreating them with `<div>`.
+
+Every interactive element needs:
+
+* accessible name
+* keyboard support
+* visible focus
+* appropriate ARIA semantics
+* disabled state where appropriate
+
+Tabs should use proper tab semantics.
+
+Dialogs should manage focus correctly.
+
+---
+
+# 27. RESPONSIVE BEHAVIOR
+
+Every control must remain usable on:
+
+* desktop
+* laptop
+* tablet
+* mobile
+
+Do not allow:
+
+* clipped labels
+* inaccessible controls
+* overlapping buttons
+* horizontal overflow
+* tiny touch targets
+
+Maintain the existing Payvora visual design.
+
+---
+
+# 28. DO NOT CHANGE LIST
+
+Do not unnecessarily modify already functional behavior.
+
+The following were confirmed functional during the audit and should remain stable:
+
+* Sidebar collapse
+* New Chat
+* AI Chat navigation
+* Voice Studio navigation
+* Image Studio navigation
+* Video Studio navigation
+* Notifications
+* Header profile
+* Model selector
+* Quick action chips
+* Image Studio working controls
+* Video Studio working controls
+* My Voices category filters
+* History search
+* Working file picker controls
+* Working template selection
+* Working aspect ratio controls
+* Working quality controls
+* Working music toggle
+
+Only modify these if required to connect them to a real backend workflow or to fix a demonstrable bug.
+
+---
+
+# 29. IMPLEMENTATION ORDER
+
+Implement in this order.
+
+## P0
+
+1. Generate Speech
+2. Voice Selection
+3. TTS settings
+4. Audio playback
+5. Download
+6. History generation records
+
+## P1
+
+7. Voice Cloning
+8. My Voices
+9. History actions
+10. History filtering
+11. History sorting
+12. Pronunciation functionality
+13. TTS editor actions
+
+## P2
+
+14. AI Chat backend integration
+15. Image generation
+16. Video generation
+17. AI Agents integration
+
+## P3
+
+18. Profile/settings
+19. Billing
+20. Help
+21. Keyboard shortcuts
+22. Additional navigation
+23. Accessibility polish
+
+---
+
+# 30. ACCEPTANCE CRITERIA
+
+Do not consider a control implemented merely because clicking it changes React state.
+
+A control is COMPLETE only when its intended user-facing result actually occurs.
+
+For example:
+
+```text
+Generate Speech
+```
+
+is NOT complete if it only does:
+
+```ts
+setLoading(true)
+```
+
+It is complete only when:
+
+```text
+user enters text
+→ selects voice
+→ clicks Generate
+→ request validates
+→ ElevenLabs request occurs
+→ audio returns
+→ audio becomes playable
+→ generation is persisted
+→ History updates
+→ loading ends
+```
+
+Likewise:
+
+```text
+Download
+```
+
+is not complete if it only shows a toast.
+
+```text
+Play
+```
+
+is not complete if it only calls `stopPropagation()`.
+
+```text
+Favorite
+```
+
+is not complete if the favorite disappears after refresh.
+
+```text
+Use Voice
+```
+
+is not complete if its callback is empty.
+
+```text
+History Filter
+```
+
+is not complete if state changes but the displayed records do not.
+
+---
+
+# 31. FINAL REQUIREMENT
+
+Before declaring the implementation complete, perform another read-only audit of every interactive control.
+
+Produce a table:
+
+| Control | File | Intended behavior | Implemented | Tested | API connected | Persistence | Accessibility | Status |
+| ------- | ---- | ----------------- | ----------- | ------ | ------------- | ----------- | ------------- | ------ |
+
+Every control must end in one of:
+
+```text
+PASS
+```
+
+or
+
+```text
+BLOCKED — reason
+```
+
+Do not mark a control PASS merely because the UI responds to a click.
+
+Test the actual intended outcome.
+
+Do not modify the application until the implementation plan is understood and approved when an approval gate is being used.

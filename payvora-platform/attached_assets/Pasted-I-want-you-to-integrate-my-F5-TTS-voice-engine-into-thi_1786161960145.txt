@@ -1,0 +1,637 @@
+I want you to integrate my F5-TTS voice engine into this Replit application as a REAL backend voice-generation service — NOT by copying the entire F5-TTS repository into the frontend.
+
+SOURCE REPOSITORY:
+https://github.com/ElonInvestmentCo/F5-TTS-Voice-Studio
+
+UPSTREAM ENGINE:
+https://github.com/SWivid/F5-TTS
+
+IMPORTANT ARCHITECTURE:
+
+The existing Replit application remains the frontend/application layer.
+
+Create a dedicated backend voice-engine integration layer that communicates with my F5-TTS installation/repository.
+
+Conceptually structure it like:
+
+/frontend
+existing Replit UI
+
+/backend
+/voice
+f5tts/
+engine adapter
+inference service
+model manager
+audio processing
+tag parser
+generation pipeline
+
+Do NOT put the Python F5-TTS training/inference implementation directly inside React/frontend code.
+
+The frontend should communicate with the backend through an API.
+
+The backend should be responsible for:
+
+* loading the F5-TTS model
+* loading user voice/reference audio
+* reference-audio preprocessing
+* text preprocessing
+* tag parsing
+* emotion/style control
+* inference
+* audio post-processing
+* WAV/MP3 output
+* streaming/progress status
+* error handling
+* GPU detection
+* model caching
+
+==================================================
+VOICE GENERATION SYSTEM
+=======================
+
+Build the voice-generation system so the user can type text such as:
+
+Hello everyone. [giggle] I'm really excited to be here.
+
+or:
+
+[soft] I understand what you're saying. [long pause] But I don't think that's the right solution.
+
+or:
+
+[angry] You seriously did that? [sigh] I can't believe it.
+
+The UI should recognize these tags as structured speech controls rather than ordinary words.
+
+The tags must NOT normally be spoken aloud.
+
+Instead, the backend should parse them and convert them into appropriate generation controls.
+
+==================================================
+SUPPORTED TAGS
+==============
+
+Implement these initial tags:
+
+EMOTION / TONE:
+
+[angry]
+[sad]
+[embarrassed]
+[excited]
+[serious]
+[soft]
+[quietly]
+[whisper]
+[whispering]
+[breathy]
+
+VOCAL REACTIONS:
+
+[laughing]
+[laugh]
+[giggling]
+[giggle]
+[chuckling]
+[chuckle]
+[snicker]
+[clear throat]
+[sigh]
+[sighing]
+[heavy sigh]
+[gasp]
+[cough]
+[groan]
+[groaning]
+[moaning]
+[sobbing]
+[crying loudly]
+[panting]
+
+PACING:
+
+[pause]
+[short pause]
+[long pause]
+[slowly]
+[fast]
+
+EMPHASIS:
+
+[emphasis]
+
+AMBIENT / CROWD:
+
+[crowd laughing]
+[background laughter]
+[audience laughing]
+
+==================================================
+IMPORTANT: DO NOT FAKE TAG SUPPORT
+==================================
+
+Do NOT simply remove the tags and claim they are supported.
+
+Implement a real tag-processing pipeline.
+
+Create a normalized internal representation such as:
+
+{
+"text": "I understand what you're saying.",
+"controls": {
+"emotion": "soft",
+"pitch": ...,
+"energy": ...,
+"speed": ...,
+"pause_before": ...,
+"pause_after": ...
+}
+}
+
+For tags that F5-TTS cannot directly control acoustically, implement the behavior through appropriate preprocessing/post-processing or segmented generation.
+
+For example:
+
+[long pause]
+
+should create an actual silence/pause in the generated audio.
+
+[slowly]
+
+should cause the relevant segment to be generated at a slower speaking rate where technically possible, or use controlled time-stretching as a fallback.
+
+[fast]
+
+should increase speaking rate where technically possible.
+
+[emphasis]
+
+should apply appropriate emphasis through generation controls, segmentation, prosody processing, or other technically valid methods.
+
+==================================================
+VOCAL REACTION TAGS
+===================
+
+Treat vocal reactions differently from emotional instructions.
+
+For example:
+
+"That is unbelievable. [gasp] I didn't expect that."
+
+should generate:
+
+"That is unbelievable."
+
+then an actual gasp-like vocal event,
+
+then:
+
+"I didn't expect that."
+
+Similarly:
+
+[laughing]
+[giggle]
+[chuckle]
+[sigh]
+[clear throat]
+[cough]
+[groan]
+[gasp]
+
+should produce actual audible vocal events rather than simply altering the emotion of the following sentence.
+
+Build this as an extensible event system.
+
+Example internal representation:
+
+[
+{
+"type": "speech",
+"text": "That is unbelievable."
+},
+{
+"type": "vocal_event",
+"event": "gasp"
+},
+{
+"type": "speech",
+"text": "I didn't expect that."
+}
+]
+
+==================================================
+TAG PROCESSOR
+=============
+
+Create a dedicated tag parser, for example:
+
+backend/voice/tags/parser.py
+
+and a registry:
+
+backend/voice/tags/registry.py
+
+The registry should define:
+
+* tag name
+* tag type
+* aliases
+* description
+* generation strategy
+* parameters
+* whether it is spoken
+* whether it requires a separate audio event
+* whether it requires post-processing
+
+Make the system extensible so additional tags can be added without rewriting the inference engine.
+
+==================================================
+ELEVENLABS / FISH-AUDIO STYLE EDITOR EXPERIENCE
+===============================================
+
+I want the user experience to feel like a modern professional AI voice studio.
+
+The text editor should:
+
+* recognize tags
+* highlight tags
+* autocomplete available tags
+* show tag descriptions
+* prevent malformed tags
+* allow users to insert tags from a tag menu
+* preserve tags when editing text
+* show validation errors
+* allow previewing individual sections
+* allow regenerating selected sections
+* allow full-text generation
+
+Create a tag toolbar/menu containing the supported tags.
+
+Organize it into:
+
+🎭 Emotional Tone
+
+* [angry]
+* [sad]
+* [embarrassed]
+* [excited]
+* [serious]
+* [soft]
+* [whispering]
+* [breathy]
+
+🔊 Vocal Reactions
+
+* [laughing]
+* [chuckling]
+* [giggle]
+* [snicker]
+* [clear throat]
+* [sigh]
+* [heavy sigh]
+* [gasp]
+* [cough]
+* [groaning]
+* [moaning]
+* [sobbing]
+* [crying loudly]
+* [panting]
+
+⏱ Rhythm & Pacing
+
+* [pause]
+* [short pause]
+* [long pause]
+* [slowly]
+* [fast]
+* [emphasis]
+
+👥 Ambient
+
+* [crowd laughing]
+* [background laughter]
+* [audience laughing]
+
+==================================================
+VOICE MANAGEMENT
+================
+
+Create a voice-management system where users can:
+
+* upload reference audio
+* name a voice
+* save a voice
+* select a saved voice
+* preview a voice
+* delete a voice
+* generate speech using the selected voice
+
+Keep user voice files outside the frontend source code.
+
+Use a proper storage abstraction.
+
+==================================================
+REFERENCE AUDIO
+===============
+
+The backend should support reference audio preprocessing.
+
+Pipeline:
+
+upload
+→ validate
+→ convert to WAV
+→ mono
+→ 24 kHz where appropriate
+→ normalize
+→ trim unnecessary silence
+→ optionally transcribe
+→ save metadata
+→ make available to F5-TTS inference
+
+Do not make users manually perform these steps.
+
+==================================================
+TRANSCRIPTION
+=============
+
+Use the Whisper/faster-whisper integration where appropriate for reference-audio transcription.
+
+The existing development work already includes:
+
+transcribe_voice.py
+transcribe_test.py
+split_dataset.py
+
+Treat these as utility/development tools rather than frontend code.
+
+The reference transcription should be automatically available to the F5-TTS generation pipeline when required.
+
+==================================================
+GENERATION PIPELINE
+===================
+
+Implement:
+
+User text
+↓
+Tag parser
+↓
+Structured speech segments
+↓
+Reference voice selection
+↓
+F5-TTS inference
+↓
+Vocal-event generation where required
+↓
+Segment alignment
+↓
+Pause insertion
+↓
+Audio post-processing
+↓
+Final audio
+↓
+Frontend player
+
+The final result should be a single playable audio file.
+
+==================================================
+DO NOT CLAIM UNSUPPORTED CAPABILITIES
+=====================================
+
+F5-TTS does not automatically become ElevenLabs simply because a tag parser was added.
+
+Where F5-TTS itself does not provide a native control, implement a technically valid adapter/post-processing strategy.
+
+Clearly separate:
+
+1. Native F5-TTS capabilities
+2. Our tag-control layer
+3. Audio post-processing
+4. Additional vocal-event generation
+
+Do not pretend that a feature is native to F5-TTS when it is actually implemented by our wrapper.
+
+==================================================
+API
+===
+
+Create clean backend endpoints such as:
+
+POST /api/voices
+POST /api/voices/:id/generate
+POST /api/voices/:id/preview
+POST /api/audio/transcribe
+GET  /api/voices
+DELETE /api/voices/:id
+GET  /api/generation/:id
+GET  /api/generation/:id/audio
+
+Generation request should support something similar to:
+
+{
+"voiceId": "...",
+"text": "[soft] Hello everyone. [giggle] It's great to see you.",
+"settings": {
+"speed": 1.0,
+"stability": ...,
+"style": ...
+}
+}
+
+Return structured generation status rather than blocking the UI.
+
+==================================================
+GPU / MODEL MANAGEMENT
+======================
+
+Detect whether CUDA/GPU is available.
+
+Do not load the F5-TTS model separately for every request.
+
+Implement a model manager that:
+
+* loads the model once
+* keeps it cached
+* queues generation jobs
+* prevents simultaneous unsafe model initialization
+* releases resources when appropriate
+
+If the Replit runtime cannot run the required GPU workload, DO NOT fake local inference.
+
+Instead implement the backend interface so the inference worker can run on an external GPU machine/server.
+
+==================================================
+IMPORTANT DEPLOYMENT ARCHITECTURE
+=================================
+
+The Replit application should be able to work as the control/UI layer while the F5-TTS inference worker can run separately.
+
+Preferred architecture:
+
+Replit frontend
+↓
+Replit backend/API
+↓
+Voice generation service
+↓
+F5-TTS GPU worker
+↓
+Audio result
+↓
+Replit backend
+↓
+Frontend player
+
+Make the GPU worker configurable through environment variables.
+
+For example:
+
+F5_TTS_SERVICE_URL
+F5_TTS_MODEL
+F5_TTS_DEVICE
+F5_TTS_COMPUTE_TYPE
+
+Do NOT hard-code machine-specific Windows paths such as:
+
+C:\AI\F5-TTS
+
+into the Replit application.
+
+==================================================
+SECURITY
+========
+
+Never expose:
+
+HF tokens
+API keys
+model credentials
+storage credentials
+private voice files
+
+to the frontend.
+
+Use environment variables/secrets.
+
+Validate uploaded audio.
+
+Prevent path traversal.
+
+Do not allow arbitrary filesystem access through API parameters.
+
+==================================================
+TESTING
+=======
+
+Create automated tests for:
+
+* tag parsing
+* tag aliases
+* malformed tags
+* plain text without tags
+* multiple tags
+* pauses
+* vocal events
+* segmentation
+* reference audio validation
+* generation requests
+* API error handling
+
+Example:
+
+Input:
+
+[soft] Hello there. [long pause] How are you? [giggle]
+
+Expected parsed structure:
+
+speech → "Hello there."
+style → soft
+pause → long
+speech → "How are you?"
+vocal_event → giggle
+
+The tags themselves must not be spoken.
+
+==================================================
+UI REQUIREMENTS
+===============
+
+Do not redesign unrelated parts of my application.
+
+Integrate the voice studio into the existing application.
+
+Create a professional voice-generation workspace containing:
+
+* voice selector
+* voice upload
+* reference audio preview
+* text editor
+* tag toolbar
+* tag autocomplete
+* generation settings
+* Generate button
+* generation progress
+* audio player
+* download/export
+* generation history
+
+Make the UI responsive and readable on desktop and mobile.
+
+==================================================
+IMPLEMENTATION PROCESS
+======================
+
+Before changing code:
+
+1. Inspect the existing Replit project.
+2. Identify the current frontend framework.
+3. Identify the current backend/API architecture.
+4. Identify existing authentication/storage/database systems.
+5. Identify where an AI/voice service can be integrated cleanly.
+6. Inspect the existing F5-TTS integration files if they are already present.
+7. Do NOT duplicate existing functionality.
+8. Create the smallest clean integration layer necessary.
+
+Then implement the system incrementally.
+
+After each major component:
+
+* run tests
+* fix errors
+* verify imports
+* verify API routes
+* verify frontend integration
+
+At the end, provide me with:
+
+1. Files created
+2. Files modified
+3. Environment variables required
+4. How the F5-TTS worker connects
+5. How to start the backend
+6. How to start the frontend
+7. How to test voice generation
+8. Which tags are fully supported
+9. Which tags use post-processing/fallback behavior
+10. Any limitations that are genuinely caused by the underlying F5-TTS model
+
+MOST IMPORTANT:
+
+Build this as a real production-quality voice-generation architecture.
+
+Do not merely create mock buttons.
+
+Do not create fake audio.
+
+Do not pretend tag support exists if the backend does not actually implement it.
+
+Do not copy the entire F5-TTS repository into the frontend.
+
+Use the F5-TTS code/model as the inference engine behind a clean voice-service abstraction.

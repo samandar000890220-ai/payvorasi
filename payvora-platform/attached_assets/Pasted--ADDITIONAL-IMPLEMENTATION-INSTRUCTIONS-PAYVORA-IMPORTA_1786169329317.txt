@@ -1,0 +1,495 @@
+### ADDITIONAL IMPLEMENTATION INSTRUCTIONS — PAYVORA
+
+**IMPORTANT: PRESERVE THE EXISTING APPLICATION.**
+
+Do not rebuild Payvora, do not create a separate Text-to-Speech page, and do not redesign the existing Voice Studio.
+
+The existing **Voice Studio page is the TTS experience**. Implement all TTS functionality directly inside the existing Voice Studio UI and preserve its current visual structure, layout, styling, components, tabs, cards, spacing, colors, typography, and interaction patterns.
+
+### 1. DO NOT CREATE A NEW TTS PAGE
+
+Do NOT create:
+
+* a new Text-to-Speech page
+* a replacement Voice Studio page
+* a duplicate TTS interface
+* a new route for TTS
+* a second voice-generation UI
+
+Use the existing **Voice Studio** page/component as the single TTS workspace.
+
+If `TextToSpeech.tsx` is the existing internal component powering Voice Studio, modify that component in place rather than creating a new page.
+
+### 2. DO NOT REDESIGN VOICE STUDIO
+
+The current Voice Studio visual design is approved.
+
+Do not:
+
+* rearrange the layout
+* replace cards
+* change the sidebar
+* change tabs
+* change colors
+* change typography
+* change spacing unnecessarily
+* remove existing controls
+* replace existing UI components
+* introduce a completely different design system
+
+Only make the minimum UI changes required to connect existing controls to real functionality, improve responsiveness, accessibility, reliability, or fix an actual broken interaction.
+
+**Functionality must be upgraded without visually redesigning the page.**
+
+### 3. KEEP F5-TTS
+
+Do NOT switch to ElevenLabs.
+
+Do NOT replace the existing F5-TTS backend.
+
+Do NOT remove the existing F5-TTS integration.
+
+Do NOT add ElevenLabs as the generation provider for this implementation.
+
+The existing F5-TTS backend remains the authoritative TTS generation provider.
+
+The goal is to make Payvora **behave like a polished production voice platform**, with an interaction quality comparable to products such as ElevenLabs and Fish Audio, while continuing to use F5-TTS underneath.
+
+### 4. EVERY BUTTON MUST ACTUALLY WORK
+
+Perform a complete audit of **every button and interactive element across the entire existing application**.
+
+Do not skip controls because they appear secondary.
+
+Every:
+
+* button
+* icon button
+* dropdown
+* select
+* tab
+* slider
+* toggle
+* checkbox
+* search field
+* filter
+* menu
+* upload control
+* playback control
+* navigation item
+* card action
+* overflow menu
+* favorite button
+* delete action
+* duplicate action
+* download action
+* share action
+* retry action
+* generate action
+* clear action
+* import action
+* editor action
+
+must either:
+
+1. perform its intended real function, or
+2. be explicitly marked as intentionally unavailable.
+
+There must be **no accidental dead buttons**.
+
+Do not use fake `onClick` handlers that only show a toast such as:
+
+`notify("Coming soon")`
+
+when the control is expected to work.
+
+Do not use placeholder handlers simply to make the UI appear functional.
+
+### 5. NEVER SKIP OR JUMP CONTROLS
+
+When auditing the application, go through the controls systematically.
+
+Do not implement only the obvious buttons.
+
+Do not skip controls because they are:
+
+* inside dropdowns
+* inside cards
+* inside tabs
+* inside modals
+* inside menus
+* on mobile
+* in secondary pages
+* in empty states
+* in history items
+* in voice cards
+* in settings
+* in studio controls
+
+Every control must be tested individually.
+
+### 6. COMPLETE INTERACTION LIFECYCLE
+
+For every action that performs asynchronous work, implement the complete lifecycle:
+
+`IDLE → VALIDATING → LOADING/SUBMITTING → PROCESSING → SUCCESS`
+
+and:
+
+`IDLE → VALIDATING → LOADING → FAILURE`
+
+Where appropriate also support:
+
+`CANCELLED`
+
+and:
+
+`RETRY`
+
+The UI must clearly communicate what is happening.
+
+Examples:
+
+* button becomes loading
+* spinner appears
+* duplicate clicks are prevented
+* successful result is displayed
+* failure produces useful feedback
+* retry is available when appropriate
+
+### 7. PREVENT DUPLICATE ACTIONS
+
+While an operation is processing:
+
+* prevent duplicate generation requests
+* prevent duplicate uploads
+* prevent duplicate clone requests
+* prevent duplicate deletes
+* prevent duplicate saves
+* prevent duplicate submissions
+
+Do not allow rapid repeated clicks to create multiple backend operations accidentally.
+
+### 8. VOICE STUDIO FUNCTIONALITY
+
+Implement the existing Voice Studio controls without changing the page design.
+
+The existing Voice Studio should support, where the backend permits:
+
+* text entry
+* text editing
+* import text
+* clear text
+* voice selection
+* voice search
+* voice filtering
+* voice categories
+* favorite voices
+* voice preview
+* speed
+* stability
+* similarity
+* supported style controls
+* supported voice enhancement controls
+* output format
+* supported sample rate
+* natural pauses
+* generation
+* generation loading state
+* generation failure state
+* generated audio playback
+* pause
+* resume
+* replay
+* download
+* retry
+* history creation
+* character/text validation
+
+Do not invent backend capabilities that F5-TTS does not support.
+
+If a control cannot be supported by F5-TTS, preserve the existing UI and handle that limitation honestly rather than pretending the control works.
+
+### 9. MY VOICES
+
+Keep the existing My Voices interface.
+
+Make existing controls functional, including where applicable:
+
+* preview
+* play
+* pause
+* favorite
+* unfavorite
+* use voice
+* edit
+* rename
+* delete
+* duplicate
+* search
+* filtering
+* category filtering
+* sorting
+
+A cloned voice must become available to the Voice Studio voice selector after successful creation.
+
+### 10. VOICE CLONING
+
+Use the existing Voice Clone UI.
+
+Do not create another clone page.
+
+Implement:
+
+`Select/Record Audio → Validate → Upload → Process → Success/Failure → Create Voice → Persist Voice → Make Available in Voice Studio`
+
+Provide clear states for:
+
+* empty
+* selected
+* uploading
+* processing
+* success
+* failure
+* retry
+
+### 11. HISTORY
+
+Keep the existing History interface.
+
+Make all existing History controls functional, including:
+
+* play
+* pause
+* replay
+* download
+* search
+* filter
+* sort
+* date range
+* delete
+* duplicate
+* share where supported
+* export where supported
+* folder actions where supported
+* retry failed generation where possible
+
+History records must correspond to actual generated content.
+
+Do not create fake history records merely to populate the interface.
+
+### 12. PERSISTENCE
+
+For this round:
+
+**Do not implement real multi-user authentication yet.**
+
+Do not build a complete multi-user authentication system.
+
+However, structure persistence cleanly so real authentication can be introduced later.
+
+Use the selected persistence architecture without unnecessarily coupling the UI to a future auth implementation.
+
+Persist application state that needs to survive refreshes, including appropriate:
+
+* voices
+* cloned voice metadata
+* favorites
+* generation metadata
+* history
+* settings
+* projects
+* relevant provider/model identifiers
+
+Do not expose private API credentials in browser code.
+
+### 13. RESPONSIVE BEHAVIOR
+
+This is a critical requirement.
+
+The **entire existing Payvora application**, not only Voice Studio, must display correctly across:
+
+* small mobile phones
+* large mobile phones
+* tablets
+* laptops
+* desktop monitors
+* large/wide monitors
+
+Do not simply scale down the desktop version.
+
+Existing layouts must naturally adapt to available screen width.
+
+Audit for:
+
+* horizontal scrolling
+* clipped text
+* overflowing buttons
+* overlapping controls
+* fixed-width containers
+* broken grids
+* broken cards
+* broken dialogs
+* broken dropdowns
+* broken tabs
+* broken sidebars
+* broken navigation
+* broken audio players
+* broken sliders
+* broken text editors
+* broken upload areas
+* broken tables
+* inaccessible menus
+
+Nothing should extend beyond the viewport unintentionally.
+
+No important control should become inaccessible on mobile.
+
+### 14. MOBILE VOICE STUDIO
+
+On smaller screens, preserve the same Voice Studio design language while allowing the existing layout to reorganize responsively.
+
+Controls may stack, wrap, resize, or become scrollable where necessary, but **do not redesign the page**.
+
+The goal is:
+
+**same interface + responsive behavior**
+
+not:
+
+**new mobile interface**
+
+### 15. ACCESSIBILITY
+
+Use semantic HTML wherever possible.
+
+Buttons should be actual `<button>` elements.
+
+Navigation should use appropriate links.
+
+Sliders should use appropriate range controls.
+
+Inputs must have labels.
+
+Dialogs must behave like dialogs.
+
+Tabs must have correct selected states.
+
+Dropdowns must be keyboard accessible.
+
+Interactive controls must have visible focus states.
+
+Do not use clickable `<div>` elements when a semantic control is appropriate.
+
+Support keyboard interaction throughout the application.
+
+### 16. RESPONSIVE + ACCESSIBLE INTERACTION REQUIREMENT
+
+Every control must work through:
+
+**Mouse → Touch → Keyboard**
+
+where applicable.
+
+Do not create controls that work with a mouse but fail on touch or keyboard.
+
+### 17. DO NOT MODIFY WORKING FUNCTIONALITY
+
+Before changing any component:
+
+1. Inspect its existing implementation.
+2. Determine whether it already works.
+3. Preserve working behavior.
+4. Only modify what is necessary.
+
+Do not replace working functionality with a new implementation simply because it is easier.
+
+### 18. FULL APPLICATION AUDIT
+
+After implementation, perform a complete audit of every existing page.
+
+For every interactive element verify:
+
+**Control → Click/Tap → Expected action → UI state → Backend/API action → Success → Failure → Persistence → Repeat-click behavior → Mobile behavior → Keyboard behavior**
+
+Classify every control as:
+
+* FUNCTIONAL
+* PARTIALLY FUNCTIONAL
+* NOT IMPLEMENTED
+* INTENTIONALLY UNAVAILABLE
+
+Do not mark something functional simply because clicking it does not crash.
+
+It must perform the intended action.
+
+### 19. NO FAKE SUCCESS
+
+Do not display:
+
+* fake generated audio
+* fake cloned voices
+* fake history records
+* fake processing states
+* fake download buttons
+* fake successful API responses
+* fake voice data
+
+unless clearly identified as development/test data.
+
+The UI must reflect the actual backend state.
+
+### 20. FINAL VALIDATION
+
+Before declaring the task complete:
+
+* run the application
+* inspect every existing page
+* test every major interaction
+* test Voice Studio end-to-end
+* test voice selection
+* test generation
+* test playback
+* test download
+* test cloning
+* test My Voices
+* test History
+* test filters
+* test search
+* test menus
+* test dialogs
+* test mobile layouts
+* test keyboard navigation
+* test failure states
+* test retry behavior
+* test refresh/persistence behavior
+
+Fix discovered problems before stopping.
+
+**Do not stop simply because the application compiles.**
+
+The acceptance criterion is a working, responsive, production-quality Payvora application built on the existing architecture.
+
+### FINAL NON-NEGOTIABLE RULE
+
+**BUILD ON THE EXISTING PAYVORA APPLICATION.**
+
+Do not rebuild.
+
+Do not redesign Voice Studio.
+
+Do not create a separate Text-to-Speech page.
+
+Do not replace F5-TTS.
+
+Do not remove existing pages.
+
+Do not skip controls.
+
+Do not leave dead buttons.
+
+Do not use fake functionality.
+
+Do not create unnecessary replacement components.
+
+Improve the existing application **in place** and make every existing interaction behave correctly.

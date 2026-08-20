@@ -1,0 +1,233 @@
+Update the Payvora AI sidebar/navigation behavior to match the interaction pattern shown in the attached ChatGPT reference screenshots.
+
+SIDEBAR COLLAPSED / EXPANDED BEHAVIOR
+
+1. EXPANDED STATE
+- Show the full sidebar navigation.
+- Display the Payvora logo/brand at the top.
+- Show navigation icons AND their text labels.
+- Show the appropriate navigation sections, such as:
+  - New Chat
+  - Search
+  - AI Chat
+  - Voice Studio
+  - Image Studio
+  - Video Studio
+  - Other available workspace/tools
+  - Recent chats/projects where applicable
+  - User profile/account area at the bottom
+- Preserve the existing navigation hierarchy and ordering.
+- Do NOT remove useful navigation items when expanded.
+- The expanded sidebar should feel like a polished modern AI/fintech application similar to ChatGPT, Linear, Stripe, and other premium SaaS products.
+
+2. COLLAPSED STATE
+When the user collapses the sidebar, DO NOT simply display every navigation item as an icon.
+
+Instead, intelligently SUMMARIZE the sidebar.
+
+The collapsed sidebar should contain only the essential/high-frequency navigation controls and branding.
+
+Keep visible:
+- Payvora logo/brand mark at the top.
+- New Chat / primary action.
+- Search.
+- The primary AI workspace/navigation icon.
+- The most important product/workspace icons, if appropriate.
+- Sidebar expand/collapse control.
+- User avatar/profile at the bottom.
+
+Hide:
+- Full text labels.
+- Secondary navigation items.
+- Long lists of chats/projects.
+- Less frequently used tools.
+- Section headings.
+- Secondary workspace navigation.
+- Any redundant items that would make the collapsed sidebar look cluttered.
+
+The collapsed sidebar should NOT become a vertical list containing every icon from the expanded sidebar.
+
+It should look intentionally simplified, clean, and professional.
+
+3. ICON BEHAVIOR
+- Icons must remain visually identical between expanded and collapsed states.
+- Do not resize or replace icons when collapsing.
+- Use a consistent modern outline icon system.
+- Approximately 20–22px icon size.
+- Use consistent stroke weight.
+- Keep every icon centered inside a consistent 40–44px clickable hit area.
+- Maintain comfortable vertical spacing.
+- Do not allow icons to jump, shift, or change position during the transition.
+
+4. COLLAPSED TOOLTIP BEHAVIOR
+Because labels are hidden in collapsed mode, every important icon must have a tooltip on hover.
+
+Examples:
+- New Chat
+- Search
+- AI Chat
+- Voice Studio
+- Image Studio
+- Video Studio
+- Settings
+- Profile
+
+Tooltips should:
+- Appear beside the collapsed sidebar.
+- Use the actual navigation name.
+- Have a subtle dark/light premium SaaS appearance consistent with the Payvora UI.
+- Appear after a short hover delay.
+- Never permanently display the labels.
+
+5. ACTIVE NAVIGATION
+The currently selected section must remain obvious in both states.
+
+Expanded:
+- Use a subtle rounded rectangular/pill active background.
+- Keep the icon and label visible.
+
+Collapsed:
+- Convert the same active state into a compact rounded-square or pill-shaped icon container.
+- Keep the icon centered.
+- Do not show the text label.
+- Do not change the icon itself.
+- Maintain the same active visual identity between both states.
+
+6. TRANSITION
+Implement a polished animated transition between expanded and collapsed states.
+
+Requirements:
+- Smooth width transition.
+- Smooth label opacity transition.
+- Smooth navigation spacing transition.
+- Icons must NOT jump or resize.
+- Avoid layout flickering.
+- Avoid content shifting unexpectedly.
+- Preserve the vertical position of primary navigation items.
+- Use a short, subtle professional transition rather than a dramatic animation.
+
+7. RESPONSIVE DESIGN
+The sidebar must work correctly across:
+- Large desktop screens
+- Standard desktop/laptop screens
+- Tablets
+- Smaller screens
+
+Do not allow the collapsed sidebar to consume unnecessary horizontal space.
+
+Target behavior:
+- Expanded = approximately 240–280px wide depending on the existing layout.
+- Collapsed = approximately 64–72px wide.
+- The main content area should automatically expand when the sidebar collapses.
+- The main content area should automatically contract when the sidebar expands.
+
+8. IMPORTANT: DO NOT DUPLICATE NAVIGATION
+
+Do NOT create a second sidebar.
+
+Do NOT create duplicate icons.
+
+Do NOT create separate navigation implementations for collapsed and expanded modes.
+
+Use ONE navigation configuration and render the appropriate subset depending on the sidebar state.
+
+For example, conceptually:
+
+expanded:
+  primary navigation + secondary navigation + labels + sections
+
+collapsed:
+  essential primary navigation + essential workspace icons + no labels
+
+The collapsed state is a condensed representation of the same navigation system.
+
+9. PAYVORA BRANDING / LOGO
+
+Use the attached Payvora logo reference as the authoritative visual reference.
+
+Replicate the logo accurately rather than replacing it with a generic icon or text.
+
+The logo should:
+- Preserve the original Payvora symbol/mark.
+- Preserve the original proportions.
+- Preserve the original typography where applicable.
+- Preserve the original colors.
+- Preserve transparency/background behavior.
+- Preserve spacing between the logo mark and "Payvora AI" branding.
+- Render sharply at different resolutions.
+- Never stretch or distort the logo.
+
+IMPORTANT:
+Do not generate a new logo design.
+Do not redesign the logo.
+Do not substitute an unrelated icon.
+Use the provided logo/reference asset and reproduce it faithfully in the application.
+
+When the sidebar is EXPANDED:
+- Show the Payvora logo mark + Payvora AI brand name.
+
+When the sidebar is COLLAPSED:
+- Show only the Payvora logo mark.
+- Hide the text portion of the brand.
+- Keep the mark centered within the sidebar.
+- Do not replace it with a different icon.
+
+10. VISUAL QUALITY
+
+The final result should feel like a premium modern fintech + AI SaaS product.
+
+Follow the visual principles demonstrated by the attached ChatGPT screenshots:
+- Minimal
+- Clean
+- Spacious
+- Professional
+- Consistent
+- Excellent typography
+- Clear hierarchy
+- Subtle borders
+- Subtle shadows
+- Refined hover states
+- Refined active states
+- No unnecessary visual noise
+
+The collapsed sidebar should feel deliberately designed — NOT like the expanded sidebar was simply squeezed into a smaller width.
+
+11. USE THE ATTACHED SCREENSHOTS AS THE BEHAVIORAL REFERENCE
+
+Use the attached ChatGPT screenshots specifically as reference for the SIDEBAR COLLAPSE/EXPANSION UX:
+
+EXPANDED:
+logo + labels + complete navigation + sections + recent items.
+
+COLLAPSED:
+logo mark + essential icons + simplified navigation + tooltips.
+
+Do not copy ChatGPT branding or proprietary assets. Reproduce the interaction pattern and information architecture principle for Payvora's own design system.
+
+12. FINAL REQUIREMENT
+
+Implement this directly into the existing Payvora application.
+
+Do not create a mockup or static demonstration.
+
+Do not generate an image.
+
+Do not merely describe the changes.
+
+Actually modify the existing sidebar/navigation components and styling so the behavior works.
+
+After implementation:
+- Verify expanded mode.
+- Verify collapsed mode.
+- Verify active navigation.
+- Verify tooltips.
+- Verify logo behavior.
+- Verify responsive behavior.
+- Verify the collapse/expand animation.
+- Verify there are no duplicate navigation items.
+- Verify there are no console errors.
+- Verify the main content resizes correctly.
+- Preserve all existing Payvora functionality and routes.
+
+Do not redesign unrelated parts of the application.
+Only improve the sidebar/navigation behavior and integrate the provided Payvora logo correctly.

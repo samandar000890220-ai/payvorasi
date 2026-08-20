@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Payvora"
+description = "A Payvora payment experience imported from the uploaded project files, prepared to run cleanly in the preview."
+version = "1.0.0"
+id = "artifacts/payvora"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 5173
+
+[services.development]
+run = "pnpm --filter @workspace/payvora run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/payvora", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/payvora/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "5173"
+BASE_PATH = "/"

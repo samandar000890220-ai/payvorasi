@@ -1,0 +1,166 @@
+# Implement the Existing Voice Studio ZIP (Do Not Redesign)
+
+Extract the provided **Voice Studio ZIP** and integrate it into the application exactly as designed.
+
+## Critical Requirements
+
+### 1. Do NOT redesign anything
+- Do **not** recreate the page.
+- Do **not** generate a new layout.
+- Do **not** replace components with new ones.
+- Do **not** change spacing, typography, colors, shadows, icons, cards, buttons, or interactions.
+- Preserve the design exactly as it exists inside the ZIP.
+
+The ZIP is the source of truth.
+
+---
+
+### 2. Wire the Voice Studio button
+
+When the user clicks:
+
+**AI Workspace → Voice Studio**
+
+it must navigate to the imported Voice Studio page from the ZIP.
+
+- Do not open a modal.
+- Do not embed screenshots.
+- Load the actual imported page.
+
+---
+
+### 3. Integrate with the existing application
+
+The imported page must use the existing application shell.
+
+Keep the existing:
+- Left sidebar
+- Top navigation
+- Routing
+- Authentication
+- Theme
+- User session
+
+Only replace the page content area.
+
+The sidebar must remain visible exactly like every other page.
+
+---
+
+### 4. Resize the imported page
+
+The current Voice Studio design was created without our sidebar.
+
+Resize and adapt the layout so it fits naturally beside the sidebar.
+
+Requirements:
+- No horizontal scrolling
+- No content cut off
+- No overlapping
+- No zooming out
+- Preserve proportions
+- Preserve spacing
+- Preserve card sizes as much as possible
+- Maintain responsiveness
+
+Treat the imported layout as responsive rather than scaling it down like an image.
+
+---
+
+### 5. Responsive behavior
+
+The page must work perfectly on:
+- Desktop
+- Laptop
+- Tablet
+- Mobile
+
+Cards should wrap naturally.
+
+Panels should resize intelligently.
+
+Nothing should overflow.
+
+Nothing should overlap.
+
+---
+
+### 6. Preserve all interactions
+
+All existing functionality from the imported page must continue to work, including:
+- Tabs
+- Buttons
+- Dropdowns
+- Sliders
+- Search
+- Cards
+- Inputs
+- Hover states
+- Active states
+- Animations
+
+---
+
+### 7. Keep the existing application styling
+
+The imported page should inherit:
+- Fonts
+- Theme
+- Design tokens
+- Color variables
+
+where appropriate, without visually changing the imported design.
+
+---
+
+### 8. Route integration
+
+Create or update the route so that:
+
+AI Workspace
+→ Voice Studio
+
+opens the imported Voice Studio page.
+
+Do not duplicate routes.
+
+Do not create unnecessary wrappers.
+
+---
+
+### 9. Code quality
+
+- Remove unused assets.
+- Remove duplicate CSS.
+- Keep components modular.
+- Follow the current project structure.
+- Ensure clean imports.
+- Fix any broken references from the ZIP.
+
+---
+
+### 10. Final verification
+
+Before finishing, verify that:
+
+✅ The ZIP has been fully extracted.
+
+✅ The imported Voice Studio page is being used.
+
+✅ No redesign occurred.
+
+✅ The sidebar remains visible.
+
+✅ The layout fits perfectly beside the sidebar.
+
+✅ The page is fully responsive.
+
+✅ All controls function correctly.
+
+✅ There is no horizontal scrolling.
+
+✅ There are no layout shifts or visual regressions.
+
+✅ Clicking **Voice Studio** always opens the imported page correctly.
+
+Do not stop until every requirement above has been completed successfully.

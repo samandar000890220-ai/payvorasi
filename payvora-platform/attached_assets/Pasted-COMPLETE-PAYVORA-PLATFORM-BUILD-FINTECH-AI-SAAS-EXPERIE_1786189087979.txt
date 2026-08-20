@@ -1,0 +1,541 @@
+COMPLETE PAYVORA PLATFORM BUILD — FINTECH AI SAAS EXPERIENCE
+
+Continue building the Payvora platform.
+
+Your task is to completely build all remaining pages, connect every sidebar/navigation button to the correct routes, and make every page production-ready.
+
+Do NOT create empty pages, placeholders, or simple mockups.
+
+Every page must feel like a real feature inside a modern AI fintech company platform.
+
+Payvora should feel like a premium AI financial technology company similar to:
+
+- Stripe Dashboard
+- OpenAI Workspace
+- Ramp
+- Mercury
+- Brex
+- Linear
+
+The final product should look like a funded enterprise SaaS fintech startup.
+
+==================================================
+
+GLOBAL REQUIREMENTS
+
+==================================================
+
+Build a complete unified application experience.
+
+Requirements:
+
+- Every sidebar item must have a working route.
+- Every button must perform a real action.
+- No dead buttons.
+- No placeholder components.
+- No unfinished pages.
+- No fake navigation.
+- No broken links.
+
+Every page must include:
+
+- Professional header/navigation
+- Consistent sidebar
+- Responsive layout
+- Loading states
+- Empty states
+- Error states
+- Success notifications
+- Search where appropriate
+- Filters where appropriate
+- Modern cards
+- Tables where appropriate
+- Professional forms
+- Smooth animations
+
+Ensure everything works on:
+
+- Desktop
+- Tablet
+- Mobile
+
+==================================================
+
+DESIGN SYSTEM
+
+==================================================
+
+Create a premium Payvora design language.
+
+The UI should feel:
+
+- Clean
+- Secure
+- Intelligent
+- Modern
+- Enterprise-grade
+- Financial technology focused
+
+Use:
+
+- Premium typography
+- Proper spacing system
+- Modern cards
+- Subtle shadows
+- Elegant borders
+- Glass effects where appropriate
+- Smooth transitions
+- Professional dashboards
+
+Maintain consistency across:
+
+- Buttons
+- Cards
+- Tables
+- Forms
+- Modals
+- Dropdowns
+- Navigation
+- Tabs
+- Charts
+- Notifications
+
+Everything should follow one design system.
+
+==================================================
+
+BUILD THESE PAGES COMPLETELY:
+
+==================================================
+
+
+# 1. DOCUMENT STUDIO
+
+Create a complete AI document workspace.
+
+Features:
+
+- AI document creation
+- Rich text editor
+- AI writing assistant
+- Document templates
+- Document history
+- Version tracking
+- Search documents
+- Document organization
+- Folder management
+- Export documents
+- Share documents
+- Collaboration features
+
+Interface:
+
+- Recent documents
+- Favorite documents
+- AI assistant panel
+- Document preview
+- Actions menu
+
+
+Connect:
+
+Document Studio sidebar button → Document Studio page
+
+
+==================================================
+
+
+# 2. AI AGENTS
+
+Create a complete AI agent management platform.
+
+Features:
+
+- Create AI agents
+- Configure agents
+- Agent profiles
+- Model selection
+- Tool permissions
+- Memory settings
+- Knowledge connections
+- Agent testing playground
+- Deployment controls
+- Agent activity logs
+
+
+Interface:
+
+- Agent cards
+- Status indicators
+- Performance metrics
+- Agent settings
+
+
+Connect:
+
+AI Agents button → AI Agents page
+
+
+==================================================
+
+
+# 3. TEMPLATES
+
+Create a professional AI template marketplace.
+
+Features:
+
+- Browse templates
+- Categories
+- Search
+- Filters
+- Template preview
+- Favorite templates
+- Use template
+- Create template
+
+
+Include:
+
+- Business templates
+- Finance templates
+- Document templates
+- AI workflow templates
+
+
+Connect:
+
+Templates button → Templates page
+
+
+==================================================
+
+
+# 4. KNOWLEDGE BASE
+
+Create an AI knowledge management system.
+
+Features:
+
+- Upload files
+- Manage knowledge sources
+- Organize documents
+- AI indexing
+- Search knowledge
+- Document processing status
+- Source management
+- Delete/update sources
+
+
+Interface:
+
+- Knowledge folders
+- Files list
+- Processing indicators
+- Search
+
+
+Connect:
+
+Knowledge Base button → Knowledge Base page
+
+
+==================================================
+
+
+# 5. PROJECTS
+
+Create a project management dashboard.
+
+Features:
+
+- Create projects
+- Project overview
+- Team members
+- Files
+- Activity timeline
+- AI workflows
+- Project status
+- Collaboration tools
+
+
+Interface:
+
+- Project cards
+- Progress indicators
+- Recent activity
+
+
+Connect:
+
+Projects button → Projects page
+
+
+==================================================
+
+
+# 6. INTEGRATIONS
+
+Create an integrations marketplace/settings page.
+
+Features:
+
+- Connected applications
+- Available integrations
+- Connect application
+- Disconnect application
+- API integrations
+- Webhooks
+- Automation settings
+- Integration logs
+
+
+Interface:
+
+- Integration cards
+- Connection status
+- Setup flow
+
+
+Connect:
+
+Integrations button → Integrations page
+
+
+==================================================
+
+
+# 7. SETTINGS
+
+Create a complete settings center.
+
+Sections:
+
+Account:
+- Profile
+- Personal information
+- Security
+
+Workspace:
+- Workspace settings
+- Members
+- Permissions
+
+AI Settings:
+- Models
+- Preferences
+- AI behavior
+
+Notifications:
+- Email notifications
+- Product updates
+- Alerts
+
+
+Connect:
+
+Settings button → Settings page
+
+
+==================================================
+
+
+# 8. BILLING
+
+Create a complete fintech billing dashboard.
+
+Features:
+
+- Current subscription
+- Plans
+- Upgrade/downgrade
+- Usage analytics
+- Payment methods
+- Billing history
+- Invoices
+- Transaction records
+
+
+Interface:
+
+- Professional billing cards
+- Usage charts
+- Invoice table
+
+
+Connect:
+
+Billing button → Billing page
+
+
+==================================================
+
+
+# 9. HELP & SUPPORT
+
+Create a complete customer support center.
+
+Features:
+
+- AI support assistant
+- Help articles
+- Search knowledge base
+- Contact support
+- Support tickets
+- FAQ
+
+
+Interface:
+
+- Support dashboard
+- Ticket history
+- Chat support
+
+
+Connect:
+
+Help & Support button → Support page
+
+
+==================================================
+
+
+# 10. KEYBOARD SHORTCUTS
+
+Create a shortcut management page/modal.
+
+Features:
+
+- Navigation shortcuts
+- Editor shortcuts
+- AI shortcuts
+- Search shortcuts
+- Command menu
+
+
+Connect:
+
+Keyboard Shortcuts button → Shortcuts page
+
+
+==================================================
+
+
+# 11. API KEYS
+
+Create a developer API management dashboard.
+
+Features:
+
+- Create API keys
+- Revoke keys
+- Rename keys
+- Permissions
+- Usage monitoring
+- Request analytics
+- API documentation links
+
+
+Interface:
+
+- Secure key display
+- Usage charts
+- Activity logs
+
+
+Connect:
+
+API Keys button → API Keys page
+
+
+==================================================
+
+
+# 12. THEME
+
+Create a complete theme system.
+
+Features:
+
+- Light mode
+- Dark mode
+- System mode
+- Accent customization
+
+Requirements:
+
+- Persist user preference
+- Apply globally
+- Update entire application
+
+
+Connect:
+
+Theme button → Theme settings
+
+
+==================================================
+
+
+# 13. LANGUAGE
+
+Create language preferences.
+
+Features:
+
+- Language selector
+- Localization framework
+- Regional settings
+- Save preference
+
+
+Connect:
+
+Language button → Language settings
+
+
+==================================================
+
+
+BACKEND / FUNCTIONALITY REQUIREMENTS
+
+==================================================
+
+Where required:
+
+- Create database models
+- Create APIs
+- Connect frontend and backend
+- Add validation
+- Add error handling
+- Add loading states
+- Persist user settings
+
+Follow the existing Payvora architecture.
+
+Do not break existing features.
+
+==================================================
+
+FINAL QUALITY CHECK
+
+==================================================
+
+Before finishing:
+
+1. Verify every sidebar item works.
+2. Verify every button works.
+3. Verify every route loads correctly.
+4. Verify mobile responsiveness.
+5. Remove all placeholders.
+6. Remove unfinished components.
+7. Fix TypeScript errors.
+8. Fix console errors.
+9. Run production build.
+10. Ensure the application feels like a premium fintech AI platform.
+
+FINAL RESULT:
+
+Payvora should look and feel like a real AI fintech company product used by businesses worldwide.
+
+Complete the build end-to-end.

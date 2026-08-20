@@ -1,0 +1,129 @@
+Implement a modern scrollbar system across the entire application.
+
+## 1. Hide Native Scrollbars
+
+Hide the browser's default scrollbar everywhere in the application while preserving full scrolling functionality.
+
+This includes:
+
+• Main content area
+• Sidebar
+• Chat pages
+• AI Workspace
+• Voice Studio
+• Image Studio
+• Video Studio
+• Document Studio
+• Recent Projects
+• Tools panel
+• History pages
+• Settings pages
+• Dropdown menus
+• Modal windows
+• Any scrollable container
+
+Users should still be able to scroll normally using:
+
+• Mouse wheel
+• Trackpad gestures
+• Touch scrolling
+• Keyboard navigation
+• Page Up / Page Down
+• Arrow keys
+• Space bar
+
+Scrolling functionality must remain 100% intact.
+
+---
+
+## 2. Modern Smooth Scrolling
+
+Implement premium smooth scrolling similar to modern fintech and AI applications.
+
+The scrolling should feel:
+
+• Extremely smooth
+• Fluid
+• Premium
+• Responsive
+• Lightweight
+• Natural
+• High-performance
+
+No stuttering.
+
+No jumping.
+
+No lag.
+
+No delayed response.
+
+Scrolling should have subtle momentum/easing while remaining responsive to user input.
+
+---
+
+## 3. Preserve Performance
+
+The smooth scrolling implementation must:
+
+• Maintain 60 FPS.
+• Be GPU accelerated where appropriate.
+• Avoid layout thrashing.
+• Avoid excessive JavaScript calculations.
+• Respect browser accessibility settings.
+• Degrade gracefully on lower-powered devices.
+
+---
+
+## 4. Responsive Behavior
+
+Ensure scrolling behaves correctly on:
+
+• Desktop
+• Laptop
+• Tablet
+• Mobile devices
+• High-resolution displays
+• Touch devices
+• Trackpads
+
+---
+
+## 5. Overflow Handling
+
+Review every page and scrollable container to ensure:
+
+• No unnecessary horizontal scrolling.
+• No clipped content.
+• Proper overflow handling.
+• Correct scrolling boundaries.
+• Nested scroll areas work smoothly.
+• Sticky headers and sidebars continue functioning correctly.
+
+---
+
+## 6. Accessibility
+
+Do not break accessibility.
+
+Ensure:
+
+• Keyboard scrolling still works.
+• Focused elements automatically scroll into view.
+• Screen reader compatibility is preserved.
+• Users with reduced motion preferences receive appropriate behavior.
+
+---
+
+## 7. Overall Experience
+
+The final scrolling experience should feel comparable in quality to premium modern applications such as:
+
+• ChatGPT
+• Linear
+• Notion
+• Replit
+• Stripe Dashboard
+• ElevenLabs
+
+Maintain Payvora's own branding and styling while delivering a clean, polished, production-ready scrolling experience.

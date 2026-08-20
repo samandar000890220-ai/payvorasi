@@ -1,0 +1,189 @@
+APPROVED — PROCEED, BUT FOLLOW THESE ARCHITECTURAL REQUIREMENTS EXACTLY.
+
+Your read-only investigation correctly identified multiple separate issues. Do NOT collapse them into one MediaRecorder/transcription implementation.
+
+IMPORTANT: We are keeping the existing realtime voice architecture.
+
+HARD CONSTRAINTS — DO NOT VIOLATE:
+
+1. DO NOT modify ChatPanel.tsx.
+2. DO NOT redesign or recreate the existing composer.
+3. DO NOT change the existing composer layout, spacing, typography, colors, icons, borders, buttons, Send button, or visual styling.
+4. DO NOT replace the realtime AudioWorklet architecture with MediaRecorder.
+5. DO NOT use MediaRecorder as the realtime transport.
+6. DO NOT create a fake waveform, simulated waveform, CSS animation, timer-based waveform, random bars, or placeholder waveform.
+7. DO NOT fake transcripts, fake AI responses, fake audio, or fake provider results.
+8. DO NOT create a second microphone/audio engine.
+9. DO NOT create a second AudioContext if the existing voice engine already provides one.
+10. DO NOT bypass the existing voice-engine context.
+11. Reuse the existing authoritative voice engine and its existing AudioWorklet, PCM16 streaming, WebSocket protocol, and AnalyserNode infrastructure.
+12. Preserve the existing realtime endpoint:
+    /api/realtime/voice
+13. The waveform must be driven by the ACTUAL microphone input AnalyserNode in real time.
+14. The waveform must visibly respond to actual microphone input amplitude/frequency data.
+15. Keep provider credentials server-side.
+16. Do not weaken, bypass, or hardcode authentication/security merely to make the feature appear to work.
+
+CURRENT FINDINGS TO IMPLEMENT AGAINST:
+
+A. The composer microphone currently stops immediately here:
+
+artifacts/payvora/src/App.tsx
+
+onClick={() => onUnavailable('Voice input is not available yet.')}
+
+That hardcoded placeholder must be removed/replaced.
+
+B. The existing realtime implementation is in:
+
+artifacts/payvora/src/voiceEngine.tsx
+
+It already contains:
+
+- startVoiceSession()
+- navigator.mediaDevices.getUserMedia()
+- AudioContext
+- AudioWorklet
+- PCM16 audio processing
+- WebSocket realtime connection
+- inputAnalyserRef
+- outputAnalyserRef
+
+C. The existing real waveform implementation is:
+
+artifacts/payvora/src/VoiceWaveform.tsx
+
+It already uses an AnalyserNode and getByteTimeDomainData().
+
+D. The current problem is that this waveform is not mounted into the composer UI that I am recording.
+
+IMPLEMENTATION OBJECTIVE:
+
+When the user clicks the existing composer microphone button:
+
+CLICK MIC
+→ existing authoritative voice engine
+→ request microphone permission
+→ start existing AudioWorklet
+→ stream real PCM16 frames over the existing /api/realtime/voice WebSocket
+→ existing input AnalyserNode receives the microphone signal
+→ existing waveform renders the actual analyser data
+→ realtime transcription/events are received from the existing realtime pipeline
+→ resulting transcript is placed into the existing composer input
+→ user can continue editing/sending normally.
+
+DO NOT implement this as:
+
+MIC
+→ MediaRecorder
+→ Blob
+→ /api/audio/transcribe
+→ transcript
+
+That would be a separate non-realtime architecture and is NOT what I want.
+
+WAVEFORM REQUIREMENT:
+
+The waveform shown in the composer must be a REAL waveform.
+
+Reuse the existing VoiceWaveform implementation or extract its rendering logic into a minimal reusable component if necessary.
+
+It must consume the existing voice-engine analyser:
+
+inputAnalyser
+
+and use actual analyser data such as:
+
+analyser.getByteTimeDomainData(...)
+
+with requestAnimationFrame.
+
+It must appear only when the voice session is active/listening, and disappear/return to the normal composer state when the voice session stops.
+
+Do not alter the visual design of the composer except for the minimum necessary waveform insertion.
+
+IMPORTANT ABOUT ChatPanel.tsx:
+
+ChatPanel.tsx is LOCKED.
+
+Do not touch it.
+
+The investigation showed that the composer microphone is inside the CodexHome/composer area in App.tsx. Therefore first determine whether App.tsx can mount the waveform and invoke the existing voice engine without modifying ChatPanel.tsx.
+
+If App.tsx is sufficient, modify only App.tsx and the minimum necessary voice-related component/context files.
+
+Do not modify unrelated files.
+
+F5-TTS / TRANSCRIPTION:
+
+You also discovered that F5_TTS_SERVICE_URL is currently missing in the environment inspected by Copilot.
+
+Do NOT solve this by replacing the realtime architecture with /api/audio/transcribe.
+
+First trace the existing /api/realtime/voice server path and determine exactly which realtime provider/transcription service it expects.
+
+If the realtime voice path requires the F5-TTS worker for transcription, then separately verify:
+
+- F5_TTS_SERVICE_URL
+- F5_TTS_SERVICE_TOKEN
+- worker reachability
+- /v1/health
+- /v1/transcribe
+- actual server-to-worker connectivity
+
+Do not invent values.
+
+Do not fake or stub the worker.
+
+Do not hardcode secrets.
+
+Do not change authentication semantics just to get a successful response.
+
+If F5-TTS is genuinely required for the realtime path and the worker is unavailable, report that as a separate backend infrastructure blocker after implementing/verifying the frontend realtime connection.
+
+The official F5-TTS project is already capable of local inference and supports NVIDIA GPU environments, so do not assume that a different TTS architecture is required.
+
+VERIFICATION REQUIREMENTS:
+
+After implementation, do NOT simply report that typecheck passed.
+
+Verify the actual flow.
+
+1. Run frontend typecheck/build/tests.
+2. Run API-server typecheck/tests.
+3. Run git diff --check.
+4. Run git status --short.
+5. Inspect the final diff.
+6. Confirm ChatPanel.tsx was NOT modified.
+7. Confirm no MediaRecorder was introduced into the composer/realtime path.
+8. Confirm the existing AudioWorklet is still used.
+9. Confirm the existing /api/realtime/voice WebSocket is still used.
+10. Confirm the existing input AnalyserNode is used.
+11. Confirm VoiceWaveform is actually mounted in the composer path.
+12. Confirm no fake waveform implementation exists.
+13. Confirm no duplicate AudioContext/voice-engine instance was introduced.
+14. Confirm no fake transcript/audio/provider response was introduced.
+
+MOST IMPORTANT:
+
+Do not stop at "the code compiles."
+
+The acceptance test is behavioral:
+
+- Open the actual running PAYVORA Preview.
+- Click the existing composer microphone.
+- The old "Voice input is not available yet." popup MUST NOT appear.
+- The browser microphone permission flow must actually be reached.
+- After permission, the existing realtime voice session must start.
+- The waveform must visibly react to my actual voice in real time.
+- The microphone audio must travel through the existing AudioWorklet/PCM16/WebSocket path.
+- The realtime voice backend must receive the stream.
+- A real transcription/event must come back.
+- The transcript must appear in the existing composer.
+- No fake data is acceptable.
+
+If the realtime backend cannot connect because F5_TTS_SERVICE_URL/worker infrastructure is missing, do NOT hide that error behind the old generic popup. Surface the actual infrastructure failure clearly for debugging, while preserving the existing production UI behavior once the infrastructure is configured.
+
+Before changing anything, inspect the existing voiceEngine, VoiceWaveform, composer/App.tsx, and /api/realtime/voice implementation together so the integration uses ONE authoritative voice pipeline.
+
+Then implement the smallest possible change and verify it end-to-end.

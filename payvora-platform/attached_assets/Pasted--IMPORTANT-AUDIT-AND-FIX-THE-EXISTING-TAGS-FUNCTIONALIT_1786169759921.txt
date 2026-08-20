@@ -1,0 +1,134 @@
+**IMPORTANT — AUDIT AND FIX THE EXISTING TAGS FUNCTIONALITY**
+
+Before continuing, inspect the existing **Tags** implementation inside the current **Voice Studio** page and verify whether the tags actually work correctly.
+
+I want the Tags behavior to be comparable to the expressive tag experience found in platforms such as **ElevenLabs and Fish Audio**, but **DO NOT replace F5-TTS** and **DO NOT redesign or modify the existing Voice Studio UI**.
+
+Keep the current page, layout, styling, controls, tags, chips, text editor, and overall design exactly as they are.
+
+### What I need you to verify
+
+For every existing tag:
+
+**Click tag → tag is inserted into the text → tag remains editable → Generate → backend receives the tag correctly → model processes it correctly → generated audio reflects the intended instruction → audio is playable → generation is saved correctly in History → replay/regenerate preserves the tag.**
+
+### Do NOT assume tags work just because they appear in the UI.
+
+Inspect the actual implementation and determine:
+
+* Where tags are defined.
+* What text is inserted when a tag is clicked.
+* Whether tags are actually included in the generation request.
+* Whether preprocessing/sanitization removes them.
+* Whether the F5-TTS backend receives them unchanged.
+* Whether the current F5-TTS model can actually interpret those tags.
+* Whether unsupported tags are currently being ignored, spoken aloud, stripped, or incorrectly processed.
+* Whether multiple tags work together.
+* Whether tags work at different positions in the text.
+* Whether tags survive retry/regeneration.
+* Whether imported text containing tags works.
+* Whether copy/paste preserves them.
+* Whether undo/redo preserves them.
+* Whether tags work correctly on mobile and tablet.
+* Whether keyboard users can operate the tag controls.
+
+### IMPORTANT BACKEND REQUIREMENT
+
+Do **NOT** fake ElevenLabs-style behavior.
+
+If F5-TTS does not natively understand a particular expressive tag, do not simply tell the user that it worked.
+
+Instead:
+
+1. Identify what F5-TTS actually supports.
+2. Determine whether the existing F5-TTS implementation has an equivalent mechanism for expressive control.
+3. If an application-side translation/preprocessing layer can safely convert a tag into something F5-TTS understands, implement that properly.
+4. If there is no reliable equivalent, mark that tag as unsupported rather than pretending it works.
+5. Never silently remove a user-selected tag without informing the user.
+
+The goal is **real functionality**, not visual imitation.
+
+### EXPRESSIVE TAG BEHAVIOR
+
+Use ElevenLabs/Fish Audio only as behavioral references.
+
+For example, modern expressive TTS systems can use inline instructions such as:
+
+`[laughs]`
+`[whispers]`
+`[sighs]`
+`[angry]`
+`[sad]`
+`[excited]`
+
+ElevenLabs specifically documents audio tags for its Eleven v3 model, where tags are natural-language instructions embedded in square brackets.
+
+However, do NOT assume those exact tags are automatically supported by F5-TTS.
+
+### TAG EDITOR REQUIREMENTS
+
+Make sure the existing tag system supports:
+
+* Single tags.
+* Multiple tags.
+* Tags before dialogue.
+* Tags between sentences.
+* Tags after sentences.
+* Multiple expressive tags in one generation.
+* Editing text around tags.
+* Removing tags.
+* Copy/paste.
+* Undo/redo.
+* Imported text.
+* Retry.
+* Regeneration.
+* History persistence.
+* Mobile interaction.
+* Keyboard navigation.
+
+Tags must not accidentally become spoken words when they are intended to be control instructions.
+
+Normal text containing square brackets must also be handled safely so the system does not incorrectly interpret every bracketed phrase as an audio tag.
+
+### DO NOT CHANGE THE PAGE
+
+This is critical:
+
+**DO NOT create a new Text-to-Speech page.**
+
+**DO NOT redesign Voice Studio.**
+
+**DO NOT move the Tags section.**
+
+**DO NOT replace the existing controls.**
+
+**DO NOT change the existing visual design.**
+
+**DO NOT replace F5-TTS.**
+
+Work directly inside the existing Voice Studio implementation.
+
+### FINAL VERIFICATION
+
+After fixing the implementation, test the Tags lifecycle end-to-end:
+
+**Tag selection**
+→ **Tag insertion**
+→ **Text editing**
+→ **Generation**
+→ **F5-TTS request**
+→ **Tag interpretation**
+→ **Audio generation**
+→ **Playback**
+→ **History persistence**
+→ **Replay**
+→ **Regeneration**
+
+Then report which existing tags are:
+
+1. **Fully functional**
+2. **Partially functional**
+3. **Unsupported by the current F5-TTS implementation**
+4. **Fixed during this implementation**
+
+Do not mark a tag as functional merely because the UI accepts it. It must actually affect the generated speech in a verifiable way.

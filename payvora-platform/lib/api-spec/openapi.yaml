@@ -1,0 +1,312 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: voice
+    description: F5-TTS voice-generation operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /voice/tags:
+    get:
+      operationId: listVoiceTags
+      tags: [voice]
+      summary: List supported voice tags
+      responses:
+        "200":
+          description: Supported tag registry
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [tags]
+                properties:
+                  tags:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VoiceTag"
+  /voice/parse:
+    post:
+      operationId: parseVoiceText
+      tags: [voice]
+      summary: Parse tagged speech text
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ParseVoiceTextRequest"
+      responses:
+        "200":
+          description: Structured speech events
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParsedVoiceText"
+        "422":
+          description: Malformed or unsupported tag
+  /voices:
+    get:
+      operationId: listVoices
+      tags: [voice]
+      summary: List saved voices for the current session
+      responses:
+        "200":
+          description: Saved voices
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [voices]
+                properties:
+                  voices:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VoiceSummary"
+    post:
+      operationId: createVoice
+      tags: [voice]
+      summary: Save a normalized reference voice
+      parameters:
+        - in: header
+          name: x-voice-name
+          required: true
+          schema: { type: string, maxLength: 80 }
+        - in: header
+          name: x-reference-text
+          required: false
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          audio/*:
+            schema: { type: string, format: binary }
+      responses:
+        "201":
+          description: Saved voice
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoiceSummary"
+  /voices/{voiceId}:
+    delete:
+      operationId: deleteVoice
+      tags: [voice]
+      summary: Delete a saved voice
+      parameters:
+        - $ref: "#/components/parameters/VoiceId"
+      responses:
+        "204": { description: Deleted }
+        "404": { description: Voice not found }
+  /voices/{voiceId}/generate:
+    post:
+      operationId: generateVoice
+      tags: [voice]
+      summary: Queue F5-TTS generation
+      parameters:
+        - $ref: "#/components/parameters/VoiceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateVoiceRequest"
+      responses:
+        "202":
+          description: Queued generation job
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerationAccepted"
+  /voices/{voiceId}/preview:
+    post:
+      operationId: previewVoice
+      tags: [voice]
+      summary: Queue a voice preview
+      parameters:
+        - $ref: "#/components/parameters/VoiceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ParseVoiceTextRequest"
+      responses:
+        "202":
+          description: Queued preview job
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerationAccepted"
+  /generation/{generationId}:
+    get:
+      operationId: getGeneration
+      tags: [voice]
+      summary: Read generation status
+      parameters:
+        - $ref: "#/components/parameters/GenerationId"
+      responses:
+        "200":
+          description: Generation status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerationStatus"
+  /generation/{generationId}/audio:
+    get:
+      operationId: getGenerationAudio
+      tags: [voice]
+      summary: Download generated WAV audio
+      parameters:
+        - $ref: "#/components/parameters/GenerationId"
+      responses:
+        "200":
+          description: Generated WAV
+          content:
+            audio/wav:
+              schema: { type: string, format: binary }
+  /audio/transcribe:
+    post:
+      operationId: transcribeVoiceAudio
+      tags: [voice]
+      summary: Transcribe reference audio through the configured worker
+      requestBody:
+        required: true
+        content:
+          audio/*:
+            schema: { type: string, format: binary }
+      responses:
+        "200":
+          description: Transcription
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [text]
+                properties:
+                  text: { type: string }
+components:
+  parameters:
+    VoiceId:
+      in: path
+      name: voiceId
+      required: true
+      schema: { type: string }
+    GenerationId:
+      in: path
+      name: generationId
+      required: true
+      schema: { type: string }
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    VoiceTag:
+      type: object
+      required: [name, type, aliases, description, strategy, spoken, separateAudioEvent, postProcess]
+      properties:
+        name: { type: string }
+        type: { type: string }
+        aliases:
+          type: array
+          items: { type: string }
+        description: { type: string }
+        strategy: { type: string }
+        spoken: { type: boolean }
+        separateAudioEvent: { type: boolean }
+        postProcess: { type: boolean }
+    ParseVoiceTextRequest:
+      type: object
+      required: [text]
+      properties:
+        text: { type: string, minLength: 1, maxLength: 20000 }
+    SpeechEvent:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [speech, pause, vocal_event]
+        text: { type: string }
+        controls:
+          type: object
+          properties:
+            emotion: { type: string }
+            speed: { type: number }
+            energy: { type: number }
+            pitch: { type: number }
+        seconds: { type: number }
+        event: { type: string }
+        description: { type: string }
+    ParsedVoiceText:
+      type: object
+      required: [events, tags]
+      properties:
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpeechEvent"
+        tags:
+          type: array
+          items:
+            type: object
+            required: [raw, normalized]
+            properties:
+              raw: { type: string }
+              normalized: { type: string }
+    VoiceSummary:
+      type: object
+      required: [id, name, createdAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        referenceText: { type: string }
+        createdAt: { type: string }
+    GenerateVoiceRequest:
+      allOf:
+        - $ref: "#/components/schemas/ParseVoiceTextRequest"
+        - type: object
+          properties:
+            settings:
+              type: object
+              additionalProperties: true
+    GenerationAccepted:
+      type: object
+      required: [generationId, status, progress]
+      properties:
+        generationId: { type: string }
+        status: { type: string }
+        progress: { type: number, minimum: 0, maximum: 100 }
+    GenerationStatus:
+      type: object
+      required: [generationId, status, progress, audioAvailable]
+      properties:
+        generationId: { type: string }
+        status: { type: string }
+        progress: { type: number, minimum: 0, maximum: 100 }
+        audioAvailable: { type: boolean }
+        error: { type: string }
+

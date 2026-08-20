@@ -1,0 +1,457 @@
+I also need you to make the ENTIRE Payvora website fully responsive and correctly scaled across ALL device and screen sizes.
+
+This is a production requirement, not an optional polish task.
+
+## RESPONSIVE DESIGN REQUIREMENT
+
+Make every page, component, modal, sidebar, card, button, input, text field, dropdown, slider, table, toolbar, navigation element, studio interface, audio player, and interactive control display correctly and remain usable across:
+
+* Small mobile phones
+* Large mobile phones
+* iPhone-sized screens
+* Android phones
+* Mobile landscape
+* Small tablets
+* Large tablets
+* Tablet landscape
+* Small laptops
+* Standard laptops
+* Large desktop monitors
+* Ultra-wide monitors
+* Different browser window sizes
+* Different device pixel ratios
+* Different zoom levels
+
+Do NOT simply scale the desktop UI down.
+
+The layout must intelligently reflow and adapt to the available viewport.
+
+## IMPORTANT
+
+Do NOT redesign the Payvora visual identity.
+
+Do NOT replace the existing design.
+
+Do NOT unnecessarily change colors, typography, spacing style, components, navigation structure, or branding.
+
+Preserve the current Payvora appearance while making the implementation responsive.
+
+## MOBILE-FIRST RESPONSIVE BEHAVIOR
+
+Use a robust responsive/mobile-first layout strategy.
+
+The interface should naturally move from:
+
+Desktop:
+multi-column layouts → sidebars → larger cards → expanded controls
+
+to tablet:
+compressed columns → adaptive panels → appropriately sized controls
+
+to mobile:
+single-column layouts → stacked controls → collapsible navigation → full-width content.
+
+Do not force desktop layouts onto narrow screens.
+
+## ZERO HORIZONTAL OVERFLOW
+
+There must be NO unintended horizontal scrolling anywhere.
+
+Check every page for:
+
+* overflowing text
+* oversized cards
+* fixed-width containers
+* fixed-width buttons
+* tables exceeding viewport width
+* images exceeding containers
+* modals wider than the screen
+* toolbars overflowing
+* dropdowns extending outside viewport
+* sidebars covering content
+* TTS controls extending off-screen
+* History cards overflowing
+* Image Studio controls overflowing
+* Video Studio controls overflowing
+
+Use flexible sizing such as appropriate combinations of:
+
+* width: 100%
+* max-width
+* min-width: 0
+* flex-wrap
+* CSS Grid
+* Flexbox
+* responsive gaps
+* relative units
+* clamp()
+* responsive breakpoints
+
+Avoid unnecessary hard-coded pixel widths.
+
+## VIEWPORT
+
+Make sure the application has the correct viewport configuration:
+
+`<meta name="viewport" content="width=device-width, initial-scale=1">`
+
+Do NOT disable user zoom.
+
+Users must still be able to zoom the interface when needed.
+
+## TYPOGRAPHY
+
+Make all text readable at every viewport.
+
+Prevent:
+
+* text clipping
+* text overlapping
+* text disappearing
+* buttons with clipped labels
+* headings extending outside containers
+* extremely tiny text
+* awkward line wrapping
+* unreadable long lines on large screens
+
+Use responsive typography where appropriate.
+
+Use `clamp()` where it improves scaling.
+
+Do not arbitrarily make text smaller just to force it to fit.
+
+## BUTTONS
+
+Every button must remain:
+
+* visible
+* readable
+* tappable
+* properly spaced
+* accessible
+
+On mobile, buttons should have comfortable touch targets.
+
+Do not allow buttons to become tiny.
+
+If a desktop toolbar contains many buttons, intelligently:
+
+* wrap them
+* stack them
+* collapse them
+* move secondary actions into a menu
+
+rather than allowing them to overflow.
+
+## SIDEBAR
+
+Desktop sidebar:
+
+* maintain the existing Payvora sidebar design.
+
+Tablet:
+
+* intelligently reduce available width or collapse when appropriate.
+
+Mobile:
+
+* convert the sidebar into an appropriate mobile navigation pattern such as a drawer/overlay.
+
+The sidebar must never cover or permanently push important content off-screen.
+
+The existing sidebar collapse behavior must continue working.
+
+## HEADER
+
+Make the header responsive.
+
+On narrow screens:
+
+* prevent controls from colliding
+* prevent avatar/profile controls from overflowing
+* keep important navigation accessible
+* collapse secondary controls when necessary
+
+Do not simply hide important functionality without providing an accessible alternative.
+
+## AI CHAT
+
+Make the entire Chat interface responsive.
+
+Desktop:
+
+* sidebar
+* header
+* chat content
+* composer
+
+should maintain the current layout.
+
+Mobile:
+
+* chat should use the full available width
+* message bubbles must wrap correctly
+* composer must remain usable
+* attachment controls must remain accessible
+* model selector must fit
+* send button must remain accessible
+* keyboard must not hide the composer unnecessarily
+* no horizontal overflow
+
+The message composer should adapt when the virtual keyboard appears.
+
+## VOICE STUDIO
+
+Make ALL Voice Studio pages responsive:
+
+* Text to Speech
+* Voice Clone
+* My Voices
+* History
+
+### Text to Speech
+
+On desktop retain the existing multi-panel design.
+
+On smaller screens intelligently stack:
+
+* text editor
+* voice selection
+* voice settings
+* generation controls
+* recent generations
+
+Do not allow the settings panel to become too narrow to use.
+
+Sliders must remain usable by touch.
+
+Dropdowns must fit inside the viewport.
+
+Generate Speech must remain prominent and accessible.
+
+### Voice Clone
+
+Make:
+
+* upload area
+* voice cards
+* filters
+* training jobs
+* right-side details panel
+* creation workflow
+
+adapt to narrow screens.
+
+The right-side details panel should become a stacked section or modal/drawer on smaller screens instead of overflowing.
+
+### My Voices
+
+Voice cards should automatically change from multi-column layouts to fewer columns and eventually one column depending on available width.
+
+Search and category filters must remain usable.
+
+### History
+
+History cards, action buttons, search, filters, date controls, and details panels must all adapt.
+
+Do not allow action icons to disappear off-screen.
+
+## IMAGE STUDIO
+
+Make the complete Image Studio responsive.
+
+Desktop can retain the existing multi-column workspace.
+
+Tablet/mobile should intelligently stack:
+
+* prompt/editor
+* generation controls
+* model settings
+* aspect ratio
+* quality
+* advanced settings
+* gallery
+* history
+
+Images must never overflow their containers.
+
+Preview modals must fit within the viewport.
+
+## VIDEO STUDIO
+
+Make the entire Video Studio responsive.
+
+Ensure:
+
+* templates
+* script editor
+* media upload
+* scenes
+* voiceover
+* B-roll
+* aspect ratio
+* quality
+* generation settings
+* preview
+* recent videos
+
+all adapt correctly.
+
+On mobile, panels should stack rather than becoming unusably narrow.
+
+## MODALS AND DROPDOWNS
+
+Every modal must:
+
+* fit within the viewport
+* have appropriate max-width/max-height
+* scroll internally when content is too large
+* remain centered
+* never extend beyond the screen
+* remain usable on mobile
+
+Every dropdown/menu must stay within the visible viewport.
+
+Do not allow menus to open partially off-screen.
+
+## IMAGES AND VIDEO
+
+All media must be responsive.
+
+Images and videos must not exceed their containers.
+
+Use appropriate responsive sizing rather than fixed dimensions.
+
+Preserve aspect ratios.
+
+Do not distort media.
+
+## FORMS AND INPUTS
+
+Inputs must:
+
+* fit their containers
+* resize appropriately
+* remain readable
+* remain usable with touch
+* not cause horizontal overflow
+
+Use appropriate mobile input behavior.
+
+Do not make inputs so small that users cannot comfortably interact with them.
+
+## SAFE AREAS
+
+Account for modern mobile devices with:
+
+* rounded corners
+* notches
+* dynamic browser bars
+* bottom navigation/browser UI
+* portrait/landscape orientation
+
+Use safe-area handling where appropriate.
+
+## ORIENTATION
+
+Test both:
+
+* portrait
+* landscape
+
+especially on phones and tablets.
+
+Do not assume portrait orientation only.
+
+## ACCESSIBILITY
+
+Responsive behavior must not break accessibility.
+
+Every interactive element must remain accessible through:
+
+* touch
+* mouse
+* keyboard
+* screen readers where applicable
+
+Maintain visible focus states.
+
+Do not hide controls in a way that makes them inaccessible.
+
+## LARGE SCREENS
+
+Do not allow content to become excessively stretched across ultra-wide displays.
+
+Use sensible max-width containers where appropriate.
+
+Maintain readable line lengths.
+
+The interface should look intentional on both a 13-inch laptop and a large desktop monitor.
+
+## DO NOT USE DEVICE-SPECIFIC HACKS
+
+Do not build separate hard-coded layouts for only:
+
+* iPhone
+* Samsung
+* iPad
+* one particular laptop
+
+Build a genuinely responsive system that adapts to viewport size.
+
+Use breakpoints based on where the layout needs to change, rather than targeting individual device models.
+
+## TESTING REQUIREMENT
+
+After implementing responsive behavior, test every major page at multiple viewport sizes.
+
+At minimum test approximately:
+
+* 320px
+* 360px
+* 375px
+* 390px
+* 414px
+* 480px
+* 768px
+* 820px
+* 1024px
+* 1280px
+* 1440px
+* 1920px
+* 2560px+
+
+Also test portrait and landscape where appropriate.
+
+Do not consider the task complete simply because the page technically renders.
+
+At each size verify:
+
+1. No horizontal overflow
+2. No clipped text
+3. No overlapping elements
+4. No inaccessible controls
+5. No broken buttons
+6. No broken dropdowns
+7. No broken modals
+8. No broken forms
+9. No cards extending outside containers
+10. No navigation covering content
+11. No unreadable text
+12. No unusably small touch targets
+13. No layout jumps that make controls difficult to use
+
+## FINAL RESPONSIVE QA
+
+Before declaring the application complete, perform a full responsive audit of EVERY page.
+
+Report:
+
+| Page | Mobile | Tablet | Laptop | Desktop | Ultra-wide | Horizontal overflow | Text clipping | Control accessibility | Status |
+| ---- | ------ | ------ | ------ | ------- | ---------- | ------------------- | ------------- | --------------------- | ------ |
+
+Do not mark a page PASS until it has been visually and functionally checked across the required viewport categories.
+
+The final result should feel like the SAME polished Payvora application on every device — not a desktop website that has merely been shrunk down.
+
+Preserve all existing working functionality while making the entire application responsive.

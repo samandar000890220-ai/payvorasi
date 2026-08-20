@@ -1,0 +1,52 @@
+I now have F5-TTS running locally on my Windows PC with:
+
+http://127.0.0.1:7860
+
+However, do NOT assume the official F5-TTS Gradio server directly implements Payvora's expected REST endpoints.
+
+My goal is to keep the existing Payvora F5-TTS architecture and connect it to this actual F5-TTS installation.
+
+Please do the following:
+
+1. Inspect the existing Payvora F5-TTS client and determine the exact request/response contract currently expected for:
+
+   * POST /v1/speech
+   * POST /v1/vocal-event
+   * POST /v1/transcribe
+
+2. Inspect the official F5-TTS Gradio API actually exposed by my local installation.
+
+3. If the official Gradio API does not match Payvora's existing /v1/* contract, DO NOT rewrite the Payvora frontend and DO NOT replace F5-TTS.
+
+4. Instead, create or use a thin server-side adapter around the existing F5-TTS installation that translates Payvora's existing requests into the appropriate F5-TTS inference calls and translates the responses back into the contract Payvora already expects.
+
+5. Preserve all existing Payvora controls and behavior, including:
+
+   * voice cloning/reference audio
+   * text generation
+   * speed
+   * pitch
+   * energy
+   * emotion
+   * tags
+   * pauses
+   * cancellation
+   * WAV/MP3 output
+   * sample-rate conversion
+   * transcription
+
+6. Do not fake any response. Every successful generation must come from the actual F5-TTS model running on my machine/GPU.
+
+7. Do not redesign Voice Studio. Keep the existing Voice Studio page, layout, components, cards, controls, and styling exactly as they are.
+
+8. For now, do NOT ask me to replace F5-TTS with ElevenLabs or another provider.
+
+9. Do not hard-code 127.0.0.1 into production configuration. The final service URL must come from the F5_TTS_SERVICE_URL environment secret.
+
+10. Add a clear health/connectivity check so Payvora can determine whether the F5-TTS worker is reachable before attempting generation.
+
+11. If the local F5-TTS worker needs to be exposed externally for Replit to reach it, explain exactly what secure tunnel/deployment configuration is required. Do not expose an unauthenticated inference endpoint publicly.
+
+12. Do not modify unrelated application functionality while doing this.
+
+First verify the API contract and tell me exactly what needs to connect to what before making architectural changes.

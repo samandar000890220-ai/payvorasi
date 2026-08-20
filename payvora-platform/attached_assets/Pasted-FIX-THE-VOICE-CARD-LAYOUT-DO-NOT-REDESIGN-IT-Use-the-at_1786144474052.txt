@@ -1,0 +1,169 @@
+FIX THE VOICE CARD LAYOUT — DO NOT REDESIGN IT
+
+Use the attached reference screenshots as the exact visual/layout reference.
+
+The "Choose a voice" section currently has the voice cards stacking or wrapping incorrectly. Fix the layout so the five voice cards sit properly in a clean, consistent horizontal arrangement exactly like the reference.
+
+VOICE CARDS:
+
+1. Aria
+   Female
+   Warm, energetic, and engaging
+
+2. Ethan
+   Male
+   Calm, deep, and professional
+
+3. Nova
+   Female
+   Clear, bright, and friendly
+
+4. Liam
+   Male
+   Strong, confident, and authoritative
+
+5. Sage
+   Neutral
+   Soft, soothing, and gentle
+
+
+LAYOUT REQUIREMENTS
+
+- Keep all 5 voice cards in ONE horizontal row on desktop.
+- Do NOT stack the cards vertically on normal desktop/laptop widths.
+- Do NOT allow one card to drop underneath another.
+- Do NOT allow the cards to overlap.
+- Do NOT create uneven card widths.
+- All five cards must have equal widths.
+- All five cards must have equal heights.
+- Maintain consistent spacing/gaps between every card.
+- Align the top and bottom edges of all cards perfectly.
+- Keep the cards inside the "Choose a voice" container.
+- The cards must not overflow outside their parent container.
+
+The intended desktop structure should visually be:
+
+┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
+│   Aria   │  │  Ethan   │  │   Nova   │  │   Liam   │  │   Sage   │
+│ Female   │  │  Male    │  │ Female   │  │ Male     │  │ Neutral  │
+│          │  │          │  │          │  │          │  │          │
+│ text     │  │ text     │  │ text     │  │ text     │  │ text     │
+│          │  │          │  │          │  │          │  │          │
+│       ▶  │  │       ▶  │  │       ▶  │  │       ▶  │  │       ▶  │
+└──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
+
+MATCH THE REFERENCE
+
+The attached reference screenshot shows the correct intended composition.
+
+Match it closely:
+- Five cards side-by-side.
+- Equal card widths.
+- Equal card heights.
+- Consistent horizontal gap.
+- Consistent internal padding.
+- Voice avatar aligned consistently.
+- Voice name aligned consistently.
+- Gender badge aligned consistently.
+- Description text aligned consistently.
+- Favorite/star control positioned consistently.
+- Play button positioned consistently near the bottom-right of each card.
+- Selected Ethan card retains its purple active border/background treatment.
+- Non-selected cards retain the normal neutral border.
+- Do not change the existing voice-card visual design unless necessary to correct the layout.
+
+IMPORTANT:
+The problem is primarily the LAYOUT/FLOW of the cards, not the design of the cards.
+
+CSS / LAYOUT BEHAVIOR
+
+Use a proper responsive grid or flex layout.
+
+For desktop:
+- display: grid
+- grid-template-columns: repeat(5, minmax(0, 1fr))
+- consistent gap
+- width: 100%
+- min-width: 0
+- align-items: stretch
+
+OR use an equivalent flex implementation that guarantees five equal-width cards remain in one row.
+
+Do NOT use arbitrary fixed widths that cause overflow.
+
+Do NOT allow individual cards to determine the width of the row.
+
+Do NOT use absolute positioning for the cards.
+
+Do NOT use negative margins to force the cards into place.
+
+RESPONSIVE BEHAVIOR
+
+Desktop:
+- 5 cards in one row.
+
+Medium/tablet:
+- Responsively reduce the number of columns only when the available width genuinely cannot accommodate five readable cards.
+
+Small/mobile:
+- Allow the cards to become a responsive grid or horizontal scroll region rather than crushing the cards until their text becomes unreadable.
+
+Most importantly:
+At the desktop viewport shown in the reference screenshot, the result MUST be five cards side-by-side.
+
+CONTAINER WIDTH
+
+Make sure the "Choose a voice" section has enough usable content width for all five cards.
+
+Account for:
+- Section padding
+- Search field
+- Tabs
+- Card gaps
+- Card widths
+- Any surrounding layout columns
+
+Do not let the right-side Voice Settings panel accidentally constrain the voice-card section incorrectly.
+
+The voice selection area and Voice Settings panel should retain the same overall two-column composition shown in the reference.
+
+VISUAL ALIGNMENT
+
+Ensure:
+
+Aria        Ethan        Nova        Liam        Sage
+│           │            │           │           │
+same width  same width   same width  same width  same width
+same height same height  same height same height same height
+same gap    same gap     same gap    same gap
+
+Descriptions should wrap naturally inside their own cards without changing the height of individual cards.
+
+Use a consistent card height or stretch behavior so one longer description does not make the row visually uneven.
+
+Do not truncate important text.
+
+Do not make the font smaller simply to force the cards to fit.
+
+FINAL VERIFICATION
+
+After fixing the implementation:
+
+1. Open the Voice Studio page.
+2. Navigate to "Choose a voice".
+3. Verify all five cards are visible simultaneously on desktop.
+4. Verify they form a single horizontal row.
+5. Verify no card is stacked underneath another.
+6. Verify no card overlaps another.
+7. Verify all cards have equal width.
+8. Verify all cards have equal height.
+9. Verify the spacing matches the reference.
+10. Verify Ethan remains selected.
+11. Verify all avatar/name/gender/description/play controls remain correctly aligned.
+12. Verify the layout remains responsive on smaller screens.
+13. Verify there are no console errors.
+14. Do not redesign the Voice Studio page.
+15. Do not change unrelated components.
+
+IMPORTANT:
+Use the attached screenshots as the visual reference. The goal is to FIX THE EXISTING VOICE CARD LAYOUT so it visually matches the clean five-card horizontal arrangement in the reference — not to create a new design.

@@ -1,0 +1,1827 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-sidebar: #13161C;
+  --color-surface-primary: #21232B;
+  --color-surface-secondary: #23252E;
+  --color-page: #FBFAFC;
+  --color-card: #FFFFFF;
+  --color-hover: rgba(10, 132, 255, 0.08);
+  --color-brand: #0A84FF;
+}
+
+/* ── Theme variables (light default, dark override, accent set by ThemeProvider) ── */
+:root {
+  --pv-sidebar: #FFFFFF;
+  --pv-page: #F8F9FB;
+  --pv-card: #FFFFFF;
+  --pv-card-raised: #FFFFFF;
+  --pv-hover: rgba(0, 0, 0, 0.05);
+  --pv-brand: #3C8CFF; /* Payvora primary */
+  --pv-blue: #3C8CFF;
+  --pv-blue-soft: rgba(60, 140, 255, 0.10);
+  --pv-accent: #7C3AED;
+  --pv-accent-soft: rgba(124, 58, 237, 0.10);
+  --pv-blue-strong: #1E63D0; /* primary button fill: ≥4.5:1 with white text */
+  --pv-ok: #15803d;
+  --pv-ok-soft: rgba(22, 163, 74, 0.12);
+  --pv-tint-teal: #0d9488;
+  --pv-tint-red: #dc2626;
+  --pv-tint-amber: #d97706;
+  --pv-border: rgba(0, 0, 0, 0.08);
+  --pv-border-strong: rgba(0, 0, 0, 0.12);
+  --pv-text: #0d0d0d;
+  --pv-text-secondary: rgba(0, 0, 0, 0.65);
+  --pv-text-muted: rgba(0, 0, 0, 0.45);
+  --pv-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  --pv-pill-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  --pv-input-bg: #ffffff;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --pv-sidebar: #1A1A1A;
+  --pv-page: #1A1A1A;
+  --pv-card: #252525;
+  --pv-card-raised: #2e2e2e;
+  --pv-hover: rgba(255, 255, 255, 0.1);
+  --pv-brand: #5CA0FF;
+  --pv-blue: #5CA0FF;
+  --pv-blue-soft: rgba(92, 160, 255, 0.16);
+  --pv-accent: #9D6BFF;
+  --pv-accent-soft: rgba(157, 107, 255, 0.18);
+  --pv-blue-strong: #2E6FD6;
+  --pv-ok: #4ade80;
+  --pv-ok-soft: rgba(74, 222, 128, 0.16);
+  --pv-tint-teal: #2dd4bf;
+  --pv-tint-red: #f87171;
+  --pv-tint-amber: #fbbf24;
+  --pv-border: rgba(255, 255, 255, 0.1);
+  --pv-border-strong: rgba(255, 255, 255, 0.16);
+  --pv-text: #f4f4f5;
+  --pv-text-secondary: rgba(255, 255, 255, 0.72);
+  --pv-text-muted: rgba(255, 255, 255, 0.5);
+  --pv-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --pv-pill-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  --pv-input-bg: #141414;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ── Hide scrollbars globally — scrolling remains fully functional ────────
+   All scroll methods (wheel, trackpad, touch, keyboard, programmatic) work.
+   Only the visual scrollbar track/thumb is hidden.
+   Firefox  → scrollbar-width: none
+   Chromium/Edge/Safari → ::-webkit-scrollbar { display: none }
+   IE/Edge legacy → -ms-overflow-style: none                                  */
+
+* {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE 10+ / Edge legacy */
+}
+
+*::-webkit-scrollbar {
+  display: none;                /* Chromium, Edge, Safari */
+}
+
+/* ── PAYVORA custom scrollbar ──────────────────────────────────────────── */
+/* Native scrollbars are visually hidden above; this fixed, six-pixel control
+   mirrors the active native page/pane scroll position without changing how
+   wheel, trackpad, touch, or keyboard scrolling behaves. */
+.payvora-scrollbar {
+  position: fixed;
+  top: 0;
+  right: max(0px, env(safe-area-inset-right));
+  z-index: 60;
+  width: 8px;
+  height: 100vh;
+  height: 100dvh;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 180ms ease, visibility 0s linear 180ms;
+}
+
+.payvora-scrollbar--visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.payvora-scrollbar-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pv-text) 6%, transparent);
+}
+
+.payvora-scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  left: 2px;
+  width: 4px;
+  min-height: 32px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pv-text) 28%, transparent);
+  cursor: grab;
+  touch-action: none;
+  transition: width 160ms ease, left 160ms ease, background-color 160ms ease;
+}
+
+.payvora-scrollbar:hover .payvora-scrollbar-thumb,
+.payvora-scrollbar-thumb--dragging {
+  left: 1px;
+  width: 6px;
+  background: color-mix(in srgb, var(--pv-text) 46%, transparent);
+}
+
+.payvora-scrollbar-thumb--dragging {
+  cursor: grabbing;
+}
+
+.payvora-scrollbar:focus-visible {
+  outline: 2px solid var(--pv-blue);
+  outline-offset: -1px;
+}
+
+.payvora-scrollbar-dragging,
+.payvora-scrollbar-dragging * {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
+
+@media (pointer: coarse) {
+  .payvora-scrollbar {
+    width: 10px;
+  }
+
+  .payvora-scrollbar-thumb {
+    left: 2px;
+    width: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .payvora-scrollbar,
+  .payvora-scrollbar-thumb {
+    transition: none;
+  }
+}
+
+html {
+  overflow-x: hidden;
+  /* scroll-behavior applied only when motion is acceptable */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: var(--pv-page);
+  color: var(--pv-text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+button,
+[role='button'] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled),
+[role='button'] {
+  touch-action: manipulation;
+}
+
+button:not(:disabled):hover,
+[role='button']:hover {
+  filter: brightness(0.985);
+}
+
+button:not(:disabled):active,
+[role='button']:active {
+  transform: scale(0.98);
+}
+
+button:focus-visible,
+input:focus-visible,
+[role='button']:focus-visible {
+  outline: 2px solid var(--pv-blue);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.payvora-menu-item:hover,
+.payvora-menu-item:focus-visible {
+  background: var(--pv-hover) !important;
+  filter: none;
+}
+
+.payvora-side-item {
+  position: relative;
+}
+
+.payvora-side-item:hover:not(:disabled),
+.payvora-side-item:focus-visible:not(:disabled) {
+  background: var(--pv-hover) !important;
+}
+
+.payvora-side-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.payvora-sidebar-tooltip {
+  /* Default: absolute for any non-nav usage */
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  z-index: 30;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translate(0, -50%);
+  padding: 7px 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  background: #21232B;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.22);
+  font-size: 12px;
+  font-weight: 500;
+  animation: payvora-tooltip-in 140ms ease both;
+}
+
+/* Fixed variant used by SideItem inside scrollable nav — escapes overflow clip */
+.payvora-sidebar-tooltip--fixed {
+  position: fixed;
+  left: 72px;
+  top: 0; /* overridden by inline style */
+  z-index: 200;
+  transform: translateY(-50%);
+}
+
+.payvora-collapsed-utility {
+  position: relative;
+  overflow: visible;
+}
+
+.payvora-collapsed-utility::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  z-index: 40;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translate(-4px, -50%);
+  opacity: 0;
+  padding: 7px 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  background: #21232B;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.22);
+  font-size: 12px;
+  font-weight: 500;
+  transition: opacity 140ms ease 180ms, transform 140ms ease 180ms;
+}
+
+.payvora-collapsed-utility:hover::after,
+.payvora-collapsed-utility:focus-visible::after {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* Tooltip is now conditionally rendered; no separate :hover rule needed */
+
+@keyframes payvora-tooltip-in {
+  from { opacity: 0; transform: translate(-4px, -50%); }
+  to   { opacity: 1; transform: translate(0,   -50%); }
+}
+
+/* Fixed variant entrance overrides translateY only */
+.payvora-sidebar-tooltip--fixed {
+  animation: payvora-tooltip-in-fixed 140ms ease both;
+}
+@keyframes payvora-tooltip-in-fixed {
+  from { opacity: 0; transform: translate(-4px, -50%); }
+  to   { opacity: 1; transform: translateY(-50%); }
+}
+
+@keyframes payvora-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 760px) {
+  /* ChatPanel's internal conversation list: hidden on phones — the app
+     sidebar "Recents" list covers conversation switching there. */
+  .chat-conv-aside {
+    display: none !important;
+  }
+
+  .payvora-main-scroll {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .payvora-studio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .voice-studio-page .voice-studio-layout {
+    flex-wrap: wrap !important;
+  }
+
+  .voice-studio-page .voice-settings-column {
+    width: 100% !important;
+  }
+}
+
+/* ── Voice card grid — container queries (respond to actual column width) ── */
+/* The voice-selection-column div already carries container-type:inline-size
+   and container-name:voice-column via its inline style in TextToSpeech.tsx. */
+
+@container voice-column (max-width: 540px) {
+  .voice-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@container voice-column (min-width: 541px) and (max-width: 760px) {
+  .voice-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@container voice-column (min-width: 761px) and (max-width: 960px) {
+  .voice-card-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ≥ 961px: all five cards in a row (default inline style) */
+
+/* Spinner used by play buttons and async controls */
+@keyframes payvora-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── App shell — full-viewport height with mobile browser bar support ──────
+   100dvh (dynamic viewport height) shrinks when the browser's address bar is
+   visible on iOS/Android, preventing the classic "content cut off" problem.
+   100vh is the fallback for browsers that don't support dvh yet.             */
+.payvora-app {
+  height: 100vh;       /* fallback */
+  height: 100dvh;      /* iOS Safari 15.4+, Chrome 108+, Firefox 116+ */
+}
+
+/* ── Main content scroll container ──────────────────────────────────────── */
+/* scroll-padding-top accounts for the 56px sticky top bar so keyboard-focused
+   elements and in-page anchors are never obscured by the header.             */
+.payvora-main-scroll {
+  scroll-padding-top: 56px;
+  /* Smooth inertia scrolling on iOS/Android */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Focusable sections reveal themselves above the sticky header */
+.payvora-main-scroll :focus-visible {
+  scroll-margin-top: 72px;
+}
+
+/* ── Voice Studio app shell ──────────────────────────────────────────────── */
+.vs-app {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tabs bar: allow horizontal scroll on small screens; hide scrollbar (decorative) */
+.vs-tabs-bar {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.vs-tabs-bar::-webkit-scrollbar { display: none; }
+
+/* studio-tabs already hides its own scrollbar in its rule block */
+
+/* ── Two-column layout shared across Voice Studio pages ─────────────────── */
+.vs-two-col {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* ── Right-hand side panels (VoiceClone 300px, MyVoices 240px) ──────────── */
+.vs-layout-side,
+.hist-details-panel {
+  flex-shrink: 0;
+}
+
+/* Header action buttons row */
+.vs-page-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ── VoiceClone voice grid (default 4 col) ──────────────────────────────── */
+.vc-voice-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* ── MyVoices voice grid (default 4 col) ────────────────────────────────── */
+.mv-voice-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Category bar: allow horizontal scroll instead of wrapping */
+.mv-category-bar {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.mv-category-bar::-webkit-scrollbar { display: none; }
+
+/* ── History stats grid (default 5 col) ─────────────────────────────────── */
+.hist-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* ── Responsive — collapse at ≤ 1024px ──────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hist-stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ── Responsive — collapse at ≤ 900px ───────────────────────────────────── */
+@media (max-width: 900px) {
+  /* Stack two-col layouts */
+  .vs-two-col {
+    flex-direction: column;
+  }
+
+  /* Side panels become full-width */
+  .vs-layout-side,
+  .hist-details-panel {
+    width: 100% !important;
+  }
+
+  /* Drop voice grids to 3 columns */
+  .vc-voice-grid,
+  .mv-voice-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Voice Studio two-col layout (TextToSpeech) */
+  .voice-studio-page .voice-studio-layout {
+    flex-wrap: wrap !important;
+  }
+  .voice-studio-page .voice-settings-column {
+    width: 100% !important;
+  }
+}
+
+/* ── Responsive — collapse at ≤ 640px ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .vc-voice-grid,
+  .mv-voice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hist-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hist-search-row {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Used by the chat view: pin the scroll container. */
+.studio-main-scroll {
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+/* Image generation state — the card is intentionally scoped to chat so the
+   approved shell, composer, and other pages remain unchanged. */
+.pv-image-generation-card {
+  width: min(100%, 584px);
+  min-height: 360px;
+  aspect-ratio: 1.42;
+  overflow: hidden;
+  position: relative;
+  border-radius: 28px;
+  padding: 30px 28px;
+  background: #2b2b2b;
+  color: #e7e7e9;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .12);
+  animation: pv-image-card-in 280ms ease-out both;
+}
+
+.pv-image-generation-status {
+  min-height: 24px;
+  color: #dedee1;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  animation: pv-image-status-in 220ms ease-out both;
+}
+
+.pv-image-dot-field {
+  width: 72%;
+  height: 72%;
+  display: grid;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  grid-auto-rows: minmax(8px, 1fr);
+  align-content: start;
+  margin-top: 16px;
+  opacity: .9;
+}
+
+.pv-image-dot {
+  width: 4px;
+  height: 4px;
+  align-self: center;
+  justify-self: center;
+  border-radius: 50%;
+  background: rgba(224, 224, 229, .84);
+  opacity: var(--pv-dot-opacity, .35);
+  animation: pv-image-dot-drift 4.8s ease-in-out infinite;
+  animation-delay: var(--pv-dot-delay, 0ms);
+  will-change: transform, opacity;
+}
+
+.pv-image-generation-card--completed {
+  padding: 0;
+  background: #2b2b2b;
+}
+
+.pv-generated-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  animation: pv-image-result-in 360ms ease-out both;
+}
+
+.pv-generated-image-message {
+  width: min(100%, 584px);
+}
+
+@keyframes pv-image-card-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pv-image-status-in {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pv-image-dot-drift {
+  0%, 100% { opacity: calc(var(--pv-dot-opacity, .35) * .62); transform: translate3d(0, 0, 0) scale(.78); }
+  50% { opacity: 1; transform: translate3d(var(--pv-dot-shift-x, 0), var(--pv-dot-shift-y, 0), 0) scale(1.08); }
+}
+
+@keyframes pv-image-result-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .pv-image-generation-card {
+    min-height: 270px;
+    border-radius: 22px;
+    padding: 22px;
+  }
+
+  .pv-image-generation-status {
+    font-size: 16px;
+  }
+
+  .pv-generated-image {
+    min-height: 270px;
+  }
+}
+
+/* Uploaded voice-library page integration. The imported source remains
+   untouched; these are host-level styles for its one custom animation. */
+.imported-voice-page {
+  min-height: 100%;
+  background: var(--pv-page);
+  color: var(--pv-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* The uploaded page owns an inline light background. Override that host
+   surface without editing the immutable imported source, so it follows the
+   exact same page token as New Chat in both themes. */
+.imported-voice-page > .min-h-screen {
+  background: var(--pv-page) !important;
+}
+
+/* Voice Library visual alignment. The uploaded source is immutable; these
+   scoped host rules preserve its layout and behavior while reusing the Chat
+   shell's surfaces, hierarchy, borders, accent, and interaction states. */
+.imported-voice-page .text-gray-900 {
+  color: var(--pv-text) !important;
+}
+
+.imported-voice-page .text-gray-800 {
+  color: var(--pv-text-secondary) !important;
+}
+
+.imported-voice-page .text-gray-700,
+.imported-voice-page .text-gray-600 {
+  color: var(--pv-text-secondary) !important;
+}
+
+.imported-voice-page .text-gray-500,
+.imported-voice-page .text-gray-400 {
+  color: var(--pv-text-muted) !important;
+}
+
+.imported-voice-page [class~='bg-white'] {
+  background: var(--pv-card) !important;
+}
+
+.imported-voice-page [class~='bg-gray-100'] {
+  background: var(--pv-hover) !important;
+}
+
+.imported-voice-page [class~='bg-gray-200'] {
+  background: color-mix(in srgb, var(--pv-text) 10%, var(--pv-page)) !important;
+}
+
+.imported-voice-page [class~='border-gray-100'],
+.imported-voice-page [class~='border-gray-200'] {
+  border-color: var(--pv-border) !important;
+}
+
+/* Header: retain the imported hierarchy while using Chat surfaces and action
+   tokens for the title mark, credits card, and Create Voice CTA. */
+.imported-voice-page .max-w-6xl > .flex.items-start.justify-between.mb-8 > .flex.items-start.gap-4 > div:first-child {
+  background: var(--pv-blue-soft) !important;
+  border-color: var(--pv-border) !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-start.justify-between.mb-8 > .flex.items-stretch.gap-3 > div.rounded-2xl.px-5.py-3 {
+  background: var(--pv-card-raised) !important;
+  border-color: var(--pv-border) !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-start.justify-between.mb-8 > .flex.items-stretch.gap-3 > div.rounded-2xl.px-5.py-3 > div > div {
+  background: var(--pv-blue-soft) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-start.justify-between.mb-8 > .flex.items-stretch.gap-3 > div.rounded-2xl.px-5.py-3 button {
+  border-color: var(--pv-border) !important;
+  color: var(--pv-blue) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-start.justify-between.mb-8 > .flex.items-stretch.gap-3 > button {
+  background: var(--pv-blue-strong) !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-start.justify-between.mb-8 > .flex.items-stretch.gap-3 > button:hover,
+.imported-voice-page .max-w-6xl > .flex.items-start.justify-between.mb-8 > .flex.items-stretch.gap-3 > button:focus-visible {
+  box-shadow: var(--pv-shadow) !important;
+  filter: brightness(1.06);
+}
+
+/* Tabs, search, and filters share the Chat input and pill language. */
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-0.border-b {
+  border-color: var(--pv-border) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-0.border-b button[style*='54, 126, 227'] {
+  color: var(--pv-blue) !important;
+  border-color: var(--pv-blue) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-3.mb-4 input {
+  background: var(--pv-input-bg) !important;
+  border-color: var(--pv-border) !important;
+  color: var(--pv-text) !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-3.mb-4 input::placeholder {
+  color: var(--pv-text-muted) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-3.mb-4 input:focus {
+  border-color: var(--pv-blue) !important;
+  box-shadow: 0 0 0 3px var(--pv-blue-soft) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-3.mb-4 > button,
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-2.mb-6.overflow-x-auto > button {
+  background: var(--pv-card) !important;
+  border-color: var(--pv-border) !important;
+  color: var(--pv-text-secondary) !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-3.mb-4 > button:hover,
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-3.mb-4 > button:focus-visible,
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-2.mb-6.overflow-x-auto > button:hover,
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-2.mb-6.overflow-x-auto > button:focus-visible {
+  border-color: var(--pv-blue) !important;
+  color: var(--pv-blue) !important;
+  filter: none;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-2.mb-6.overflow-x-auto > div {
+  background: var(--pv-border) !important;
+}
+
+.imported-voice-page .max-w-6xl > .flex.items-center.gap-2.mb-6.overflow-x-auto > button[style*='box-shadow'] {
+  background: var(--pv-blue-strong) !important;
+  border-color: var(--pv-blue-strong) !important;
+  color: #fff !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+/* Promotion panel: retain the imported layout while making its surface part
+   of the same restrained card family as the Chat workspace. */
+.imported-voice-page .max-w-6xl > .rounded-2xl.p-6.mb-8.flex.items-center.gap-6 {
+  background: color-mix(in srgb, var(--pv-card) 92%, var(--pv-blue) 8%) !important;
+  border-color: var(--pv-border) !important;
+  box-shadow: var(--pv-shadow) !important;
+}
+
+.imported-voice-page .max-w-6xl > .rounded-2xl.p-6.mb-8.flex.items-center.gap-6 > .w-28.h-24 {
+  background: var(--pv-blue-soft) !important;
+  border-color: var(--pv-border) !important;
+}
+
+.imported-voice-page .max-w-6xl > .rounded-2xl.p-6.mb-8.flex.items-center.gap-6 .wave-bar {
+  background: var(--pv-blue) !important;
+}
+
+.imported-voice-page .max-w-6xl > .rounded-2xl.p-6.mb-8.flex.items-center.gap-6 button {
+  background: var(--pv-blue-strong) !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+.imported-voice-page .max-w-6xl > .rounded-2xl.p-6.mb-8.flex.items-center.gap-6 button:hover,
+.imported-voice-page .max-w-6xl > .rounded-2xl.p-6.mb-8.flex.items-center.gap-6 button:focus-visible {
+  box-shadow: var(--pv-shadow) !important;
+  filter: brightness(1.06);
+}
+
+/* Voice cards: content and grid stay unchanged; surface contrast, hierarchy,
+   borders, hover elevation, and primary actions now match the Chat UI. */
+.imported-voice-page .max-w-6xl .grid.grid-cols-3.gap-4 > div {
+  background: var(--pv-card) !important;
+  border-color: var(--pv-border) !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+.imported-voice-page .max-w-6xl .grid.grid-cols-3.gap-4 > div:hover {
+  border-color: color-mix(in srgb, var(--pv-blue) 42%, var(--pv-border)) !important;
+  box-shadow: var(--pv-shadow) !important;
+  transform: translateY(-1px);
+}
+
+.imported-voice-page .max-w-6xl .grid.grid-cols-3.gap-4 > div [class~='w-7'][class~='h-7'] {
+  background: var(--pv-blue-strong) !important;
+  box-shadow: var(--pv-pill-shadow);
+}
+
+.imported-voice-page .max-w-6xl .grid.grid-cols-3.gap-4 > div [class~='w-7'][class~='h-7']:hover,
+.imported-voice-page .max-w-6xl .grid.grid-cols-3.gap-4 > div [class~='w-7'][class~='h-7']:focus-visible {
+  filter: brightness(1.08);
+  box-shadow: var(--pv-shadow);
+}
+
+/* Player: preserve its fixed position and controls while replacing the
+   imported light surface with the current application surface. */
+.imported-voice-page > .min-h-screen > [class~='fixed'][class~='bottom-0'][class~='left-0'][class~='right-0'] {
+  background: color-mix(in srgb, var(--pv-card) 94%, transparent) !important;
+  border-top-color: var(--pv-border) !important;
+  box-shadow: 0 -8px 28px color-mix(in srgb, var(--pv-text) 8%, transparent) !important;
+  color: var(--pv-text);
+}
+
+.imported-voice-page > .min-h-screen > [class~='fixed'][class~='bottom-0'][class~='left-0'][class~='right-0'] [class~='w-10'][class~='h-10'] {
+  background: var(--pv-blue-strong) !important;
+  box-shadow: var(--pv-pill-shadow) !important;
+}
+
+.imported-voice-page > .min-h-screen > [class~='fixed'][class~='bottom-0'][class~='left-0'][class~='right-0'] [class~='w-10'][class~='h-10']:hover,
+.imported-voice-page > .min-h-screen > [class~='fixed'][class~='bottom-0'][class~='left-0'][class~='right-0'] [class~='w-10'][class~='h-10']:focus-visible {
+  box-shadow: var(--pv-shadow) !important;
+  filter: brightness(1.08);
+}
+
+.imported-voice-page > .min-h-screen > [class~='fixed'][class~='bottom-0'][class~='left-0'][class~='right-0'] [class~='relative'][class~='w-24'][class~='h-1.5'] {
+  background: color-mix(in srgb, var(--pv-text) 14%, transparent) !important;
+}
+
+.imported-voice-page > .min-h-screen > [class~='fixed'][class~='bottom-0'][class~='left-0'][class~='right-0'] svg rect {
+  fill: var(--pv-text-muted) !important;
+  opacity: 0.62;
+}
+
+.imported-voice-page > .min-h-screen > [class~='fixed'][class~='bottom-0'][class~='right-0'] button:focus-visible,
+.imported-voice-page .max-w-6xl button:focus-visible {
+  outline: 2px solid var(--pv-blue) !important;
+  outline-offset: 2px;
+}
+
+.imported-voice-page .wave-bar {
+  animation: imported-voice-pulse-wave 1.2s ease-in-out infinite;
+}
+
+@keyframes imported-voice-pulse-wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.6); }
+}
+
+@media (max-width: 760px) {
+  .imported-voice-page .max-w-6xl {
+    max-width: none;
+  }
+
+  .imported-voice-page .px-6 {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .imported-voice-page .flex.items-stretch.gap-3 {
+    flex-wrap: wrap;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Documents / Templates / Knowledge domain styles
+   ══════════════════════════════════════════════════════════════════════════ */
+@keyframes pv-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+.tmpl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.ds-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 16px;
+  height: calc(100vh - 128px);
+  min-height: 480px;
+}
+
+.ds-sidebar {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.ds-editor {
+  min-height: 0;
+}
+
+.ds-content:empty::before {
+  content: 'Start writing… use the toolbar to format, or ask the AI assistant to draft for you.';
+  color: var(--pv-text-muted);
+}
+.ds-content h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; margin: 0.4em 0; }
+.ds-content h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin: 0.4em 0; }
+.ds-content ul, .ds-content ol { padding-left: 1.4em; }
+.ds-content p { margin: 0.6em 0; }
+
+@media (max-width: 760px) {
+  .tmpl-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  .ds-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .ds-sidebar {
+    max-height: 360px;
+  }
+  .ds-editor {
+    min-height: 60vh;
+  }
+}
+
+/* ===== Billing / Settings / API Keys / Integrations / Shortcuts domain ===== */
+.pv-skel {
+  background: linear-gradient(90deg, var(--pv-hover) 25%, var(--pv-border) 37%, var(--pv-hover) 63%);
+  background-size: 400% 100%;
+  animation: pv-skel-shimmer 1.4s ease infinite;
+}
+@keyframes pv-skel-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+@media (max-width: 760px) {
+  .settings-two-col,
+  .integrations-wh-form {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .billing-inv-row {
+    grid-template-columns: 1fr 1fr !important;
+  }
+.billing-inv-row > span:nth-child(2) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ── Codex-inspired PAYVORA home shell ─────────────────────────────────── */
+.payvora-codex-app {
+  --pv-codex-rail: #f7f7f8;
+  --pv-codex-line: rgba(0, 0, 0, 0.09);
+  --pv-codex-muted: #8a8a8f;
+  --pv-codex-quiet: #f3f3f4;
+  --pv-codex-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.04);
+  background: #fff !important;
+}
+
+:root[data-theme='dark'] .payvora-codex-app {
+  --pv-codex-rail: #202020;
+  --pv-codex-line: rgba(255, 255, 255, 0.11);
+  --pv-codex-muted: #a0a0a5;
+  --pv-codex-quiet: #2b2b2c;
+  --pv-codex-shadow: 0 1px 2px rgba(0, 0, 0, 0.28), 0 8px 24px rgba(0, 0, 0, 0.18);
+  background: #1a1a1a !important;
+}
+
+.payvora-codex-sidebar {
+  width: 322px !important;
+  max-width: min(322px, 88vw) !important;
+  background: var(--pv-codex-rail) !important;
+  border-right: 1px solid var(--pv-codex-line) !important;
+  box-shadow: 7px 0 20px rgba(0, 0, 0, 0.025);
+}
+
+.payvora-codex-sidebar[aria-hidden='true'] {
+  width: 0 !important;
+  max-width: 0 !important;
+  margin-left: 0 !important;
+  border-right-width: 0 !important;
+  overflow: hidden;
+}
+
+.payvora-codex-sidebar-brand {
+  min-height: 70px;
+  padding: 16px 12px 12px 28px !important;
+}
+
+.payvora-codex-sidebar-brand img {
+  width: 176px !important;
+  height: auto !important;
+  max-height: 88px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.payvora-codex-sidebar-utilities {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.payvora-codex-sidebar-utilities > button {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+}
+
+.payvora-codex-sidebar-content {
+  padding: 4px 18px 92px !important;
+}
+
+.payvora-codex-sidebar .payvora-side-item {
+  gap: 12px !important;
+  min-height: 36px;
+  padding: 7px 10px !important;
+  border-radius: 8px !important;
+  color: var(--pv-text-secondary) !important;
+  font-size: 16px !important;
+  font-weight: 450 !important;
+}
+
+.payvora-codex-sidebar .payvora-side-item:hover,
+.payvora-codex-sidebar .payvora-side-item:focus-visible {
+  background: rgba(0, 0, 0, 0.055) !important;
+}
+
+:root[data-theme='dark'] .payvora-codex-sidebar .payvora-side-item:hover,
+:root[data-theme='dark'] .payvora-codex-sidebar .payvora-side-item:focus-visible {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.payvora-codex-sidebar .payvora-side-item[aria-current='page'] {
+  background: transparent !important;
+  color: var(--pv-text) !important;
+  font-weight: 550 !important;
+}
+
+.payvora-codex-sidebar .payvora-side-item[aria-current='page'] > span:first-child {
+  color: var(--pv-text) !important;
+}
+
+.payvora-codex-sidebar .payvora-side-item[aria-current='page'] > span[aria-hidden] {
+  display: none;
+}
+
+.payvora-codex-sidebar .payvora-side-item + div {
+  margin-bottom: 10px;
+}
+
+.payvora-codex-sidebar p {
+  color: var(--pv-codex-muted) !important;
+}
+
+.payvora-codex-sidebar p[style*='font-size: 17px'] {
+  margin-top: 28px !important;
+  padding-left: 10px !important;
+  font-size: 15px !important;
+  font-weight: 560 !important;
+}
+
+.payvora-codex-accountbar {
+  border-top: 1px solid var(--pv-codex-line);
+  background: var(--pv-codex-rail) !important;
+  padding: 12px 18px calc(12px + env(safe-area-inset-bottom)) !important;
+}
+
+.payvora-codex-account-name {
+  max-width: 190px;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--pv-text);
+  cursor: pointer;
+  font: 500 14px/1.2 inherit;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.payvora-codex-main {
+  background: #fff !important;
+}
+
+:root[data-theme='dark'] .payvora-codex-main {
+  background: #1a1a1a !important;
+}
+
+.payvora-codex-header {
+  min-height: 58px;
+  padding: 10px 4px 10px 14px !important;
+}
+
+.payvora-codex-header > div:last-child > button,
+.payvora-codex-menu-toggle {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.payvora-codex-menu-toggle {
+  display: none !important;
+}
+
+.payvora-codex-sidebar[aria-hidden='true'] + .payvora-codex-main .payvora-codex-menu-toggle {
+  display: flex !important;
+}
+
+.payvora-codex-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payvora-codex-header-action {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 6px !important;
+}
+
+.payvora-codex-header-action svg {
+  width: 17px;
+  height: 17px;
+}
+
+.payvora-codex-upgrade {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  border-radius: 18px;
+  padding: 7px 11px;
+  background: #f4ebff;
+  color: #8a4dff;
+  cursor: pointer;
+  font: 600 14px/1 inherit;
+}
+
+.payvora-codex-upgrade > span {
+  font-size: 16px;
+  line-height: 0;
+}
+
+:root[data-theme='dark'] .payvora-codex-upgrade {
+  background: rgba(158, 106, 255, 0.16);
+  color: #be9aff;
+}
+
+.pv-codex-home {
+  flex: 1;
+  min-height: 580px;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding: 0 clamp(18px, 3vw, 44px) max(20px, env(safe-area-inset-bottom));
+}
+
+.pv-codex-hero {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(40px, 8vh, 98px) 0 clamp(44px, 7vh, 78px);
+  animation: pv-codex-enter 440ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (min-width: 1161px) and (min-height: 800px) {
+  .pv-codex-hero {
+    position: relative;
+    top: clamp(72px, 9vh, 96px);
+  }
+}
+
+.pv-codex-mark {
+  margin-bottom: 26px;
+  color: #b4b5b9;
+}
+
+.pv-codex-hero h1 {
+  margin: 0;
+  color: var(--pv-text);
+  font-size: clamp(30px, 2.8vw, 36px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  transform: translateY(8px);
+}
+
+.pv-codex-prompts {
+  width: min(100%, 890px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 44px;
+}
+
+.pv-codex-prompt-card {
+  min-height: 132px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid var(--pv-codex-line);
+  border-radius: 18px;
+  padding: 19px 20px 17px;
+  background: var(--pv-card);
+  color: var(--pv-text);
+  box-shadow: var(--pv-codex-shadow);
+  cursor: pointer;
+  font: 540 16px/1.55 inherit;
+  letter-spacing: -0.01em;
+  text-align: left;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.pv-codex-prompt-card:hover,
+.pv-codex-prompt-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--pv-text) 18%, transparent);
+  box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 12px 28px rgba(0,0,0,.07);
+  filter: none !important;
+}
+
+.pv-codex-prompt-icon {
+  display: inline-flex;
+  width: 21px;
+  height: 21px;
+  align-items: center;
+  justify-content: center;
+}
+.pv-codex-prompt-icon svg { width: 19px; height: 19px; }
+.pv-codex-prompt-icon--blue { color: #2486ff; }
+.pv-codex-prompt-icon--purple { color: #9c5cff; }
+.pv-codex-prompt-icon--green { color: #00a95d; }
+.pv-codex-prompt-icon--orange { color: #ef6500; }
+
+.pv-codex-composer-wrap {
+  width: min(100%, 904px);
+  margin: 0 auto;
+  animation: pv-codex-enter 480ms 60ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.pv-codex-project-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 23px 23px 0 0;
+  background: var(--pv-codex-quiet);
+  color: var(--pv-codex-muted);
+  cursor: pointer;
+  font: 450 15px/1 inherit;
+}
+.pv-codex-project-picker svg { width: 18px; height: 18px; }
+
+.pv-codex-composer {
+  overflow: hidden;
+  border: 1px solid var(--pv-codex-line);
+  border-radius: 23px;
+  background: var(--pv-input-bg);
+  box-shadow: 0 3px 9px rgba(0,0,0,.06), 0 12px 34px rgba(0,0,0,.05);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.pv-codex-composer:focus-within {
+  border-color: color-mix(in srgb, var(--pv-blue) 45%, var(--pv-codex-line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pv-blue) 10%, transparent), 0 12px 34px rgba(0,0,0,.07);
+}
+
+.pv-codex-composer textarea {
+  display: block;
+  width: 100%;
+  min-height: 64px;
+  max-height: 156px;
+  border: 0;
+  outline: 0;
+  resize: none;
+  padding: 20px 22px 8px;
+  background: transparent;
+  color: var(--pv-text);
+  font: 400 17px/1.45 inherit;
+}
+.pv-codex-composer textarea::placeholder { color: #b8b9be; }
+
+.pv-codex-composer-controls {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  gap: 5px;
+  padding: 0 10px 10px 12px;
+  color: var(--pv-text-secondary);
+}
+
+.pv-codex-control-icon,
+.pv-codex-send {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--pv-text-secondary);
+  cursor: pointer;
+}
+.pv-codex-control-icon:hover { background: var(--pv-hover); color: var(--pv-text); filter: none !important; }
+
+.pv-codex-access-control,
+.pv-codex-model-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--pv-text-secondary);
+  cursor: pointer;
+  font: 500 14px/1 inherit;
+}
+.pv-codex-access-control { color: #ed5a17; }
+.pv-codex-model-control span { color: var(--pv-codex-muted); font-weight: 400; }
+.pv-codex-control-spacer { flex: 1; }
+
+.pv-codex-send {
+  background: #96979a;
+  color: #fff;
+}
+.pv-codex-send:not(:disabled) { background: var(--pv-blue-strong); cursor: pointer; }
+.pv-codex-send:disabled { opacity: 1; }
+
+:root[data-theme='dark'] .pv-codex-prompt-card {
+  background: #1b1b1b;
+  border-color: #303030;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+:root[data-theme='dark'] .pv-codex-composer {
+  background: #2b2b2b;
+  border-color: #353535;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme='dark'] .pv-codex-project-picker {
+  background: #202020;
+}
+
+@keyframes pv-codex-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1160px) {
+  .payvora-codex-sidebar { width: 292px !important; }
+  .pv-codex-prompts { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 520px; }
+}
+
+@media (max-width: 760px) {
+  .payvora-codex-sidebar { width: min(322px, 86vw) !important; }
+  .payvora-codex-sidebar[aria-hidden='true'] { width: min(322px, 86vw) !important; max-width: 86vw !important; }
+  .payvora-codex-menu-toggle { display: flex !important; }
+  .pv-codex-home { min-height: 100%; padding: 0 14px max(14px, env(safe-area-inset-bottom)); }
+  .pv-codex-hero { padding-top: 50px; padding-bottom: 40px; }
+  .pv-codex-mark { margin-bottom: 18px; transform: scale(.82); }
+  .pv-codex-hero h1 { font-size: 30px; text-align: center; }
+  .pv-codex-prompts { width: 100%; margin-top: 30px; gap: 10px; }
+  .pv-codex-prompt-card { min-height: 116px; padding: 15px; font-size: 14px; }
+  .pv-codex-model-control { display: none; }
+  .pv-codex-composer textarea { min-height: 58px; font-size: 16px; }
+}
+
+@media (max-width: 430px) {
+  .pv-codex-prompts { grid-template-columns: 1fr; }
+  .pv-codex-prompt-card { min-height: 82px; flex-direction: row; align-items: center; }
+  .pv-codex-hero { align-self: start; }
+  .pv-codex-access-control span { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Workspace controls and premium liquid-glass sidebar
+   ═══════════════════════════════════════════════════════════════════════ */
+.payvora-codex-sidebar {
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.72), rgba(246,247,250,.60) 48%, rgba(238,240,245,.72)),
+    var(--pv-codex-rail) !important;
+  border-right-color: color-mix(in srgb, var(--pv-text) 13%, transparent) !important;
+  box-shadow: inset -1px 0 rgba(255,255,255,.58), 10px 0 32px rgba(19, 27, 48, .045) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+  backdrop-filter: blur(22px) saturate(135%);
+}
+
+.payvora-codex-sidebar::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--pv-blue) 11%, transparent), transparent 38%),
+    linear-gradient(180deg, rgba(255,255,255,.32), transparent 17%, rgba(255,255,255,.08));
+}
+
+:root[data-theme='dark'] .payvora-codex-sidebar {
+  background:
+    linear-gradient(145deg, rgba(38,39,45,.82), rgba(28,29,34,.74) 48%, rgba(24,25,30,.86)),
+    var(--pv-codex-rail) !important;
+  border-right-color: rgba(255,255,255,.105) !important;
+  box-shadow: inset -1px 0 rgba(255,255,255,.035), 10px 0 34px rgba(0,0,0,.17) !important;
+}
+
+:root[data-theme='dark'] .payvora-codex-sidebar::before {
+  background:
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--pv-blue) 13%, transparent), transparent 38%),
+    linear-gradient(180deg, rgba(255,255,255,.042), transparent 22%, rgba(0,0,0,.075));
+}
+
+.payvora-codex-sidebar > * { position: relative; z-index: 1; }
+
+.payvora-codex-sidebar-brand {
+  min-height: 74px;
+  border-bottom: 1px solid color-mix(in srgb, var(--pv-text) 5%, transparent);
+}
+
+.payvora-codex-sidebar-utilities > button {
+  color: var(--pv-text-secondary);
+  transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease !important;
+}
+
+.payvora-codex-sidebar-utilities > button:hover {
+  background: color-mix(in srgb, var(--pv-text) 7%, transparent) !important;
+  color: var(--pv-text);
+}
+
+.payvora-codex-sidebar-utilities > button:focus-visible,
+.payvora-codex-sidebar .payvora-side-item:focus-visible,
+.payvora-codex-accountbar button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--pv-blue) 72%, white);
+  outline-offset: 2px;
+}
+
+.payvora-codex-sidebar-content {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--pv-text) 18%, transparent) transparent;
+}
+
+.payvora-codex-sidebar-content::-webkit-scrollbar { width: 7px; }
+.payvora-codex-sidebar-content::-webkit-scrollbar-track { background: transparent; }
+.payvora-codex-sidebar-content::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pv-text) 13%, transparent);
+  background-clip: padding-box;
+}
+.payvora-codex-sidebar-content:hover::-webkit-scrollbar-thumb { background-color: color-mix(in srgb, var(--pv-text) 25%, transparent); }
+
+.payvora-codex-sidebar .payvora-side-item {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent !important;
+  color: color-mix(in srgb, var(--pv-text) 78%, transparent) !important;
+  transition: background 190ms ease, border-color 190ms ease, color 190ms ease, box-shadow 190ms ease !important;
+}
+
+.payvora-codex-sidebar .payvora-side-item:hover,
+.payvora-codex-sidebar .payvora-side-item:focus-visible {
+  background: color-mix(in srgb, var(--pv-text) 6%, transparent) !important;
+  border-color: color-mix(in srgb, var(--pv-text) 6%, transparent) !important;
+  color: var(--pv-text) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.20);
+}
+
+:root[data-theme='dark'] .payvora-codex-sidebar .payvora-side-item:hover,
+:root[data-theme='dark'] .payvora-codex-sidebar .payvora-side-item:focus-visible {
+  background: rgba(255,255,255,.065) !important;
+  border-color: rgba(255,255,255,.055) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.055);
+}
+
+.payvora-codex-sidebar .payvora-side-item[aria-current='page'] {
+  background: linear-gradient(115deg, color-mix(in srgb, var(--pv-blue) 13%, transparent), color-mix(in srgb, var(--pv-text) 5%, transparent)) !important;
+  border-color: color-mix(in srgb, var(--pv-blue) 19%, transparent) !important;
+  color: var(--pv-text) !important;
+  font-weight: 590 !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.26), 0 4px 14px rgba(20, 38, 72, .035);
+}
+
+.payvora-codex-sidebar .payvora-side-item[aria-current='page'] > span[aria-hidden] {
+  display: block;
+  z-index: 2;
+  background: var(--pv-blue) !important;
+  box-shadow: 0 0 9px color-mix(in srgb, var(--pv-blue) 38%, transparent);
+}
+
+:root[data-theme='dark'] .payvora-codex-sidebar .payvora-side-item[aria-current='page'] {
+  background: linear-gradient(115deg, color-mix(in srgb, var(--pv-blue) 21%, transparent), rgba(255,255,255,.065)) !important;
+  border-color: color-mix(in srgb, var(--pv-blue) 25%, rgba(255,255,255,.05)) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.08), 0 4px 16px rgba(0,0,0,.12);
+}
+
+.payvora-codex-sidebar .payvora-side-item > span:first-child { color: var(--pv-text-secondary); }
+.payvora-codex-sidebar .payvora-side-item[aria-current='page'] > span:first-child { color: var(--pv-blue) !important; }
+
+.payvora-codex-sidebar .payvora-side-item[style*='font-size: 11px'] span,
+.payvora-codex-sidebar .payvora-side-item > span[style*='font-size: 11px'] {
+  letter-spacing: .10em !important;
+}
+
+.payvora-codex-accountbar {
+  border-top-color: color-mix(in srgb, var(--pv-text) 9%, transparent) !important;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--pv-page) 28%, transparent), color-mix(in srgb, var(--pv-codex-rail) 84%, transparent)) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.20);
+  -webkit-backdrop-filter: blur(15px) saturate(125%);
+  backdrop-filter: blur(15px) saturate(125%);
+}
+
+:root[data-theme='dark'] .payvora-codex-accountbar { box-shadow: inset 0 1px rgba(255,255,255,.04); }
+
+.payvora-codex-accountbar > div > div { padding: 5px 7px 5px 4px; border-radius: 11px; transition: background 180ms ease; }
+.payvora-codex-accountbar > div > div:hover { background: color-mix(in srgb, var(--pv-text) 6%, transparent); }
+
+.payvora-codex-accountbar > button {
+  border: 1px solid color-mix(in srgb, var(--pv-text) 8%, transparent) !important;
+  background: color-mix(in srgb, var(--pv-text) 5%, transparent) !important;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+.payvora-codex-accountbar > button:hover { background: color-mix(in srgb, var(--pv-text) 9%, transparent) !important; border-color: color-mix(in srgb, var(--pv-text) 14%, transparent) !important; }
+.payvora-codex-accountbar > button:active { transform: scale(.96); }
+
+.payvora-workspace-stage {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.payvora-workspace-content {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.payvora-workspace-content > .payvora-main-scroll { flex: 1; }
+
+.payvora-workspace-controls { display: inline-flex; align-items: center; gap: 7px; }
+
+.payvora-workspace-control {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--pv-text-secondary);
+  cursor: pointer;
+  transition: color 150ms ease, background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.payvora-workspace-control:hover {
+  color: var(--pv-text);
+  background: color-mix(in srgb, var(--pv-text) 7%, transparent);
+  border-color: color-mix(in srgb, var(--pv-text) 7%, transparent);
+}
+.payvora-workspace-control:active { transform: scale(.94); }
+.payvora-workspace-control[aria-pressed='true'] {
+  color: var(--pv-text);
+  background: color-mix(in srgb, var(--pv-text) 9%, transparent);
+  border-color: color-mix(in srgb, var(--pv-text) 10%, transparent);
+  box-shadow: inset 0 1px rgba(255,255,255,.08);
+}
+.payvora-workspace-control:focus-visible,
+.payvora-workspace-launcher-item:focus-visible,
+.payvora-workspace-tab-close:focus-visible,
+.payvora-workspace-tab-add:focus-visible,
+.payvora-branch-button:focus-visible,
+.payvora-workspace-back:focus-visible,
+.payvora-browser-address input:focus-visible,
+.payvora-files-content input:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--pv-blue) 75%, white);
+  outline-offset: 2px;
+}
+
+.payvora-right-workspace {
+  position: relative;
+  z-index: 8;
+  width: var(--pv-workspace-panel-width);
+  min-width: 360px;
+  flex: 0 0 var(--pv-workspace-panel-width);
+  overflow: hidden;
+  border-left: 1px solid var(--pv-codex-line);
+  background: var(--pv-page);
+  color: var(--pv-text);
+  box-shadow: -12px 0 28px rgba(0,0,0,.035);
+  animation: payvora-workspace-slide-in 190ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+:root[data-theme='dark'] .payvora-right-workspace,
+:root[data-theme='dark'] .payvora-bottom-workspace { background: #171717; border-color: #2d2d2e; }
+
+.payvora-right-workspace.is-resizing { user-select: none; }
+.payvora-workspace-resize {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  width: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: col-resize;
+}
+.payvora-workspace-resize::after { content: ''; position: absolute; top: 0; bottom: 0; left: 4px; width: 1px; background: transparent; transition: background 140ms ease; }
+.payvora-workspace-resize:hover::after, .payvora-right-workspace.is-resizing .payvora-workspace-resize::after { background: var(--pv-blue); }
+
+.payvora-workspace-launcher { padding: 96px max(28px, 12%) 32px; display: grid; gap: 8px; }
+.payvora-workspace-launcher-item {
+  min-height: 50px;
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--pv-text) 5%, transparent);
+  color: var(--pv-text);
+  cursor: pointer;
+  font: 500 15px/1 inherit;
+  text-align: left;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.payvora-workspace-launcher-item:hover { background: color-mix(in srgb, var(--pv-text) 9%, transparent); border-color: color-mix(in srgb, var(--pv-text) 6%, transparent); }
+.payvora-workspace-tool-icon { display: grid; place-items: center; color: var(--pv-text-secondary); }
+.payvora-workspace-launcher-item kbd { border: 0; border-radius: 10px; padding: 2px 8px; background: color-mix(in srgb, var(--pv-text) 9%, transparent); color: var(--pv-text-muted); font: 500 12px/1.2 inherit; }
+
+.payvora-workspace-tool { display: flex; min-height: 100%; flex-direction: column; }
+.payvora-workspace-tabbar {
+  min-height: 63px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--pv-codex-line);
+}
+.payvora-workspace-tab { display: inline-flex; min-width: 148px; align-items: center; gap: 9px; align-self: stretch; padding: 0 12px; color: var(--pv-text); font-size: 15px; font-weight: 540; }
+.payvora-workspace-tab > span { display: grid; color: var(--pv-text-secondary); }
+.payvora-workspace-tab-close, .payvora-workspace-tab-add {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--pv-text-secondary);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+.payvora-workspace-tab-close:hover, .payvora-workspace-tab-add:hover { background: color-mix(in srgb, var(--pv-text) 8%, transparent); color: var(--pv-text); }
+.payvora-workspace-tab-add { margin-left: 1px; font-size: 24px; font-weight: 300; }
+
+.payvora-bottom-workspace {
+  height: clamp(230px, 32vh, 346px);
+  flex: 0 0 clamp(230px, 32vh, 346px);
+  overflow: hidden;
+  border-top: 1px solid var(--pv-codex-line);
+  background: var(--pv-page);
+  color: var(--pv-text);
+  box-shadow: 0 -12px 28px rgba(0,0,0,.025);
+  animation: payvora-workspace-rise-in 190ms cubic-bezier(.2,.8,.2,1) both;
+}
+.payvora-bottom-workspace .payvora-workspace-tabbar { min-height: 47px; padding-left: 14px; }
+.payvora-bottom-workspace .payvora-workspace-tab { min-width: 145px; }
+.payvora-bottom-workspace .payvora-workspace-tab-add { display: none; }
+
+.payvora-terminal-surface {
+  height: calc(100% - 63px);
+  padding: 17px 20px;
+  overflow: auto;
+  background: #171717;
+  color: #e8e8e9;
+  font: 600 13px/1.55 ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+}
+.payvora-terminal-surface.is-compact { height: calc(100% - 47px); padding: 12px 20px; }
+.payvora-terminal-surface p { margin: 0 0 4px; }
+.payvora-terminal-prompt { margin-top: 22px !important; }
+.payvora-terminal-prompt span { display: inline-block; width: 8px; height: 17px; margin-left: 5px; vertical-align: -3px; background: currentColor; animation: payvora-terminal-blink 1.15s steps(1) infinite; }
+
+.payvora-review-toolbar { position: relative; min-height: 91px; padding: 16px 20px; border-bottom: 1px solid var(--pv-codex-line); }
+.payvora-branch-menu { position: relative; display: inline-block; }
+.payvora-branch-button { display: inline-flex; align-items: center; gap: 3px; min-height: 35px; padding: 0 11px; border: 0; border-radius: 9px; background: color-mix(in srgb, var(--pv-text) 7%, transparent); color: var(--pv-text); cursor: pointer; font: 500 15px/1 inherit; }
+.payvora-branch-button:hover { background: color-mix(in srgb, var(--pv-text) 11%, transparent); }
+.payvora-review-branch { display: flex; align-items: center; gap: 11px; margin-top: 10px; color: var(--pv-text-muted); font-size: 15px; }
+.payvora-review-branch svg { width: 13px; }
+.payvora-branch-popover { position: absolute; z-index: 5; top: 42px; left: 0; width: 250px; padding: 8px; border: 1px solid color-mix(in srgb, var(--pv-text) 10%, transparent); border-radius: 14px; background: color-mix(in srgb, var(--pv-card) 96%, black); box-shadow: 0 16px 38px rgba(0,0,0,.20); }
+.payvora-branch-popover button { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 36px; padding: 0 9px; border: 0; border-radius: 7px; background: transparent; color: var(--pv-text); cursor: pointer; font: 500 14px/1 inherit; text-align: left; }
+.payvora-branch-popover button:hover, .payvora-branch-popover button.is-selected { background: color-mix(in srgb, var(--pv-text) 9%, transparent); }
+.payvora-branch-popover button:nth-child(1), .payvora-branch-popover button:nth-child(4) { margin-bottom: 7px; border-bottom: 1px solid color-mix(in srgb, var(--pv-text) 9%, transparent); border-radius: 7px 7px 0 0; }
+
+.payvora-workspace-empty { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 11px; min-height: 210px; padding: 32px; color: var(--pv-text-muted); text-align: center; }
+.payvora-workspace-empty > svg { color: var(--pv-text-muted); opacity: .74; }
+.payvora-workspace-empty strong { color: var(--pv-text); font-size: 20px; font-weight: 650; }
+.payvora-workspace-empty span { font-size: 15px; }
+
+.payvora-browser-surface { display: flex; flex: 1; min-height: 0; flex-direction: column; }
+.payvora-browser-address { display: flex; align-items: center; gap: 7px; padding: 10px 18px; border-bottom: 1px solid var(--pv-codex-line); }
+.payvora-browser-address button { width: 27px; height: 27px; border: 0; border-radius: 7px; background: transparent; color: var(--pv-text-secondary); cursor: pointer; font-size: 18px; }
+.payvora-browser-address button:hover:not(:disabled) { background: color-mix(in srgb, var(--pv-text) 8%, transparent); color: var(--pv-text); }
+.payvora-browser-address button:disabled { opacity: .35; cursor: default; }
+.payvora-browser-address input { min-width: 0; flex: 1; height: 34px; border: 1px solid color-mix(in srgb, var(--pv-text) 13%, transparent); border-radius: 9px; background: transparent; color: var(--pv-text); padding: 0 10px; font: 400 14px/1 inherit; }
+.payvora-browser-frame { position: relative; display: flex; flex: 1; min-height: 230px; flex-direction: column; overflow: hidden; background: var(--pv-card); }
+.payvora-browser-frame-status { display: flex; align-items: center; gap: 7px; min-height: 30px; padding: 0 14px; color: var(--pv-text-muted); font-size: 11px; border-bottom: 1px solid var(--pv-codex-line); }
+.payvora-browser-frame-status button { margin-left: auto; border: 0; background: transparent; color: var(--pv-blue); cursor: pointer; font: 600 11px/1 inherit; }
+.payvora-browser-frame iframe { display: block; flex: 1; width: 100%; min-height: 230px; border: 0; background: #fff; }
+.payvora-browser-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pv-text-muted); }
+.payvora-browser-status-dot.is-loading { background: #f59e0b; animation: payvora-browser-pulse 1s ease-in-out infinite; }
+.payvora-browser-status-dot.is-loaded { background: #22c55e; }
+.payvora-browser-suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin-top: 10px; }
+.payvora-browser-suggestions button, .payvora-browser-quick-actions button { border: 1px solid color-mix(in srgb, var(--pv-text) 11%, transparent); border-radius: 999px; background: var(--pv-card-raised); color: var(--pv-text-secondary); cursor: pointer; font: 500 12px/1 inherit; }
+.payvora-browser-suggestions button { padding: 7px 10px; }
+.payvora-browser-suggestions button:hover, .payvora-browser-quick-actions button:hover { color: var(--pv-text); border-color: color-mix(in srgb, var(--pv-blue) 45%, transparent); }
+.payvora-browser-assistant { flex: 0 0 auto; border-top: 1px solid var(--pv-codex-line); background: var(--pv-card); }
+.payvora-browser-assistant-toggle { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 55px; padding: 9px 16px; border: 0; background: transparent; color: var(--pv-text); cursor: pointer; text-align: left; }
+.payvora-browser-assistant-toggle > span:nth-child(2) { display: grid; gap: 2px; min-width: 0; }
+.payvora-browser-assistant-toggle strong { font-size: 13px; font-weight: 650; }
+.payvora-browser-assistant-toggle small { color: var(--pv-text-muted); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.payvora-browser-ai-mark { display: grid; width: 26px; height: 26px; place-items: center; border-radius: 9px; background: var(--pv-blue-soft); color: var(--pv-blue); }
+.payvora-browser-assistant-chevron { margin-left: auto; color: var(--pv-text-muted); font-size: 18px; }
+.payvora-browser-assistant-body { display: grid; gap: 8px; padding: 0 14px 13px; }
+.payvora-browser-quick-actions { display: flex; gap: 5px; overflow-x: auto; padding-bottom: 1px; }
+.payvora-browser-quick-actions button { flex: 0 0 auto; padding: 6px 8px; white-space: nowrap; }
+.payvora-browser-quick-actions button:disabled { opacity: .4; cursor: not-allowed; }
+.payvora-browser-assistant-body textarea { width: 100%; box-sizing: border-box; resize: vertical; min-height: 46px; padding: 8px 10px; border: 1px solid color-mix(in srgb, var(--pv-text) 12%, transparent); border-radius: 9px; outline: none; background: var(--pv-input-bg); color: var(--pv-text); font: 400 12px/1.4 inherit; }
+.payvora-browser-assistant-body textarea:focus, .payvora-browser-ai-composer:focus-within { border-color: color-mix(in srgb, var(--pv-blue) 65%, transparent); }
+.payvora-browser-ai-thread { display: grid; gap: 6px; max-height: 120px; overflow-y: auto; font-size: 12px; line-height: 1.45; }
+.payvora-browser-ai-message { padding: 7px 9px; border-radius: 9px; white-space: pre-wrap; }
+.payvora-browser-ai-message.is-user { justify-self: end; max-width: 88%; background: var(--pv-hover); color: var(--pv-text); }
+.payvora-browser-ai-message.is-assistant { background: var(--pv-blue-soft); color: var(--pv-text); }
+.payvora-browser-ai-error { margin: 0; color: #dc2626; font-size: 11px; }
+.payvora-browser-ai-composer { display: flex; align-items: center; gap: 6px; padding: 4px 5px 4px 10px; border: 1px solid color-mix(in srgb, var(--pv-text) 12%, transparent); border-radius: 10px; background: var(--pv-input-bg); }
+.payvora-browser-ai-composer input { min-width: 0; flex: 1; height: 28px; border: 0; outline: 0; background: transparent; color: var(--pv-text); font: 400 13px/1 inherit; }
+.payvora-browser-ai-composer button { display: grid; width: 27px; height: 27px; place-items: center; border: 0; border-radius: 8px; background: var(--pv-blue); color: #fff; cursor: pointer; font-size: 16px; }
+.payvora-browser-ai-composer button:disabled { opacity: .4; cursor: not-allowed; }
+@keyframes payvora-browser-pulse { 50% { opacity: .35; } }
+
+.payvora-files-surface { display: flex; flex: 1; min-height: 0; flex-direction: column; }
+.payvora-files-header { display: flex; align-items: center; justify-content: space-between; min-height: 42px; padding: 0 18px; border-bottom: 1px solid var(--pv-codex-line); font-size: 16px; }
+.payvora-files-header button { width: 29px; height: 29px; border: 0; border-radius: 7px; background: transparent; color: var(--pv-text-secondary); cursor: pointer; }
+.payvora-files-header button:hover { background: color-mix(in srgb, var(--pv-text) 8%, transparent); }
+.payvora-files-content { flex: 1; padding: 12px; overflow: auto; }
+.payvora-files-content input { width: 100%; height: 34px; box-sizing: border-box; border: 1px solid color-mix(in srgb, var(--pv-text) 13%, transparent); border-radius: 9px; background: transparent; color: var(--pv-text); padding: 0 11px; font: 400 14px/1 inherit; }
+.payvora-files-content ul { display: grid; gap: 2px; margin: 10px 0 0; padding: 0; list-style: none; }
+.payvora-files-content li { display: flex; align-items: center; gap: 9px; min-height: 32px; padding: 0 8px; border-radius: 7px; color: var(--pv-text); font-size: 14px; }
+.payvora-files-content li:hover { background: color-mix(in srgb, var(--pv-text) 7%, transparent); }
+.payvora-files-content li span { color: var(--pv-text-muted); }
+.payvora-workspace-back { align-self: flex-start; margin: 0 20px 18px; border: 0; border-radius: 8px; background: transparent; color: var(--pv-text-secondary); cursor: pointer; font: 500 13px/1 inherit; }
+.payvora-workspace-back:hover { color: var(--pv-text); text-decoration: underline; }
+
+@keyframes payvora-workspace-slide-in { from { opacity: .65; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes payvora-workspace-rise-in { from { opacity: .65; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes payvora-terminal-blink { 50% { opacity: 0; } }
+
+@media (max-width: 1024px) {
+  .payvora-right-workspace { width: min(var(--pv-workspace-panel-width), 47vw); min-width: 340px; flex-basis: min(var(--pv-workspace-panel-width), 47vw); }
+  .payvora-workspace-launcher { padding-left: 22px; padding-right: 22px; }
+}
+
+@media (max-width: 760px) {
+  .payvora-workspace-stage { overflow: hidden; }
+  .payvora-right-workspace { position: absolute; inset: 0 0 0 auto; width: min(100%, 430px); min-width: 0; flex-basis: auto; box-shadow: -14px 0 32px rgba(0,0,0,.18); }
+  .payvora-workspace-resize { display: none; }
+  .payvora-bottom-workspace { position: absolute; z-index: 12; right: 0; bottom: 0; left: 0; height: min(43dvh, 330px); box-shadow: 0 -15px 34px rgba(0,0,0,.18); }
+  .payvora-workspace-launcher { padding-top: 40px; }
+  .payvora-workspace-tab { min-width: 0; flex: 1; }
+  .payvora-workspace-tab-add { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .payvora-right-workspace,
+  .payvora-bottom-workspace { animation: none; }
+}
+

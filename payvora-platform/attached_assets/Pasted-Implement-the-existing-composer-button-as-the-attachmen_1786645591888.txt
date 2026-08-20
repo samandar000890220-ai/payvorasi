@@ -1,0 +1,24 @@
+Implement the existing “+” composer button as the attachment/action menu: clicking “+” should open a small, polished menu anchored to the button with options such as Upload files, Add images, and other supported attachment types; selecting an option should open the appropriate native file picker and attach the selected files to the current composer message for preview/removal before sending. Keep the existing “+” button, composer layout, spacing, typography, colors, icons, borders, and styling unchanged, do not modify ChatPanel.tsx, and do not touch or interfere with the existing realtime voice AudioWorklet/PCM16/WebSocket/AnalyserNode pipeline. Do not show the “Attachments are not available yet.” popup; implement the smallest necessary change using the existing composer architecture and real file handling only—no fake attachments or placeholder behavior.
+
+
+
+
+
+
+
+
+
+
+
+Fix the composer interactions and realtime voice configuration without redesigning the existing UI. Make the + button open the existing attachment/options menu and ensure each available option works through the existing architecture; do not show the “Attachments are not available yet” popup when the feature is actually supported. Also fix the microphone error: Voice input failed: Realtime provider not configured on server. Set REALTIME_PROVIDER environment variable to "loopback" or a configured provider. First inspect the existing /api/realtime/voice implementation and determine which realtime provider is intended/configured. Do not fake the provider, do not replace the realtime AudioWorklet/PCM16/WebSocket pipeline with MediaRecorder or /api/audio/transcribe, and do not hardcode secrets. If REALTIME_PROVIDER is genuinely missing, configure it using the appropriate existing provider/environment configuration, or clearly report the exact required environment variable/value without changing the architecture. Keep ChatPanel.tsx untouched and preserve the existing composer design. After fixing, verify the + menu and microphone end-to-end in the running Preview, including actual microphone permission, realtime connection, real waveform, and real transcription.
+
+
+
+
+
+
+
+
+
+Proceed with the realtime voice integration and composer + interaction exactly as specified in my architecture note. Keep ChatPanel.tsx completely untouched and preserve the existing composer design. Reuse the existing authoritative AudioWorklet/PCM16/WebSocket/AnalyserNode pipeline and /api/realtime/voice; do not use MediaRecorder or /api/audio/transcribe. When the microphone is active, mount the existing VoiceWaveform in the composer and drive it from the existing inputAnalyser using real getByteTimeDomainData() + requestAnimationFrame data so it visibly responds to my actual microphone input; no fake/simulated waveform. Also fix the + button so it opens the intended existing attachment/options interaction instead of showing “Attachments are not available yet.” Finally, investigate and fix the REALTIME_PROVIDER configuration error using the existing provider architecture without hardcoding secrets or faking a provider. Make the smallest possible changes and verify the complete flow in the running Preview: + works, microphone permission appears, realtime voice starts, the real waveform reacts to my voice, PCM16 streams through the existing WebSocket, real realtime transcription/events return, and the transcript reaches the existing composer. If the required realtime/F5-TTS infrastructure is unavailable, report that as a separate backend infrastructure blocker rather than replacing the architecture.
+

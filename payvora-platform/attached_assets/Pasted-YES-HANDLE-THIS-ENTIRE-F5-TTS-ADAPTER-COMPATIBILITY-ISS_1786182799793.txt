@@ -1,0 +1,250 @@
+YES — HANDLE THIS ENTIRE F5-TTS ADAPTER COMPATIBILITY ISSUE YOURSELF.
+
+I have now verified the local Windows F5-TTS adapter.
+
+The adapter is running successfully at:
+
+http://127.0.0.1:7861
+
+`/openapi.json` returns HTTP 200.
+
+The actual registered routes are:
+
+* `/pronunciation`
+* `/pronunciation/api/list`
+* `/pronunciation/api/set`
+* `/pronunciation/api/delete`
+* `/pronunciation/api/reload`
+* `/health`
+* `/tts_to_audio/`
+* `/tts_to_audio`
+* `/create_and_store_latents/`
+* `/create_and_store_latents`
+
+There are currently NO:
+
+* `/v1/speech`
+* `/v1/vocal-event`
+* `/v1/transcribe`
+
+This means the local adapter does not currently match Payvora's expected F5-TTS service contract.
+
+DO NOT ASK ME TO MANUALLY MODIFY PYTHON CODE.
+
+DO NOT ASK ME TO BUILD ANOTHER SERVER.
+
+DO NOT REPLACE F5-TTS WITH ELEVENLABS.
+
+DO NOT REDESIGN PAYVORA.
+
+DO NOT MODIFY THE EXISTING VOICE STUDIO UI.
+
+DO NOT CREATE A FAKE API.
+
+Instead, inspect the existing Payvora F5-TTS client and the existing local adapter implementation and implement the compatibility layer required to connect them.
+
+### REQUIRED WORK
+
+Inspect:
+
+1. Payvora's existing F5-TTS client contract.
+2. The existing `f5_adapter_server.py`.
+3. The actual F5-TTS Python inference API already being loaded by the persistent adapter.
+4. The existing authentication/token handling.
+5. The existing reference-audio/voice handling.
+6. The existing transcription implementation.
+7. The existing `/tts_to_audio` implementation.
+
+Then implement these Payvora-compatible endpoints inside the existing adapter:
+
+GET `/v1/health`
+
+POST `/v1/speech`
+
+POST `/v1/vocal-event`
+
+POST `/v1/transcribe`
+
+### IMPORTANT
+
+Do NOT throw away the existing adapter.
+
+Add the compatibility API around the existing F5-TTS pipeline.
+
+The existing routes must continue working unless there is a real technical reason otherwise.
+
+### `/v1/speech`
+
+It must accept the exact multipart fields Payvora already sends.
+
+Inspect Payvora's actual `client.ts` instead of guessing the fields.
+
+Support:
+
+* text
+* reference_text
+* reference_audio
+* model
+* device
+* compute_type
+* controls
+* response_format
+
+The `controls` JSON must be parsed safely.
+
+Do not claim that F5-TTS natively supports controls that it does not actually support.
+
+Where a control is unsupported by the model, either implement a real post-processing operation or report it honestly as unsupported.
+
+The endpoint must return REAL generated WAV bytes from the existing F5-TTS model.
+
+Never return fake audio.
+
+Never return a fake success response.
+
+### `/v1/transcribe`
+
+Use the existing transcription capability already available in the local adapter/F5-TTS environment.
+
+Return the format Payvora expects:
+
+`{"text":"..."}`
+
+Do not fabricate transcription.
+
+### `/v1/vocal-event`
+
+Inspect how Payvora currently uses this endpoint.
+
+If the local F5-TTS system cannot genuinely synthesize the requested vocal event, return an honest unsupported response rather than pretending it worked.
+
+Do not silently convert unsupported events into arbitrary spoken text.
+
+### `/v1/health`
+
+Return a useful health response showing at minimum:
+
+* adapter reachable
+* F5-TTS backend loaded/not loaded
+* CUDA availability
+* model loaded/not loaded
+* authentication configuration status
+
+Do NOT expose the actual secret/token.
+
+### AUTHENTICATION
+
+Preserve the existing:
+
+`F5_TTS_ADAPTER_TOKEN`
+
+Bearer authentication.
+
+Payvora must be able to send:
+
+`Authorization: Bearer <token>`
+
+Never expose the token to browser/client code.
+
+Never hard-code the token.
+
+### MODEL
+
+Continue using the existing local F5-TTS model.
+
+The current adapter successfully loads:
+
+`C:\AI\F5-TTS\models\F5TTS_v1_Base_v4_winter\model_212000.safetensors`
+
+and:
+
+`C:\AI\F5-TTS\models\F5TTS_v1_Base_v4_winter\vocab.txt`
+
+It is running with CUDA.
+
+Do not replace this model.
+
+### IMPORTANT CAPABILITY RULE
+
+Do NOT make claims based on assumptions.
+
+Verify each capability against the actual implementation.
+
+For example:
+
+* reference-audio voice cloning → must use the real F5-TTS pipeline
+* text generation → real F5-TTS
+* speed → verify how the existing pipeline handles it
+* pitch → only expose if there is a genuine implementation/post-process
+* energy → only expose if genuinely implemented
+* emotion → do not pretend F5-TTS has native emotion conditioning if it doesn't
+* vocal events → do not fake unsupported events
+* pauses → preserve the existing real pause implementation
+* pronunciation overrides → preserve the existing implementation
+
+### PAYVORA MUST REMAIN THE FOUNDATION
+
+Do not create a new TTS page.
+
+The existing Voice Studio page is the TTS interface.
+
+Do not redesign it.
+
+Do not change its layout.
+
+Do not replace its components.
+
+Do not remove existing controls.
+
+The objective is:
+
+Payvora Voice Studio
+→ Payvora API
+→ F5-TTS service contract
+→ secure tunnel
+→ Windows F5 adapter
+→ local F5-TTS Python API
+→ CUDA GPU
+→ real generated audio
+
+### TESTING — DO THIS YOURSELF
+
+After implementing the compatibility layer:
+
+1. Run typecheck/build/tests for the Payvora project.
+2. Verify the adapter code has no syntax/import errors.
+3. Verify `/v1/health` exists.
+4. Verify `/v1/speech` exists.
+5. Verify `/v1/vocal-event` exists.
+6. Verify `/v1/transcribe` exists.
+7. Verify the OpenAPI schema contains all four routes.
+8. Verify authentication rejects missing/invalid tokens.
+9. Verify authentication accepts the configured token.
+10. Verify `/v1/health` does not leak the token.
+11. Perform an actual local speech generation test using the existing F5-TTS model if the environment is accessible.
+12. Confirm that the response contains real WAV audio bytes.
+13. Do NOT claim success if generation was not actually performed.
+
+Then give me a concise verification report containing:
+
+* files changed
+* routes added
+* request fields
+* response formats
+* authentication behavior
+* actual F5-TTS capabilities
+* unsupported capabilities
+* local test results
+* exact next step for Cloudflare tunneling
+
+### VERY IMPORTANT
+
+Do not stop at "the code looks correct."
+
+I want the actual endpoints verified against the actual running adapter.
+
+Do not proceed to Cloudflare until the local compatibility API is working.
+
+Do not ask me for the tunnel URL yet.
+
+BUILD THE COMPATIBILITY LAYER NOW.

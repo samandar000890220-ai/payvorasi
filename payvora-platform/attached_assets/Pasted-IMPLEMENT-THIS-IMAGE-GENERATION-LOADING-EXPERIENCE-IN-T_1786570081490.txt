@@ -1,0 +1,167 @@
+IMPLEMENT THIS IMAGE-GENERATION LOADING EXPERIENCE IN THE EXISTING CHAT INTERFACE.
+
+IMPORTANT:
+I am NOT uploading the reference screen recording to you. Use the following written specification as the complete source of truth for the behavior and visual treatment.
+
+DO NOT redesign the existing chat interface.
+DO NOT change the existing sidebar.
+DO NOT change the existing composer.
+DO NOT change typography, spacing, colors, layout, or unrelated components.
+ONLY implement/upgrade the image-generation loading state described below.
+
+IMAGE GENERATION LOADING EXPERIENCE
+
+When a user submits a request that triggers image generation, the assistant response area must immediately enter an image-generation loading state.
+
+Instead of showing a normal text response, display a centered image-generation placeholder card.
+
+PLACEHOLDER CARD:
+- Dark charcoal/graphite background.
+- Rounded corners.
+- Compact but substantial rectangular aspect ratio.
+- No visible border unless already consistent with the existing dark-mode design.
+- The card should feel native to the existing dark-mode chat interface.
+- It must appear where the eventual generated image will appear.
+- The eventual generated image should replace this exact placeholder area rather than creating a separate unrelated card.
+
+STATUS TEXT:
+At the top-left inside the placeholder, display:
+
+"Creating image"
+
+Use the existing interface typography system, with a muted/light-gray appearance appropriate for the dark card.
+
+ANIMATED DOT FIELD:
+Inside the card, create an animated field/matrix of small dots.
+
+The dots should:
+- be small and subtle;
+- use different levels of opacity;
+- form a loose rectangular/grid-like field;
+- gradually fade in/out;
+- subtly shift/reposition over time;
+- create the impression that the image is being constructed/generated;
+- NOT spin like a traditional loading spinner;
+- NOT use a circular progress indicator;
+- NOT look like a skeleton loader;
+- NOT remain completely static.
+
+The animation should be calm, premium, subtle, and continuous.
+
+The dot field should have a soft, organic movement so that it looks like the visual content is slowly being formed.
+
+STATUS TRANSITION:
+After image generation has progressed, change the status text from:
+
+"Creating image"
+
+to:
+
+"Sketching it out"
+
+Keep the same animated dot field running underneath.
+
+The status transition should be smooth and should not cause the card to jump or resize.
+
+IMPORTANT:
+Do not hard-code the status based purely on arbitrary frontend timers.
+
+The UI should be driven by the actual image-generation state/events from the application.
+
+Use a state model similar to:
+
+idle
+→ generating
+→ sketching
+→ completed
+→ error
+
+For example:
+
+generating:
+    status = "Creating image"
+
+sketching:
+    status = "Sketching it out"
+
+completed:
+    remove placeholder
+    render generated image
+
+error:
+    replace loading state with the application's existing error UI
+
+BACKEND/FRONTEND BEHAVIOR:
+The actual image-generation request must remain handled by the application's existing backend/API/image-generation pipeline.
+
+The frontend loading animation is ONLY the visual representation of the backend generation state.
+
+Do not fake a successful generation.
+
+Do not display the generated-image state until the backend actually returns the generated image/result.
+
+If the backend already exposes generation/progress/status events, use those events.
+
+If it does not expose intermediate progress, implement a safe UI state machine where the initial state is "Creating image" and a controlled intermediate state can become "Sketching it out", but ALWAYS keep the final transition tied to the actual successful image-generation response.
+
+ANIMATION DETAILS:
+Implement the dot animation efficiently using CSS/React rather than repeatedly forcing expensive React re-renders.
+
+Prefer:
+- CSS transforms
+- opacity animation
+- CSS keyframes
+- GPU-friendly transforms
+- requestAnimationFrame only if genuinely necessary
+
+The dot field should subtly move horizontally/vertically and change opacity.
+
+Do not make the movement distracting.
+
+Do not animate the entire card.
+
+Do not animate the status text excessively.
+
+FINAL RESULT:
+The user should experience this sequence:
+
+User submits image prompt
+        ↓
+Dark rounded image-generation placeholder appears
+        ↓
+"Creating image"
+        ↓
+Animated dot field subtly moves
+        ↓
+"Sketching it out"
+        ↓
+Animated dot field continues
+        ↓
+Backend finishes image generation
+        ↓
+Placeholder smoothly transitions/replaces into the actual generated image
+
+The generated image should occupy the same visual region as the placeholder.
+
+MATCH THE BEHAVIOR AND VISUAL FEEL, NOT JUST THE STATIC APPEARANCE.
+
+The most important characteristics are:
+1. dark rounded generation card
+2. "Creating image" status
+3. animated dot-matrix visualization
+4. "Sketching it out" status
+5. subtle continuous movement
+6. smooth replacement with the real generated image
+7. real backend generation state controls completion
+8. no unrelated UI redesign
+
+Before modifying anything, inspect the existing image-generation flow, chat message rendering, API response handling, and relevant components. Reuse the existing architecture wherever possible.
+
+Do not create a second competing image-generation system if one already exists.
+
+After implementation:
+- run the project's existing typecheck/build/tests;
+- verify the loading state;
+- verify the completed-image state;
+- verify error handling;
+- verify that normal text conversations are completely unaffected.

@@ -1,0 +1,93 @@
+Examining task implementation
+Examining task implementation
+
+I’m starting to realize that the user wants a concrete implementation, even though the task initially seemed to call for a quick look. I'll need to inspect the skills for react-vite since it likely involves web app setup and check the attached files. It’s important that I don’t change my approach until the user responds, but since they’ve brought up specific requests, I’ll adjust accordingly and start reading further.
+
+I’ll inspect the imported project and the two uploaded files first, then trace every AI request path before making the smallest server-side enforcement change.
+
+
+
+Show less
+Loaded skill react-vite
+Loaded skill artifacts
+
+Opened Pasted--IMPLEMENT-THE-PROJECT-S-CANONICAL-SYSTEM-PROMPT-I-want_1786568103245.txt
+
+Opened index_1786567922998.js
+
+Listed files
+The uploaded server snapshot already contains a large founder-persona prompt, while the live workspace is a pnpm monorepo with a Payvora artifact and shared API server. I’m now locating the live chat route, provider calls, and frontend caller so the canonical prompt is moved/enforced in the actual runtime—not just copied from the upload.
+
+
+
+Show less
+
+Found files
+
+Opened replit.md
+
+Opened vite.config.ts
+
+Opened build.mjs
+
+Opened tsconfig.json
+Inspecting files needed
+
+Inspecting files needed
+
+Opened aiChat.ts
+
+Opened app.ts
+
+Opened index.ts
+
+Searched for "fetch(|use.*Chat|aiChat…"
+
+Found files
+
+Opened client.ts
+
+Opened ChatPanel.tsx
+
+Opened index.ts
+
+Opened package.json
+
+Opened package.json
+
+Searched for ".chat.completions.creat…"
+Inspecting server routes
+
+Inspecting server routes
+The live app has four server-side text-completion routes beyond chat: support, agents, and document generation, plus the main streamed chat route. The frontend only posts { content }, so there is no client prompt override today; I’m checking each route’s payload shape before centralizing them behind one server-owned completion wrapper.
+
+
+
+15 actions
+I found no separate fallback provider in the live workspace: all production text-generation routes use the same OpenAI-compatible integration, while the “alternate” agent models are model selections, not fallback calls. I’m adding one backend canonical prompt module plus one completion wrapper that strips client/history system messages, preserves task context as explicitly secondary context, and injects the canonical instruction on every streamed request.
+
+
+
+9 actions
+The route changes are in place. I’m validating the backend now; the pure prompt-construction tests must not initialize the provider client, so I’m separating that testable construction layer from the provider wrapper before running typechecks and tests.
+
+
+
+Show less
+
+Created messages.ts
+
+Edited request.ts
+
+Edited request.test.ts
+Verifying processes
+
+Verifying processes
+
+Running tests
+
+Checked for code errors
+
+Searched for "chat.completions.create…"
+
+Worked for 1 minute

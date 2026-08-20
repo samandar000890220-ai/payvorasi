@@ -1,0 +1,10 @@
+{
+  "description": "Create stunning, pixel-perfect web designs that replicate original layouts and styles accurately, ensuring a seamless user experience across all devices.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

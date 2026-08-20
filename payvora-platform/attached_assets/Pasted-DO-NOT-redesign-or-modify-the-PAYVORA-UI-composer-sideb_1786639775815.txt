@@ -1,0 +1,188 @@
+DO NOT redesign or modify the PAYVORA UI, composer, sidebar, microphone icon, layout, styling, spacing, responsive behavior, or any unrelated component.
+
+I need you to debug the ACTUAL microphone button behavior in the running Replit Preview.
+
+CURRENT SYMPTOM:
+When I click the microphone button in the PAYVORA composer in Replit Preview, the application displays this black toast:
+
+"Voice input is not available yet."
+
+This happens in the browser Preview, not inside Copilot.
+
+The screenshot confirms this is an IN-APP toast, so I need you to trace exactly where that message originates and why the microphone handler is falling back to it.
+
+IMPORTANT:
+Do not guess.
+Do not redesign anything.
+Do not replace the microphone UI.
+Do not change the composer appearance.
+Do not modify unrelated voice-engine architecture.
+Do not touch the existing F5-TTS implementation unless the frontend integration proves it is necessary.
+
+FIRST: LOCATE THE EXACT SOURCE OF THE MESSAGE
+
+Search the entire repository for the exact string:
+
+"Voice input is not available yet."
+
+Also search for related microphone/voice fallback logic, including:
+
+- navigator.mediaDevices
+- getUserMedia
+- MediaRecorder
+- microphone
+- mic
+- voice input
+- voiceInput
+- startRecording
+- stopRecording
+- transcribe
+- /voice/transcribe
+- /audio/transcribe
+- speech
+- VoiceEngine
+- browser microphone permission
+- NotAllowedError
+- NotFoundError
+- SecurityError
+- mediaDevices
+
+Report:
+1. Exact file containing "Voice input is not available yet."
+2. Exact function/component that displays it.
+3. Exact microphone click handler.
+4. Exact condition that causes the fallback toast.
+5. Whether the current implementation actually calls navigator.mediaDevices.getUserMedia().
+6. Whether MediaRecorder is actually initialized.
+7. Whether recorded audio is actually sent to the backend.
+8. Which backend transcription endpoint it calls, if any.
+
+THEN TRACE THE COMPLETE FLOW:
+
+MIC BUTTON
+→ browser microphone permission
+→ getUserMedia()
+→ MediaRecorder
+→ audio chunks
+→ audio Blob
+→ transcription request
+→ API server
+→ /voice/transcribe or /audio/transcribe
+→ F5-TTS/STT provider
+→ transcription result
+→ frontend
+→ composer input
+
+Identify the FIRST point where the flow stops.
+
+CHECK THESE SPECIFIC BROWSER CONDITIONS:
+
+1. Is window.isSecureContext true in the Replit Preview?
+2. Does navigator.mediaDevices exist?
+3. Does navigator.mediaDevices.getUserMedia exist?
+4. Does getUserMedia({ audio: true }) actually execute?
+5. Does the browser reject it?
+6. If rejected, print the exact error name and message.
+7. Check for:
+   - NotAllowedError
+   - NotFoundError
+   - SecurityError
+   - AbortError
+8. Determine whether the Replit Preview is running the PAYVORA app inside an iframe.
+9. If an iframe is involved, inspect whether microphone permission is being delegated with the appropriate Permissions Policy / iframe allow="microphone" configuration.
+10. Determine whether browser/site microphone permission is actually the blocker.
+
+DO NOT simply tell me to enable microphone permissions.
+First prove from the code and runtime which condition is failing.
+
+NEXT, CHECK THE BACKEND CONNECTION:
+
+Inspect the existing API-server implementation that was just verified:
+
+artifacts/api-server/src/voice/f5tts/client.ts
+artifacts/api-server/src/routes/voice.ts
+artifacts/api-server/src/voice/engine.ts
+
+Do NOT rewrite these files unless the frontend trace demonstrates a real incompatibility.
+
+Verify:
+- which transcription endpoint the frontend should use
+- HTTP method
+- expected Content-Type
+- multipart field name
+- accepted audio format
+- response JSON shape
+- whether the frontend currently sends the correct payload
+
+The existing backend verification already showed:
+- API-server typecheck: PASS
+- API-server tests: 7 PASS
+- git diff --check: PASS
+- F5TtsClient methods are present
+- transcription endpoint exists
+
+Therefore, treat the backend as currently functional until evidence shows otherwise.
+
+MOST IMPORTANT:
+
+If the frontend currently contains a placeholder such as:
+
+if (!voiceInputAvailable) {
+  showToast("Voice input is not available yet.");
+  return;
+}
+
+or equivalent logic, identify exactly why voiceInputAvailable is false and replace ONLY the placeholder/fallback integration with the real microphone implementation.
+
+The desired behavior is:
+
+CLICK MIC
+→ request microphone access
+→ if permission is granted, start recording
+→ show the existing microphone active state using the existing UI/state mechanism
+→ record audio
+→ stop recording
+→ send audio to the existing transcription endpoint
+→ receive transcript
+→ return transcript to the existing voice-input state/action
+→ insert/use the transcript through the existing composer integration
+
+Do NOT redesign the composer.
+
+The Voice Engine must remain UI-independent and expose typed state/actions only. Do not put microphone UI, composer mutation, orb logic, waveform logic, or Send-button logic inside the Voice Engine.
+
+If browser permissions are the actual blocker, report that separately and implement the application-side error handling so the user receives a useful error instead of the generic:
+
+"Voice input is not available yet."
+
+Before changing anything, show me:
+
+A. exact source of the toast
+B. exact current mic flow
+C. exact failure point
+D. root cause
+E. minimal files that need modification
+
+Then implement ONLY the minimal fix.
+
+AFTER IMPLEMENTATION:
+
+Run:
+
+1. frontend typecheck
+2. API-server typecheck
+3. relevant tests
+4. git diff --check
+5. git status --short
+
+Then report:
+- files changed
+- exact behavior fixed
+- whether getUserMedia is now reached
+- whether microphone permission is requested
+- whether audio reaches /voice/transcribe
+- whether transcription reaches the frontend
+- whether any backend files were changed
+- test results
+
+DO NOT COMMIT.

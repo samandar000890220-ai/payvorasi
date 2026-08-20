@@ -1,0 +1,481 @@
+Redesign the entire Payvora application UI and structure into a premium modern fintech AI platform.
+
+IMPORTANT:
+Do NOT remove existing functionality.
+Do NOT break existing routes, APIs, integrations, AI features, voice pipeline, image generation, or working components.
+
+Keep the ChatGPT-style chat home/composer experience as the main AI interaction area, but completely redesign the application shell, sidebar, navigation, and all internal pages using a modern enterprise fintech design system.
+
+The final product should feel like a world-class AI fintech company similar to:
+- OpenAI enterprise products
+- Stripe dashboard
+- Ramp
+- Mercury
+- Brex
+- Linear
+- Vercel
+- Modern SaaS AI platforms
+
+==================================================
+
+NEW APPLICATION STRUCTURE
+
+Create a clean grouped enterprise sidebar.
+
+Sidebar:
+
+PAYVORA
+
+AI Studio
+ ├── Image Studio
+ ├── Voice Studio
+ ├── Video Studio
+ ├── AI Agents
+ ├── Templates
+
+Knowledge & Automation
+ ├── Knowledge Base
+ ├── Projects
+ ├── Integrations
+
+Workspace
+ ├── Document Studio
+ ├── API Keys
+ ├── Settings
+
+Account
+ ├── Billing
+ ├── Help & Support
+ ├── Keyboard Shortcuts
+
+==================================================
+
+GLOBAL DESIGN SYSTEM
+
+Apply this design system to EVERY PAGE.
+
+Style:
+- Premium fintech SaaS
+- Minimal
+- Professional
+- High-end enterprise software
+- Clean typography
+- Spacious layouts
+- Strong hierarchy
+
+Design requirements:
+
+- Modern dashboard layouts
+- Rounded cards
+- Soft shadows
+- Glass/transparency effects where appropriate
+- Smooth animations
+- Premium hover states
+- Beautiful empty states
+- Responsive mobile/tablet/desktop layouts
+
+Typography:
+- Use clean modern fonts
+- Strong headings
+- Clear readable body text
+- Proper spacing between sections
+
+Colors:
+Use Payvora premium fintech colors:
+
+Primary:
+#3C8CFF
+
+Dark:
+#1A1A1A
+#252525
+
+Neutral:
+#F8F9FB
+#FFFFFF
+
+Accent:
+#7C3AED
+
+Use subtle gradients and professional AI styling.
+
+==================================================
+
+SIDEBAR REDESIGN
+
+Replace the current sidebar with:
+
+- Collapsible enterprise navigation
+- Icons for every section
+- Active page highlighting
+- Smooth transitions
+- User workspace area at bottom
+- Upgrade button
+- Profile menu
+
+Sidebar should feel like:
+Stripe Dashboard + ChatGPT navigation combined.
+
+==================================================
+
+AI STUDIO REDESIGN
+
+Create a premium AI command center.
+
+Header:
+
+AI Studio
+
+Subtitle:
+"Create, automate, and manage AI-powered workflows."
+
+Cards:
+
+Image Studio
+- AI image generation
+- Image editing
+- Variations
+- Upscaling
+
+Voice Studio
+- Voice cloning
+- Text-to-speech
+- Voice library
+- Audio generation
+
+Video Studio
+- AI video generation
+- Editing
+- Video workflows
+
+AI Agents
+- Agent builder
+- Agent marketplace
+- Agent workflows
+
+Templates
+- Prompt templates
+- Workflow templates
+- AI tools
+
+Each card should have:
+- Icon
+- Description
+- Status
+- Open button
+- Premium fintech card styling
+
+
+==================================================
+
+IMAGE STUDIO
+
+Redesign to match the provided screen recording.
+
+Analyze the entire recording frame-by-frame.
+
+DO NOT skip frames.
+
+Replicate:
+
+- Layout
+- Spacing
+- Typography
+- Controls
+- Tabs
+- Buttons
+- Cards
+- Shadows
+- Animations
+- Panels
+- Model selector
+- Settings panel
+- Generation area
+- History section
+
+The final UI should be pixel-perfect compared to the reference.
+
+Maintain:
+
+Generate
+Edit Image
+Variations
+Upscale
+History
+Inspiration
+
+tabs.
+
+==================================================
+
+VOICE STUDIO
+
+Connect with the existing F5-TTS implementation.
+
+Keep:
+
+- Voice cloning
+- Reference voices
+- Voice library
+- Generation history
+- Audio player
+- Text editor
+
+Redesign UI:
+
+Include:
+
+Voice Library
+
+Cards:
+- Voice name
+- Preview
+- Duration
+- Created date
+- Select voice button
+
+Generation panel:
+
+Text input
+Voice selector
+Expressive controls
+Generate button
+
+Premium audio workspace styling.
+
+==================================================
+
+VIDEO STUDIO
+
+Create professional AI video workspace.
+
+Include:
+
+- Prompt input
+- Video settings
+- Style selection
+- Duration controls
+- Generated videos library
+- Playback viewer
+
+==================================================
+
+AI AGENTS PAGE
+
+Create enterprise agent management dashboard.
+
+Include:
+
+Agent cards:
+
+- Agent name
+- Description
+- Status
+- Last run
+- Usage
+
+Features:
+
+- Create agent
+- Test agent
+- Deploy agent
+- Agent workflows
+
+==================================================
+
+TEMPLATES PAGE
+
+Create template marketplace.
+
+Categories:
+
+- Marketing
+- Customer Support
+- Finance
+- Documents
+- Automation
+- Coding
+
+Include:
+
+- Search
+- Filters
+- Template cards
+- Create from template
+
+==================================================
+
+KNOWLEDGE BASE
+
+Create enterprise knowledge management system.
+
+Include:
+
+- Upload documents
+- Search knowledge
+- Collections
+- Sources
+- AI retrieval status
+
+Cards:
+
+Documents
+Sources
+Collections
+Recent activity
+
+==================================================
+
+DOCUMENT STUDIO
+
+Create AI document workspace.
+
+Include:
+
+- Document editor
+- AI assistant
+- Document generation
+- Summaries
+- Formatting tools
+- Export options
+
+==================================================
+
+PROJECTS
+
+Create project workspace.
+
+Include:
+
+- Project cards
+- Files
+- Activity
+- Collaborators
+- AI tools
+
+==================================================
+
+INTEGRATIONS
+
+Create integration marketplace.
+
+Include:
+
+- Connected apps
+- Available integrations
+- API connections
+- Webhooks
+
+==================================================
+
+API KEYS
+
+Create developer dashboard.
+
+Include:
+
+- API key creation
+- Key management
+- Usage statistics
+- Documentation links
+
+==================================================
+
+BILLING
+
+Create premium billing dashboard.
+
+Use:
+
+Database-backed billing system first.
+
+Include:
+
+- Current plan
+- Usage
+- Credits
+- Invoices
+- Payment history
+
+Prepare architecture so Stripe can be connected later.
+
+==================================================
+
+SETTINGS
+
+Create complete settings center.
+
+Sections:
+
+Profile
+Security
+Notifications
+Workspace
+AI Preferences
+Appearance
+Language
+
+==================================================
+
+HELP & SUPPORT
+
+Create support center.
+
+Include:
+
+- Search help
+- Documentation
+- Contact support
+- FAQ
+- Ticket history
+
+==================================================
+
+KEYBOARD SHORTCUTS
+
+Create shortcut manager.
+
+Include:
+
+- Shortcut list
+- Search
+- Custom shortcuts
+
+==================================================
+
+RESPONSIVENESS
+
+Every page must work perfectly on:
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile
+
+No overflow.
+No broken layouts.
+No unreadable text.
+
+==================================================
+
+IMPLEMENTATION RULES
+
+Before modifying:
+
+1. Inspect existing routes.
+2. Inspect existing components.
+3. Reuse existing functionality.
+4. Keep APIs unchanged unless necessary.
+5. Do not create duplicate systems.
+
+After implementation:
+
+- Test every navigation item.
+- Verify every button opens the correct page.
+- Verify existing AI features still work.
+- Verify F5-TTS voice pipeline remains connected.
+- Verify image/video/document tools remain functional.
+
+The goal:
+
+Transform Payvora into a premium fintech AI operating system while preserving all existing functionality.

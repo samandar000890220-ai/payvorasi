@@ -1,0 +1,10 @@
+{
+  "description": "Delivers pixel-perfect, responsive web designs that precisely match original layouts, styles, and interactions for flawless user experiences across devices.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

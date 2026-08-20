@@ -1,0 +1,9 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "Qr8L89t5wP7d3IneiVzsL"
+uri = "file://f5tts-worker-adapter/payvora-f5tts-worker.zip"
+type = "unspecified"
+title = "Payvora F5-TTS Worker (port 7870)"
+description = "adapter.py, test_adapter.py, README.md — ready to run on your Windows PC."

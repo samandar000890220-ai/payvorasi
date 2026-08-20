@@ -1,0 +1,53 @@
+Redesign my entire website to look and feel exactly like the ChatGPT mobile app interface (iOS-style) from the screenshots I provided.
+
+### Overall Style
+- Clean, modern, minimalist ChatGPT UI
+- Support both light mode (white background) and dark mode (pure black background)
+- Soft, large border-radius everywhere (especially cards, buttons, input fields, and the sidebar) — match the rounded “pill” and card radii from the ChatGPT app
+- Smooth, premium animations
+- System-like typography (SF Pro style or Inter/system-ui)
+- Subtle shadows and very light borders only where needed
+
+### Layout Structure
+1. **Left Sidebar** (collapsible)
+   - Starts collapsed or can be toggled
+   - When open: slides in from the left with a smooth spring/ease animation
+   - Dark overlay on the main content when sidebar is open (on mobile)
+   - Top: “ChatGPT” title + search icon
+   - Menu items with icons:
+     - Images
+     - Library
+     - Projects
+     - More (with •••)
+   - Section “Recents” with a vertical list of previous chats (truncated titles)
+   - Bottom of sidebar: blue “Chat” pill button + Style button + gear icon
+   - Exact same spacing, icon sizes, and text hierarchy as the ChatGPT app
+
+2. **Main Content Area**
+   - When no chat is open: show the empty state exactly like the screenshots
+     - Top: hamburger menu + “Upgrade” pill button (blue star) + history icon
+     - Centered empty space
+     - Bottom action list:
+       - Create an image
+       - Write or edit
+       - Search the web
+     - Fixed bottom input bar: rounded full-width input with “+ Ask ChatGPT”, microphone, and blue send button
+   - When a chat is active: normal chat messages view with the same input bar
+
+### Specific Details to Match
+- Border radius: very rounded (match ChatGPT’s ~16–24px cards and full pill buttons)
+- Sidebar animation: smooth slide-in + slight scale/opacity on the overlay
+- Colors:
+  - Light mode: pure white bg, black text, light gray secondary text
+  - Dark mode: pure black bg, white text, dark gray secondary
+  - Accent: ChatGPT blue (#10A37F is close, but use the exact blue from the screenshots for the Chat button and Upgrade)
+- Bottom floating elements and the input field should have the exact same height, padding, and radius as the real app
+- Make the sidebar feel native (touch-friendly, good hit areas)
+
+### Technical Requirements
+- Fully responsive (mobile-first, then desktop)
+- Use modern CSS (or Tailwind if preferred) with CSS variables for light/dark themes
+- Smooth transitions (0.3–0.4s cubic-bezier for sidebar)
+- Keep the existing functionality of my site, just completely restyle the UI and navigation to match this ChatGPT look
+
+Please implement the full redesign now, including the sliding sidebar animation and matching radii.

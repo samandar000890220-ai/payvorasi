@@ -1,0 +1,40 @@
+Upgrade the scrolling and overall page-flow UX across the ENTIRE Payvora website to feel like a polished, modern fintech + AI product.
+
+Do a full audit of every page, including Voice Studio, Text-to-Speech, Voice Clone, My Voices, History, chat/workspace pages, settings, dashboards, sidebars, modals, drawers, tables, forms, and mobile layouts.
+
+Requirements:
+
+* Fix every page/container that cannot scroll naturally when content exceeds the viewport.
+* Establish a consistent, predictable scroll architecture across the entire app.
+* Remove accidental nested-scroll traps, clipped content, `overflow: hidden` problems, fixed-height containers, and viewport-height conflicts.
+* Make the Voice Studio fully scrollable on desktop, tablet, and mobile.
+* Keep important headers/toolbars appropriately sticky where useful without covering content.
+* Make long forms, cards, lists, tables, and panels independently scrollable only when genuinely necessary.
+* Make mouse-wheel, trackpad, touch, keyboard, PageUp/PageDown, Home/End, and scrollbar interactions work naturally.
+* Use smooth scrolling for intentional in-page navigation, but DO NOT hijack or override native user scrolling.
+* Avoid scroll-jacking, forced scroll snapping, excessively slow scrolling, or animations that make the interface feel delayed.
+* Use appropriate `overscroll-behavior` to prevent unwanted scroll chaining between nested panels while preserving normal scrolling.
+* Make scrollbars visually subtle, modern, and consistent while keeping them usable and discoverable.
+* Respect `prefers-reduced-motion` and disable nonessential scroll/motion effects for users who request reduced motion.
+* Ensure focused elements and keyboard navigation remain visible while scrolling.
+* Prevent sticky/fixed elements from obscuring content.
+* Make the layout responsive based on the actual available container width/height, not just viewport width.
+* Ensure there is never horizontal overflow unless the content genuinely requires horizontal scrolling.
+* Keep spacing, card heights, section widths, headers, and content density visually balanced across all pages.
+* Do not redesign the product or replace existing functionality. Preserve the current Payvora visual language and components while improving the underlying layout/scroll behavior.
+* Reuse the existing design system/components instead of creating duplicate implementations.
+
+IMPORTANT:
+First inspect the entire existing layout architecture and identify the root causes of the scrolling problems. Then implement the fixes systematically at the shared layout/container level where possible, instead of adding page-specific hacks.
+
+After implementation:
+
+1. Run typecheck.
+2. Run the production build.
+3. Start the Payvora workflow.
+4. Test every major route at desktop and mobile widths.
+5. Specifically test Voice Studio at 1024px, 1280px, and mobile widths.
+6. Verify there is no clipped content, inaccessible bottom content, broken sticky headers, nested scroll traps, horizontal overflow, or browser-console errors.
+7. Report exactly which files were modified and what scrolling/layout issues were fixed.
+
+Do NOT stop at identifying problems. Implement and verify the fixes completely.

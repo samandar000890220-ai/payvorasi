@@ -1,0 +1,206 @@
+STOP AND REVIEW YOUR CURRENT IMPLEMENTATION BEFORE CONTINUING.
+
+You are starting to make assumptions that conflict with my requirements.
+
+I explicitly said:
+
+**DO NOT BUILD A NEW TEXT-TO-SPEECH PAGE.**
+
+The existing **Voice Studio page IS the Text-to-Speech experience.**
+
+Do not create a separate TTS page, do not replace the existing Voice Studio page, and do not rebuild its interface.
+
+### IMPORTANT CORRECTION
+
+You said:
+
+> "Now I'm writing the new TextToSpeech component"
+
+Do NOT create a new standalone Text-to-Speech page.
+
+If `TextToSpeech.tsx` is the existing component used INSIDE the current Voice Studio page, you may modify that existing component in place, but it must remain part of the existing Voice Studio experience and must preserve its current UI exactly.
+
+Do not create a second TTS experience.
+
+---
+
+### DO NOT MAKE UNVERIFIED ASSUMPTIONS ABOUT F5-TTS
+
+You also said you are:
+
+* disabling Stability and Similarity
+* mapping Speaking Style to emotion options
+* injecting pause tags
+* adding pitch from −12 to +12
+* mapping voice tags to emotions
+
+Do NOT implement any of these merely because ElevenLabs or Fish Audio supports similar concepts.
+
+Before implementing each control, inspect the actual F5-TTS backend currently used by Payvora and determine whether that capability is genuinely supported.
+
+For every existing Voice Studio control, determine:
+
+**UI control → frontend state → API request → F5-TTS backend parameter → actual model behavior → generated audio**
+
+If the backend does not support a control, do not fake it.
+
+Do not mark a control functional simply because the slider moves.
+
+---
+
+### PRESERVE THE EXISTING VOICE STUDIO
+
+The current Voice Studio page is the source of truth.
+
+DO NOT:
+
+* redesign it
+* change its layout
+* replace its styling
+* move controls
+* remove controls
+* create a replacement page
+* replace existing cards unnecessarily
+* remove existing functionality
+* change the visual hierarchy
+* invent new UI patterns
+
+Only wire the existing controls to real functionality.
+
+If a control currently exists, preserve it.
+
+If it currently looks correct, leave its appearance alone.
+
+---
+
+### TAGS MUST BE VERIFIED, NOT ASSUMED
+
+Before implementing Speaking Style, Natural Pauses, or expressive tags, inspect exactly how the current Tags system works.
+
+Determine:
+
+1. What tags currently exist.
+2. What text each tag inserts.
+3. What happens to the tag before generation.
+4. What request is actually sent to F5-TTS.
+5. Whether F5-TTS understands that syntax.
+6. Whether the model actually changes the generated speech because of the tag.
+7. Whether preprocessing strips or modifies the tag.
+8. Whether unsupported tags are spoken aloud.
+9. Whether multiple tags work.
+10. Whether tags survive retry/regeneration/history.
+
+Do not claim ElevenLabs/Fish Audio-style behavior unless the F5-TTS implementation can actually produce the behavior.
+
+---
+
+### DO NOT REPLACE REAL DATA WITH FAKE DATA
+
+You are correct that fake stock voices and fake training jobs should not remain if the application is supposed to use real data.
+
+However, do not solve this by unnecessarily deleting existing functionality.
+
+For every existing component:
+
+**Inspect → understand → preserve → wire → test → only then modify what is actually broken.**
+
+Do not rewrite entire components unless necessary.
+
+---
+
+### VOICE CLONING
+
+For Voice Clone, distinguish between:
+
+* Upload UI
+* Recording UI
+* Backend upload
+* F5-TTS voice-cloning capability
+* Processing
+* Voice creation
+* Voice persistence
+* Voice availability in Voice Studio
+
+If a feature is not supported by the current backend, show an honest unavailable state rather than creating a fake implementation.
+
+Do not invent "training jobs", quality scores, processing states, or voice metadata that do not actually exist.
+
+---
+
+### HISTORY
+
+History should use the application's actual generation records.
+
+Do not invent data.
+
+For every History action, verify:
+
+**Action → backend/data operation → UI state → success → failure → persistence**
+
+If an action cannot actually be implemented with the current backend/data model, mark it as unavailable rather than pretending it works.
+
+---
+
+### RESPONSIVE REQUIREMENT
+
+Every existing control must also work correctly across:
+
+* mobile
+* tablet
+* laptop
+* desktop
+* large monitors
+
+Do not merely shrink the desktop version.
+
+The existing Voice Studio must reorganize naturally on smaller screens while maintaining the same design language.
+
+Check:
+
+* voice cards
+* tags
+* sliders
+* dropdowns
+* text editor
+* buttons
+* audio player
+* history cards
+* dialogs
+* upload areas
+* navigation
+* filters
+
+No clipping.
+No overlapping.
+No horizontal overflow.
+No controls extending outside their containers.
+No unreadable text.
+No inaccessible controls.
+
+---
+
+### MOST IMPORTANT RULE
+
+Do not continue coding based on assumptions.
+
+First inspect the existing implementation and report:
+
+**1. What currently works**
+**2. What is currently stubbed**
+**3. What is currently fake/mock**
+**4. What the F5-TTS backend actually supports**
+**5. What each existing Voice Studio control should connect to**
+**6. Which controls require application-side handling**
+**7. Which controls genuinely cannot be supported**
+
+Then implement the fixes **inside the existing Voice Studio page**.
+
+The goal is:
+
+**Existing Payvora Voice Studio + existing F5-TTS backend + real functionality + ElevenLabs/Fish Audio-level interaction quality**
+
+NOT:
+
+**New TTS page + redesigned UI + assumed F5-TTS capabilities.**
+
+Do not proceed with the current implementation until these requirements are followed.
